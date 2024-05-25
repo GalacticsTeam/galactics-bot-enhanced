@@ -1,0 +1,33 @@
+{
+  "name": "galactics-bot-enhanced",
+  "version": "1.0.0",
+  "description": "Galactics Official bot",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsx watch src/",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omarlawaty/galactics-bot-enhanced.git"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "Galactics Dev Team",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "ollama": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "tsx": "^4.7.2"
+  },
+  "bugs": {
+    "url": "https://github.com/omarlawaty/galactics-bot-enhanced/issues"
+  },
+  "homepage": "https://github.com/omarlawaty/galactics-bot-enhanced#readme"
+}
