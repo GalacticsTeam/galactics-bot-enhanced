@@ -1,6 +1,6 @@
 export type Prefix = 'gt!';
 
-export type command = 'roll-dice';
+export type command = 'roll-dice' | 'avatar';
 
 export type Features = {
   ping: boolean;

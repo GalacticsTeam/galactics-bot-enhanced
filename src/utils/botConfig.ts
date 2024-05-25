@@ -10,6 +10,7 @@ const devModeConfig: BotConfig = {
   allowedFeatures: {
     ping: true,
     'roll-dice': true,
+    avatar: true,
   },
   prefixes: ['gt!'],
   serverId: '1086033687109455982',
@@ -19,6 +20,7 @@ const productionModeConfig: BotConfig = {
   allowedFeatures: {
     ping: false,
     'roll-dice': false,
+    avatar: false,
   },
   prefixes: ['gt!'],
   serverId: '673700884617625621',
