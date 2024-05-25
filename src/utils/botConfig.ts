@@ -9,6 +9,7 @@ export const isDevMode: boolean = !!process.env.DEVMODE ?? false;
 const devModeConfig: BotConfig = {
   allowedFeatures: {
     ping: true,
+    'roll-dice': true,
   },
   prefixes: ['gt!'],
   serverId: '1086033687109455982',
@@ -17,6 +18,7 @@ const devModeConfig: BotConfig = {
 const productionModeConfig: BotConfig = {
   allowedFeatures: {
     ping: false,
+    'roll-dice': false,
   },
   prefixes: ['gt!'],
   serverId: '673700884617625621',
