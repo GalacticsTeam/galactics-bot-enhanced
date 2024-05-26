@@ -1,8 +1,7 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder, GuildMember, User } from 'discord.js';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { command } from './types';
 
-import { commandCreate } from './types';
-
-export const user = (interaction: ChatInputCommandInteraction) => {
+export const user: command<'user'> = (interaction: ChatInputCommandInteraction) => {
   const { user, guild, options } = interaction;
   const guildUser = guild.members.cache.get(options.getUser('user')?.id ?? user.id);
 
@@ -43,4 +42,4 @@ user.userCreate = {
       type: ApplicationCommandOptionType.User,
     },
   ],
-} satisfies commandCreate;
+};

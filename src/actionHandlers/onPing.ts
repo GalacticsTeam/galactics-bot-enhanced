@@ -1,4 +1,5 @@
 import { Message } from 'discord.js';
+
 import { botConfig } from '../utils';
 
 export const onPing = (msg: Message) => {

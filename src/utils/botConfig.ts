@@ -6,10 +6,16 @@ configDotenv();
 
 export const isDevMode: boolean = !!process.env.DEVMODE ?? false;
 
+export const commands = {
+  diceRoll: 'roll-dice',
+  avatar: 'avatar',
+  user: 'user',
+} as const;
+
 const devModeConfig: BotConfig = {
   allowedFeatures: {
     ping: true,
-    'roll-dice': true,
+    diceRoll: true,
     avatar: true,
     user: true,
   },
@@ -20,7 +26,7 @@ const devModeConfig: BotConfig = {
 const productionModeConfig: BotConfig = {
   allowedFeatures: {
     ping: false,
-    'roll-dice': false,
+    diceRoll: false,
     avatar: false,
     user: false,
   },

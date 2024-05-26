@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import { CacheType, Client, Interaction } from 'discord.js';
 
 import { action } from './action';
 
@@ -9,5 +9,5 @@ import { onInteractionCreate } from './onInteractionCreate';
 export const invokeActions = (Client: Client) => {
   action(Client, 'ready', onReady);
   action(Client, 'messageCreate', onMessageCreate);
-  action(Client, 'interactionCreate', onInteractionCreate);
+  action(Client, 'interactionCreate', onInteractionCreate as (i: Interaction<CacheType>) => void);
 };
