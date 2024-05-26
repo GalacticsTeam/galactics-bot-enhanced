@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 
-import { botConfig, isDevMode } from '@botConfig';
+import { botConfig, isDevMode } from '../utils';
 import { commandsCreate } from '../actionHandlers';
 
 export const onReady = <T extends boolean>(client: Client<T>) => {

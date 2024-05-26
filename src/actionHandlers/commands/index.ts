@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
-import { commands as commandNames } from '@botConfig';
+import { commands as commandNames } from '../../utils';
 
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';

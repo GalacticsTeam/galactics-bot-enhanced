@@ -5,8 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch src/",
-    "test": "tsc --noEmit",
-    "build": "tsc"
+    "test": "tsc",
+    "build": "tsc --noEmit false --outDir dist/",
+    "start": "npm run build && node ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +22,10 @@
     "axios": "^1.6.8",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
-    "ollama": "^0.5.0"
+    "ollama": "^0.5.0",
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "typescript": "^5.4.5",
     "tsx": "^4.11.0"
   },
   "bugs": {
