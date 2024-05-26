@@ -4,7 +4,7 @@ import { BotConfig } from '../types';
 
 configDotenv();
 
-export const isDevMode: boolean = !!process.env.DEVMODE ?? false;
+export const isDevMode: boolean = !!+process.env.DEVMODE ?? false;
 
 export const commands = {
   diceRoll: 'roll-dice',
