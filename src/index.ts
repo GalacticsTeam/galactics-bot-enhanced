@@ -1,7 +1,7 @@
 import { Client, Partials } from 'discord.js';
 import { configDotenv } from 'dotenv';
 
-import { crashHandling } from './utils';
+import { crashHandling, isDevMode } from './utils';
 import { invokeActions } from './actions';
 
 // =======================================================
@@ -22,4 +22,4 @@ invokeActions(client);
 
 // =======================================================
 // Client initialization
-client.login(process.env.BOT_TOKEN);
+client.login(isDevMode ? process.env.BOT_TOKEN_DEV : process.env.BOT_TOKEN_PRODUCTION);
