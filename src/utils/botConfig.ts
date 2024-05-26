@@ -6,8 +6,32 @@ configDotenv();
 
 export const isDevMode: boolean = !!process.env.DEVMODE ?? false;
 
-const devModeConfig: BotConfig = {};
+export const commands = {
+  diceRoll: 'roll-dice',
+  avatar: 'avatar',
+  user: 'user',
+} as const;
 
-const productionModeConfig: BotConfig = {};
+const devModeConfig: BotConfig = {
+  allowedFeatures: {
+    ping: true,
+    diceRoll: true,
+    avatar: true,
+    user: true,
+  },
+  prefixes: ['gt!'],
+  serverId: '1086033687109455982',
+};
+
+const productionModeConfig: BotConfig = {
+  allowedFeatures: {
+    ping: false,
+    diceRoll: false,
+    avatar: false,
+    user: false,
+  },
+  prefixes: ['gt!'],
+  serverId: '673700884617625621',
+};
 
 export const botConfig: BotConfig = isDevMode ? devModeConfig : productionModeConfig;
