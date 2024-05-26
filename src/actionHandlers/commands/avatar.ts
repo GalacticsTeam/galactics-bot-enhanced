@@ -4,21 +4,23 @@ import { command } from './types';
 export const avatar: command<'avatar'> = (interaction: ChatInputCommandInteraction) => {
   const { user, guild, options } = interaction;
 
-  const mentionedUser = options.getUser('user');
-  const server = options.getString('server');
+  const server = options.getString('server') || null;
+  const source = options.getUser('user') || (server ? guild : null) || user;
 
-  const getAvatarEmbed: getAvatarEmbedFn = (user: User & Guild, type = 'user') =>
-    new EmbedBuilder()
-      .setColor(0x0f0229)
-      .setTitle(type === 'user' ? user.username : user.name)
-      .setDescription(
-        `[Avatar Link](${type === 'user' ? user.avatarURL({ size: 2048 }) : user.iconURL({ size: 2048 })})`
-      )
-      .setImage(type === 'user' ? user.avatarURL({ size: 2048 }) : user.iconURL({ size: 2048 }));
-
-  if (!server && !mentionedUser) return interaction.reply({ embeds: [getAvatarEmbed(user, 'user')], ephemeral: true });
-  if (server) return interaction.reply({ embeds: [getAvatarEmbed(guild, 'server')], ephemeral: true });
-  if (mentionedUser) return interaction.reply({ embeds: [getAvatarEmbed(mentionedUser, 'user')], ephemeral: true });
+  return interaction.reply({
+    embeds: [
+      new EmbedBuilder()
+        .setColor(0x0f0229)
+        .setTitle(!server ? (source as User).username : (source as Guild).name)
+        .setDescription(
+          `[Avatar Link](${
+            !server ? (source as User).avatarURL({ size: 2048 }) : (source as Guild).iconURL({ size: 2048 })
+          })`
+        )
+        .setImage(!server ? (source as User).avatarURL({ size: 2048 }) : (source as Guild).iconURL({ size: 2048 })),
+    ],
+    ephemeral: true,
+  });
 };
 
 avatar.avatarCreate = {
@@ -27,7 +29,7 @@ avatar.avatarCreate = {
   options: [
     {
       name: 'user',
-      description: "Get's specific user's avatar",
+      description: "Get's user's avatar",
       required: false,
       type: ApplicationCommandOptionType.User,
     },
@@ -36,6 +38,12 @@ avatar.avatarCreate = {
       description: "Get's this server's avatar",
       required: false,
       type: ApplicationCommandOptionType.String,
+      choices: [
+        {
+          name: 'server',
+          value: 'server',
+        },
+      ],
     },
   ],
 };
