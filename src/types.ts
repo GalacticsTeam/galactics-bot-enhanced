@@ -1,11 +1,13 @@
+import { commands } from './utils';
+
 export type Prefix = 'gt!';
 
-export type command = 'roll-dice' | 'avatar' | 'user';
+export type commandName = keyof typeof commands;
 
 export type Features = {
   ping: boolean;
 } & {
-  [t in command]: boolean;
+  [t in commandName]: boolean;
 };
 
 export type BotConfig = {

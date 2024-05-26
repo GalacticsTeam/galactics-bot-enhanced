@@ -1,9 +1,7 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder, Guild, User } from 'discord.js';
-import { commandCreate } from './types';
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder, Guild, User, bold } from 'discord.js';
+import { command } from './types';
 
-type getAvatarEmbedFn = ((user: User, type: 'user') => EmbedBuilder) & ((user: Guild, type: 'server') => EmbedBuilder);
-
-export const avatar = (interaction: ChatInputCommandInteraction) => {
+export const avatar: command<'avatar'> = (interaction: ChatInputCommandInteraction) => {
   const { user, guild, options } = interaction;
 
   const mentionedUser = options.getUser('user');
@@ -40,4 +38,4 @@ avatar.avatarCreate = {
       type: ApplicationCommandOptionType.String,
     },
   ],
-} satisfies commandCreate;
+};

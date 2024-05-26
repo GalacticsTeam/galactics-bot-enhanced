@@ -1,22 +1,5 @@
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandDataResolvable, ApplicationCommandOptionType } from 'discord.js';
 
-import { command } from '../../types';
+import { commandName } from '../../types';
 
-type commandOptionChoice = {
-  name: string;
-  value: string;
-};
-
-type commandOption = {
-  name: string;
-  description: string;
-  required: boolean;
-  type: ApplicationCommandOptionType;
-  choices?: commandOptionChoice[];
-};
-
-export type commandCreate = {
-  name: command;
-  description: string;
-  options: commandOption[];
-};
+export type command<T extends commandName> = Record<`${T}Create`, ApplicationCommandDataResolvable> & Function;

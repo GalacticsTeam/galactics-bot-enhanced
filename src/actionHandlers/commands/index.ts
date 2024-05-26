@@ -1,21 +1,23 @@
 import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
-import { command } from '../../types';
+import { commands as commandNames } from '@botConfig';
 
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
 
+type command = (typeof commandNames)[keyof typeof commandNames];
+
 export const commands = (interaction: ChatInputCommandInteraction) => {
   switch (interaction.commandName as command) {
     case 'roll-dice':
-      diceRoll(interaction);
+      return diceRoll(interaction);
 
     case 'avatar':
-      avatar(interaction);
+      return avatar(interaction);
 
     case 'user':
-      user(interaction);
+      return user(interaction);
   }
 };
 
