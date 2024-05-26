@@ -3,32 +3,35 @@ import { command } from './types';
 
 export const user: command<'user'> = (interaction: ChatInputCommandInteraction) => {
   const { user, guild, options } = interaction;
-  const guildUser = guild.members.cache.get(options.getUser('user')?.id ?? user.id);
+  const guildUser = guild && guild.members.cache.get(options.getUser('user')?.id ?? user.id);
 
-  return interaction.reply({
-    embeds: [
-      new EmbedBuilder()
-        .addFields(
-          {
-            name: 'Joined Discord:',
-            value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
-            inline: true,
-          },
-          {
-            name: 'Joined Server:',
-            value: `**<t:${parseInt(`${guildUser.joinedTimestamp / 1000}`, 10)}:R>**`,
-            inline: true,
-          }
-        )
-        .setThumbnail(guildUser.user.avatarURL({ size: 2048 }))
-        .setColor('#1f0557')
-        .setFooter({
-          text: guildUser.user.tag,
-          iconURL: guildUser.user.avatarURL({ size: 2048 }),
-        }),
-    ],
-    ephemeral: false,
-  });
+  return (
+    guildUser &&
+    interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .addFields(
+            {
+              name: 'Joined Discord:',
+              value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
+              inline: true,
+            },
+            {
+              name: 'Joined Server:',
+              value: `**<t:${parseInt(`${guildUser.joinedTimestamp / 1000}`, 10)}:R>**`,
+              inline: true,
+            }
+          )
+          .setThumbnail(guildUser.user.avatarURL({ size: 2048 }))
+          .setColor('#1f0557')
+          .setFooter({
+            text: guildUser.user.tag,
+            iconURL: guildUser.user.avatarURL({ size: 2048 }) ?? undefined,
+          }),
+      ],
+      ephemeral: false,
+    })
+  );
 };
 
 user.userCreate = {
