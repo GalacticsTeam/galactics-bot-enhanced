@@ -26,11 +26,11 @@ const devModeConfig: BotConfig = {
 
 const productionModeConfig: BotConfig = {
   allowedFeatures: {
-    ping: false,
-    blockLinks: false,
-    diceRoll: false,
-    avatar: false,
-    user: false,
+    ping: true,
+    blockLinks: true,
+    diceRoll: true,
+    avatar: true,
+    user: true,
   },
   prefixes: ['gt!'],
   serverId: '673700884617625621',
