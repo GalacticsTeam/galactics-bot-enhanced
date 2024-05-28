@@ -1,4 +1,4 @@
-import { commands } from './utils';
+import { commandName } from './actionHandlers/commands/types';
 
 export type Prefix = 'gt!';
 
