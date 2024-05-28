@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 
-import { isAllowedFeature } from 'src/utils/helpers';
+import { isAllowedFeature } from '../utils/helpers';
 import { onPing, onLinkSend } from '../actionHandlers';
 
 export const onMessageCreate = <T extends boolean>(msg: Message<T>) => {
