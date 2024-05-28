@@ -16,10 +16,11 @@ export const commands = {
 const devModeConfig: BotConfig = {
   allowedFeatures: {
     ping: true,
-    diceRoll: false,
+    blockLinks: true,
+    diceRoll: true,
     avatar: true,
     user: true,
-    clearChat: false,
+    clearChat: true,
   },
   prefixes: ['gt!'],
   serverId: '1086033687109455982',
@@ -28,6 +29,7 @@ const devModeConfig: BotConfig = {
 const productionModeConfig: BotConfig = {
   allowedFeatures: {
     ping: true,
+    blockLinks: true,
     diceRoll: true,
     avatar: true,
     user: true,

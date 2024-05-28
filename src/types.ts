@@ -6,6 +6,7 @@ export type commandName = keyof typeof commands;
 
 export type Features = {
   ping: boolean;
+  blockLinks: boolean;
 } & {
   [t in commandName]: boolean;
 };
