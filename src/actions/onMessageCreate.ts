@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 
+import { isAllowedFeature } from 'src/utils/helpers';
 import { onPing, onLinkSend } from '../actionHandlers';
 
 export const onMessageCreate = <T extends boolean>(msg: Message<T>) => {
@@ -9,6 +10,6 @@ export const onMessageCreate = <T extends boolean>(msg: Message<T>) => {
   const commandName = command[0].toLowerCase();
   const args = command.slice(1);
 
-  if (commandName === 'ping') onPing(msg);
-  onLinkSend(msg);
+  isAllowedFeature('ping') && onPing(msg);
+  isAllowedFeature('blockLinks') && onLinkSend(msg);
 };

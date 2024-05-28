@@ -11,6 +11,8 @@ export type Features = {
   [t in commandName]: boolean;
 };
 
+export type FeatureName = keyof Features;
+
 export type BotConfig = {
   allowedFeatures: Features;
   prefixes: Prefix[];
