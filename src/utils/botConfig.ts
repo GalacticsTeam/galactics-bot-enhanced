@@ -10,6 +10,7 @@ export const commands = {
   diceRoll: 'roll-dice',
   avatar: 'avatar',
   user: 'user',
+  clearChat: 'clear',
 } as const;
 
 const devModeConfig: BotConfig = {
@@ -19,6 +20,7 @@ const devModeConfig: BotConfig = {
     diceRoll: true,
     avatar: true,
     user: true,
+    clearChat: true,
   },
   prefixes: ['gt!'],
   serverId: '1086033687109455982',
@@ -31,6 +33,7 @@ const productionModeConfig: BotConfig = {
     diceRoll: true,
     avatar: true,
     user: true,
+    clearChat: true,
   },
   prefixes: ['gt!'],
   serverId: '673700884617625621',
