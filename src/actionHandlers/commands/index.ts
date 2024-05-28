@@ -1,14 +1,14 @@
 import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
-import { commands as commandNames } from '../../utils';
-import { commandName } from 'src/types';
+import { commandName } from '../../types';
+import { isAllowedFeature } from '../../utils/helpers';
 
 import { type command } from './types';
+import { commands as commandNames } from '../../utils';
 
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
-import { isAllowedFeature } from 'src/utils/helpers';
 import { clearChat } from './clearChat';
 
 type commands = (typeof commandNames)[keyof typeof commandNames];
