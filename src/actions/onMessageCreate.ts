@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 
+import { isAllowedFeature } from 'src/utils/helpers';
 import { onPing } from '../actionHandlers';
 
 export const onMessageCreate = <T extends boolean>(msg: Message<T>) => {
@@ -9,5 +10,5 @@ export const onMessageCreate = <T extends boolean>(msg: Message<T>) => {
   const commandName = command[0].toLowerCase();
   const args = command.slice(1);
 
-  if (commandName === 'ping') onPing(msg);
+  isAllowedFeature('ping') && onPing(msg);
 };

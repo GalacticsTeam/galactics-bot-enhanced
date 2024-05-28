@@ -1,28 +1,40 @@
 import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
 import { commands as commandNames } from '../../utils';
+import { commandName } from 'src/types';
+
+import { type command } from './types';
 
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
+import { isAllowedFeature } from 'src/utils/helpers';
 
-type command = (typeof commandNames)[keyof typeof commandNames];
+type commands = (typeof commandNames)[keyof typeof commandNames];
 
 export const commands = (interaction: ChatInputCommandInteraction) => {
-  switch (interaction.commandName as command) {
+  switch (interaction.commandName as commands) {
     case 'roll-dice':
-      return diceRoll(interaction);
+      return createCommandFn(interaction, diceRoll);
 
     case 'avatar':
-      return avatar(interaction);
+      return createCommandFn(interaction, avatar);
 
     case 'user':
-      return user(interaction);
+      return createCommandFn(interaction, user);
   }
 };
 
 export const commandsCreate = (commands: GuildApplicationCommandManager) => {
-  commands.create(diceRoll.diceRollCreate);
-  commands.create(avatar.avatarCreate);
-  commands.create(user.userCreate);
+  createCommand(commands, diceRoll);
+  createCommand(commands, avatar);
+  createCommand(commands, user);
+};
+
+const createCommandFn = <T extends commandName>(interaction: ChatInputCommandInteraction, command: command<T>) => {
+  isAllowedFeature(command.name as T) && command(interaction);
+};
+
+const createCommand = <T extends commandName>(commands: GuildApplicationCommandManager, command: command<T>): void => {
+  isAllowedFeature(command.name as T) && commands.create(command[((command.name as T) + 'Create') as `${T}Create`]);
 };
