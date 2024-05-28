@@ -9,6 +9,7 @@ import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
 import { isAllowedFeature } from 'src/utils/helpers';
+import { clearChat } from './clearChat';
 
 type commands = (typeof commandNames)[keyof typeof commandNames];
 
@@ -22,6 +23,9 @@ export const commands = (interaction: ChatInputCommandInteraction) => {
 
     case 'user':
       return createCommandFn(interaction, user);
+
+    case 'clear':
+      return createCommandFn(interaction, clearChat);
   }
 };
 
@@ -29,6 +33,7 @@ export const commandsCreate = (commands: GuildApplicationCommandManager) => {
   createCommand(commands, diceRoll);
   createCommand(commands, avatar);
   createCommand(commands, user);
+  createCommand(commands, clearChat);
 };
 
 const createCommandFn = <T extends commandName>(interaction: ChatInputCommandInteraction, command: command<T>) => {
