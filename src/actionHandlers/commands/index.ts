@@ -1,11 +1,10 @@
 import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
-import { commandName } from '../../types';
 import { isAllowedFeature } from '../../utils/helpers';
+import { commands as commandNames } from '../../utils/botConfig';
 
 import { type command } from './types';
-import { commands as commandNames } from '../../utils';
-
+import { commandName } from './types';
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
