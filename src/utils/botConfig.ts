@@ -11,6 +11,7 @@ export const commands = {
   avatar: 'avatar',
   user: 'user',
   clearChat: 'clear',
+  serverInfo: 'server-info',
 } as const;
 
 const devModeConfig: BotConfig = {
@@ -21,6 +22,7 @@ const devModeConfig: BotConfig = {
     avatar: true,
     user: true,
     clearChat: true,
+    serverInfo: true,
   },
   prefixes: ['gt!'],
   serverId: '1086033687109455982',
@@ -34,6 +36,7 @@ const productionModeConfig: BotConfig = {
     avatar: true,
     user: true,
     clearChat: true,
+    serverInfo: true,
   },
   prefixes: ['gt!'],
   serverId: '673700884617625621',
