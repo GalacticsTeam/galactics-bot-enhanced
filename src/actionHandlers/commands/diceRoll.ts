@@ -1,8 +1,8 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType } from 'discord.js';
 
-import { command } from './types';
+import type { Command } from './types';
 
-export const diceRoll: command<'diceRoll'> = (interaction: ChatInputCommandInteraction) => {
+export const diceRoll: Command = (interaction) => {
   const { options } = interaction;
   const maxNumber = options.getNumber('limit') ?? null;
 
@@ -15,7 +15,7 @@ export const diceRoll: command<'diceRoll'> = (interaction: ChatInputCommandInter
   });
 };
 
-diceRoll.diceRollCreate = {
+diceRoll.create = {
   name: 'roll-dice',
   description: 'Roll the dice',
   options: [

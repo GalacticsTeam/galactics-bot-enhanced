@@ -1,7 +1,8 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
-import { command } from './types';
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 
-export const user: command<'user'> = (interaction: ChatInputCommandInteraction) => {
+import type { Command } from './types';
+
+export const user: Command = (interaction) => {
   const { user, guild, options } = interaction;
   const guildUser = guild && guild.members.cache.get(options.getUser('user')?.id ?? user.id);
 
@@ -34,7 +35,7 @@ export const user: command<'user'> = (interaction: ChatInputCommandInteraction) 
   );
 };
 
-user.userCreate = {
+user.create = {
   name: 'user',
   description: 'Get your account creation and server joined date',
   options: [

@@ -1,7 +1,8 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder, Guild, User, bold } from 'discord.js';
-import { command } from './types';
+import { ApplicationCommandOptionType, EmbedBuilder, Guild, User } from 'discord.js';
 
-export const avatar: command<'avatar'> = (interaction: ChatInputCommandInteraction) => {
+import type { Command } from './types';
+
+export const avatar: Command = (interaction) => {
   const { user, guild, options } = interaction;
 
   const server = options.getString('server') || null;
@@ -23,7 +24,7 @@ export const avatar: command<'avatar'> = (interaction: ChatInputCommandInteracti
   });
 };
 
-avatar.avatarCreate = {
+avatar.create = {
   name: 'avatar',
   description: "Get's your avatar",
   options: [

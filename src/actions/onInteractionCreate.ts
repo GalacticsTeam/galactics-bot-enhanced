@@ -1,9 +1,9 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 
-import { commands } from '../actionHandlers';
+import { commandsHandler } from '../actionHandlers';
 
 export const onInteractionCreate = (interaction: ChatInputCommandInteraction) => {
   if (!interaction.isCommand()) return;
 
-  commands(interaction);
+  commandsHandler(interaction);
 };

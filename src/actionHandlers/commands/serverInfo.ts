@@ -1,8 +1,8 @@
-import { ChannelType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { ChannelType, EmbedBuilder } from 'discord.js';
 
-import { command } from './types';
+import type { Command } from './types';
 
-export const serverInfo: command<'serverInfo'> = async (interaction: ChatInputCommandInteraction) => {
+export const serverInfo: Command = async (interaction) => {
   const { guild } = interaction;
 
   const serverMembers = (await guild.members.fetch()).map((member) => member);
@@ -49,7 +49,7 @@ export const serverInfo: command<'serverInfo'> = async (interaction: ChatInputCo
   });
 };
 
-serverInfo.serverInfoCreate = {
+serverInfo.create = {
   name: 'server-info',
   description: "Get's Server's full info",
 };

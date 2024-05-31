@@ -1,8 +1,8 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, PermissionsBitField } from 'discord.js';
+import { ApplicationCommandOptionType, PermissionsBitField } from 'discord.js';
 
-import { command } from './types';
+import type { Command } from './types';
 
-export const clearChat: command<'clearChat'> = (interaction: ChatInputCommandInteraction) => {
+export const clearChat: Command = (interaction) => {
   const { member, channel, options } = interaction;
   const amount = options.getNumber('amount') || 0;
 
@@ -16,7 +16,7 @@ export const clearChat: command<'clearChat'> = (interaction: ChatInputCommandInt
       .then(() => interaction.reply({ content: `Deleted ${amount} messages`, ephemeral: true }));
 };
 
-clearChat.clearChatCreate = {
+clearChat.create = {
   name: 'clear',
   description: 'Clear N amount of massages',
   options: [
