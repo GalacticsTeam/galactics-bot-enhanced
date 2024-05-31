@@ -10,6 +10,6 @@ export const onMessageCreate = <T extends boolean>(msg: Message<T>) => {
   const commandName = command[0].toLowerCase();
   const args = command.slice(1);
 
-  isAllowedFeature('ping') && onPing(msg);
-  isAllowedFeature('blockLinks') && onLinkSend(msg);
+  isAllowedFeature('ping', msg.guild.id) && onPing(msg);
+  isAllowedFeature('blockLinks', msg.guild.id) && onLinkSend(msg);
 };

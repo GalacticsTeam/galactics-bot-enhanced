@@ -1,14 +1,21 @@
 import { Client } from 'discord.js';
 
-import { botConfig, isDevMode } from '../utils';
+import { ServerSchema, runDB } from '../db';
+import { isDevMode } from '../utils';
 import { commandsCreate } from '../actionHandlers';
 
-export const onReady = <T extends boolean>(client: Client<T>) => {
-  const guild = client.guilds.cache.get(botConfig.serverId);
-  const commands = guild.commands;
+export const onReady = async <T extends boolean>(client: Client<T>) => {
+  // Database Connection
+  runDB();
 
-  // Command Creation
-  commandsCreate(commands);
+  const servers = await ServerSchema.find({ isDevServer: isDevMode });
+  servers.forEach((server) => {
+    const guild = client.guilds.cache.get(server.serverId);
+    const commands = guild.commands;
+
+    // Command Creation
+    commandsCreate(commands);
+  });
 
   // Bot Up Messages
   console.log(`Test Mode is set to ${isDevMode}`);

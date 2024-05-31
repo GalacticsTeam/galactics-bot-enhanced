@@ -31,9 +31,11 @@ export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) 
 const createCommandFn = <T extends InteractionIdentifier>(
   interaction: ChatInputCommandInteraction,
   command: Interaction[T]
-) => isAllowedFeature(getCommandIdentifier(command.name)) && command.interaction(interaction);
+) => isAllowedFeature(getCommandIdentifier(command.name), interaction.guild.id) && command.interaction(interaction);
 
 const createCommand = <T extends InteractionIdentifier>(
   commandsCreator: GuildApplicationCommandManager,
   command: Interaction[T]
-) => isAllowedFeature(getCommandIdentifier(command.name)) && commandsCreator.create(command.interaction.create);
+) =>
+  isAllowedFeature(getCommandIdentifier(command.name), commandsCreator.guild.id) &&
+  commandsCreator.create(command.interaction.create);

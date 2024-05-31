@@ -1,37 +1,29 @@
 import { configDotenv } from 'dotenv';
 
-import { BotConfig } from '../types';
+import { BotConfig, Features } from '../types';
 
 configDotenv();
 
 export const isDevMode: boolean = !!+process.env.DEVMODE ?? false;
 
-const devModeConfig: BotConfig = {
-  allowedFeatures: {
-    ping: true,
-    blockLinks: true,
-    diceRoll: true,
-    avatar: true,
-    user: true,
-    clearChat: true,
-    serverInfo: true,
+export const defaultServerConfig: BotConfig = {
+  features: {
+    ping: false,
+    blockLinks: false,
+    diceRoll: false,
+    avatar: false,
+    user: false,
+    clearChat: false,
+    serverInfo: false,
   },
   prefixes: ['gt!'],
-  serverId: '1086033687109455982',
+  isMaintenance: false,
+  isDevServer: isDevMode,
 };
 
-const productionModeConfig: BotConfig = {
-  allowedFeatures: {
-    ping: true,
-    blockLinks: true,
-    diceRoll: true,
-    avatar: true,
-    user: true,
-    clearChat: true,
-    serverInfo: true,
-  },
-  prefixes: ['gt!'],
-  serverId: '673700884617625621',
-};
+export const features: Features = Object.assign(
+  {},
+  ...Object.keys(defaultServerConfig.features).map((feature) => ({ [feature]: Boolean }))
+);
 
-export const botConfig: BotConfig = isDevMode ? devModeConfig : productionModeConfig;
+export const botConfig: BotConfig = defaultServerConfig;
