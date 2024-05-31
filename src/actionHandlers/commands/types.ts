@@ -1,7 +1,13 @@
-import { ApplicationCommandDataResolvable } from 'discord.js';
+import { ApplicationCommandDataResolvable, ChatInputCommandInteraction } from 'discord.js';
 
-import { commands } from '../../utils';
+import { commands } from './';
 
-export type commandName = keyof typeof commands;
+export type Interaction = typeof commands;
+export type InteractionIdentifier = keyof Interaction;
+export type InteractionName = Interaction[InteractionIdentifier]['name'];
+export type InteractionFn = Interaction[InteractionIdentifier]['interaction'];
 
-export type command<T extends commandName> = Record<`${T}Create`, ApplicationCommandDataResolvable> & Function;
+export type Command = Record<`create`, InteractionCreate> & ((interaction: ChatInputCommandInteraction) => void);
+type InteractionCreate = ApplicationCommandDataResolvable & {
+  name: InteractionName;
+};

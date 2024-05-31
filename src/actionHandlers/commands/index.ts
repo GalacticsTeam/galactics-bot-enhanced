@@ -1,49 +1,39 @@
 import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
-import { isAllowedFeature } from '../../utils/helpers';
-import { commands as commandNames } from '../../utils/botConfig';
+import { getCommandIdentifier, isAllowedFeature } from '../../utils/helpers';
 
-import { type command } from './types';
-import { commandName } from './types';
+import type { Interaction, InteractionIdentifier, InteractionName } from './types';
+
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
 import { clearChat } from './clearChat';
 import { serverInfo } from './serverInfo';
 
-type commands = (typeof commandNames)[keyof typeof commandNames];
+export const commands = {
+  diceRoll: { name: 'roll-dice', interaction: diceRoll },
+  avatar: { name: 'avatar', interaction: avatar },
+  user: { name: 'user', interaction: user },
+  clearChat: { name: 'clear', interaction: clearChat },
+  serverInfo: { name: 'server-info', interaction: serverInfo },
+} as const;
 
-export const commands = (interaction: ChatInputCommandInteraction) => {
-  switch (interaction.commandName as commands) {
-    case 'roll-dice':
-      return createCommandFn(interaction, diceRoll);
+export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
+  const interactionName = interaction.commandName as InteractionName;
+  const command = commands[getCommandIdentifier(interactionName)];
 
-    case 'avatar':
-      return createCommandFn(interaction, avatar);
-
-    case 'user':
-      return createCommandFn(interaction, user);
-
-    case 'clear':
-      return createCommandFn(interaction, clearChat);
-
-    case 'server-info':
-      return createCommandFn(interaction, serverInfo);
-  }
+  command.name === interactionName && createCommandFn(interaction, command);
 };
 
-export const commandsCreate = (commands: GuildApplicationCommandManager) => {
-  createCommand(commands, diceRoll);
-  createCommand(commands, avatar);
-  createCommand(commands, user);
-  createCommand(commands, clearChat);
-  createCommand(commands, serverInfo);
-};
+export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) =>
+  Object.values(commands).forEach((command) => createCommand(commandsCreator, command));
 
-const createCommandFn = <T extends commandName>(interaction: ChatInputCommandInteraction, command: command<T>) => {
-  isAllowedFeature(command.name as T) && command(interaction);
-};
+const createCommandFn = <T extends InteractionIdentifier>(
+  interaction: ChatInputCommandInteraction,
+  command: Interaction[T]
+) => isAllowedFeature(getCommandIdentifier(command.name)) && command.interaction(interaction);
 
-const createCommand = <T extends commandName>(commands: GuildApplicationCommandManager, command: command<T>): void => {
-  isAllowedFeature(command.name as T) && commands.create(command[((command.name as T) + 'Create') as `${T}Create`]);
-};
+const createCommand = <T extends InteractionIdentifier>(
+  commandsCreator: GuildApplicationCommandManager,
+  command: Interaction[T]
+) => isAllowedFeature(getCommandIdentifier(command.name)) && commandsCreator.create(command.interaction.create);

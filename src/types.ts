@@ -1,4 +1,4 @@
-import { commandName } from './actionHandlers/commands/types';
+import { InteractionIdentifier } from './actionHandlers/commands/types';
 
 export type Prefix = 'gt!';
 
@@ -6,7 +6,7 @@ export type Features = {
   ping: boolean;
   blockLinks: boolean;
 } & {
-  [t in commandName]: boolean;
+  [t in InteractionIdentifier]: boolean;
 };
 
 export type FeatureName = keyof Features;
