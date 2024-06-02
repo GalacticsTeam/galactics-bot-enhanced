@@ -1,27 +1,19 @@
-import { ApplicationCommandOptionType, PermissionsBitField } from 'discord.js';
+import { ApplicationCommandOptionType } from 'discord.js';
 
 import type { Command } from './types';
 
 export const slowMode: Command = (interaction) => {
-  const { options, channel, member } = interaction;
+  const { options, channel } = interaction;
 
   const duration = options.getNumber('duration');
 
-  // check if the member is an administrator
-  if (!(member.permissions as PermissionsBitField).has('Administrator')) return;
+  channel.setRateLimitPerUser(duration, 'Change slow mode');
 
   // remove slow-mode from channel
-  if (duration == 0) {
-    channel
-      .setRateLimitPerUser(duration)
-      .then(() => interaction.reply({ content: `Slow mode has been removed`, ephemeral: true }));
-    return;
-  }
+  if (duration === 0) return interaction.reply({ content: `Slow mode has been removed`, ephemeral: true });
 
   // adding slow-mode to the channel
-  channel
-    .setRateLimitPerUser(duration, 'reason')
-    .then(() => interaction.reply({ content: `Channel slow mode is set to ${duration}s`, ephemeral: true }));
+  interaction.reply({ content: `Channel slow mode is set to ${duration}s`, ephemeral: true });
 };
 
 slowMode.create = {
