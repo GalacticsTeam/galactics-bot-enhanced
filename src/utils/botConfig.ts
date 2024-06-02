@@ -19,6 +19,9 @@ export const defaultServerConfig: BotConfig = {
   prefixes: ['gt!'],
   isMaintenance: false,
   isDevServer: isDevMode,
+  embeds: {
+    color: '#000000',
+  },
 };
 
 export const features: Features = Object.assign(

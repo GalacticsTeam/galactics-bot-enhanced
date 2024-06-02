@@ -6,7 +6,7 @@ import { commandsCreate } from '../actionHandlers';
 
 export const onReady = async <T extends boolean>(client: Client<T>) => {
   // Database Connection
-  runDB();
+  await runDB();
 
   const servers = await ServerSchema.find({ isDevServer: isDevMode });
   servers.forEach((server) => {
@@ -20,5 +20,6 @@ export const onReady = async <T extends boolean>(client: Client<T>) => {
   // Bot Up Messages
   console.log(`Test Mode is set to ${isDevMode}`);
   console.log(`Logged in as ${client.user.tag}`);
+  console.log(`Serving on ${servers.length} servers`);
   console.log('The Bot Is Ready');
 };

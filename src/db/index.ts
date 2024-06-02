@@ -15,6 +15,7 @@ export const runDB = async () => {
       strict: true,
       deprecationErrors: true,
     },
+    dbName: 'discordBot',
   })
     .then(() => console.log('Connected to MongoDB server'))
     .catch((err) => console.log(err));

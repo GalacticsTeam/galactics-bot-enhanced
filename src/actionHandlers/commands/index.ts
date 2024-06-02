@@ -28,14 +28,16 @@ export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
 export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) =>
   Object.values(commands).forEach((command) => createCommand(commandsCreator, command));
 
-const createCommandFn = <T extends InteractionIdentifier>(
+const createCommandFn = async <T extends InteractionIdentifier>(
   interaction: ChatInputCommandInteraction,
   command: Interaction[T]
-) => isAllowedFeature(getCommandIdentifier(command.name), interaction.guild.id) && command.interaction(interaction);
+) =>
+  (await isAllowedFeature(getCommandIdentifier(command.name), interaction.guild.id)) &&
+  command.interaction(interaction);
 
-const createCommand = <T extends InteractionIdentifier>(
+const createCommand = async <T extends InteractionIdentifier>(
   commandsCreator: GuildApplicationCommandManager,
   command: Interaction[T]
 ) =>
-  isAllowedFeature(getCommandIdentifier(command.name), commandsCreator.guild.id) &&
+  (await isAllowedFeature(getCommandIdentifier(command.name), commandsCreator.guild.id)) &&
   commandsCreator.create(command.interaction.create);

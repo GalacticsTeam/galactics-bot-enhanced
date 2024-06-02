@@ -1,11 +1,12 @@
 import { commands } from '../actionHandlers';
 
+import { getServerItem } from '../db';
+
 import type { InteractionIdentifier, InteractionName } from '../actionHandlers/commands/types';
 import type { FeatureName, ID } from '../types';
-import { getServerSchema } from '../db';
 
 export const isAllowedFeature = <T extends FeatureName>(commandName: T, serverId: string) =>
-  getServerSchema(serverId as ID).then((server) => server.features[commandName]);
+  getServerItem(serverId as ID, 'features').then((features) => features[commandName]);
 
 export const getCommandIdentifier = (interactionName: InteractionName): InteractionIdentifier =>
   Object.keys(commands).filter(
