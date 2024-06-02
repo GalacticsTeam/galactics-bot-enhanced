@@ -9,6 +9,7 @@ import { avatar } from './avatar';
 import { user } from './user';
 import { clearChat } from './clearChat';
 import { serverInfo } from './serverInfo';
+import { slowMode } from './slowMode';
 
 export const commands = {
   diceRoll: { name: 'roll-dice', interaction: diceRoll },
@@ -16,6 +17,7 @@ export const commands = {
   user: { name: 'user', interaction: user },
   clearChat: { name: 'clear', interaction: clearChat },
   serverInfo: { name: 'server-info', interaction: serverInfo },
+  slowMode: { name: 'slow-mode', interaction: slowMode },
 } as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
