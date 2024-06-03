@@ -1,20 +1,35 @@
-import { EmbedBuilder, GuildMember, TextChannel } from 'discord.js';
+import { EmbedBuilder, GuildMember, TextChannel, channelMention, userMention } from 'discord.js';
 
 const roles = {
   member: '1086033687109455989',
-  bots: '1086033687109455985',
-  founder: '1086033687201726634',
+  bot: '1086033687109455985',
+};
+
+const channels = {
+  welcomeChannel: '1086033689143676980',
+  rulesChannel: '1086033688871063671',
 };
 
 export const welcome = (member: GuildMember) => {
   if (member.user.bot) {
-    member.roles.add(roles.member);
+    member.roles.add(roles.bot);
     return;
   }
 
-  member.roles.add('1086033687201726634');
+  member.roles.member;
 
-  const welcomeChannel = member.guild.channels.cache.get('1086033689143676980') as TextChannel;
+  const welcomeChannel = member.guild.channels.cache.get(channels.welcomeChannel) as TextChannel;
+
+  welcomeChannel.send(`
+  >>>   \`#\` **Welcome** ${userMention(member.id)} to out server !
+  \`#\` We inform u to read our **rules** \`:\` ${channelMention(channels.rulesChannel)}
+  \`#\` Total members \`:\` **${member.guild.memberCount}**
+  \`#\` Enjoy with us :heart_on_fire:
+    `);
+};
+
+// embed version, just in case we needed to use it :)
+/*
 
   welcomeChannel.send({
     embeds: [
@@ -45,4 +60,4 @@ export const welcome = (member: GuildMember) => {
         }),
     ],
   });
-};
+*/
