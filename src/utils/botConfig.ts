@@ -24,6 +24,13 @@ export const defaultServerConfig: BotConfig = {
   },
 };
 
+export const defaultUserConfig: DefaultUserConfig = {
+  warns: {
+    number: 0,
+    reasons: [],
+  },
+};
+
 export const features: Features = Object.assign(
   {},
   ...Object.keys(defaultServerConfig.features).map((feature) => ({ [feature]: Boolean }))

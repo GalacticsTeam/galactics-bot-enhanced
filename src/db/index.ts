@@ -5,6 +5,7 @@ import { configDotenv } from 'dotenv';
 
 export * from './ServerSchema';
 export * from './UserSchema';
+export * from './helpers';
 
 configDotenv();
 

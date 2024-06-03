@@ -4,7 +4,7 @@ export type Prefix = 'gt!';
 
 export type Feature = 'ping' | 'blockLinks' | InteractionIdentifier;
 
-export type ID = `${number}`;
+export type ID = string;
 
 export type FeaturesSchema = {
   [t in Feature]: BooleanConstructor;
@@ -23,5 +23,12 @@ export interface DefaultServerConfig {
   isDevServer: boolean;
   embeds: {
     color: string;
+  };
+}
+
+export interface DefaultUserConfig {
+  warns: {
+    number: number;
+    reasons: string[];
   };
 }
