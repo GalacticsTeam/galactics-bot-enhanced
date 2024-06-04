@@ -1,10 +1,13 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 
 import type { Command } from './types';
+import { getServerItem } from '../../db';
 
-export const user: Command = (interaction) => {
+export const user: Command = async (interaction) => {
   const { user, guild, options } = interaction;
   const guildUser = guild && guild.members.cache.get(options.getUser('user')?.id ?? user.id);
+
+  const embedProps = await getServerItem(guild.id, 'embeds');
 
   return (
     guildUser &&
@@ -24,7 +27,7 @@ export const user: Command = (interaction) => {
             }
           )
           .setThumbnail(guildUser.user.avatarURL({ size: 2048 }))
-          .setColor('#1f0557')
+          .setColor(embedProps.color)
           .setFooter({
             text: guildUser.user.tag,
             iconURL: guildUser.user.avatarURL({ size: 2048 }) ?? undefined,

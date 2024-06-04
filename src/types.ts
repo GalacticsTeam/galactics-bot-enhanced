@@ -1,3 +1,5 @@
+import { ColorResolvable } from 'discord.js';
+
 import { InteractionIdentifier } from './actionHandlers/commands/types';
 
 export type Prefix = 'gt!';
@@ -22,7 +24,7 @@ export interface DefaultServerConfig {
   isMaintenance: boolean;
   isDevServer: boolean;
   embeds: {
-    color: string;
+    color: ColorResolvable;
   };
 }
 

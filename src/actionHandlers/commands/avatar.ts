@@ -1,17 +1,20 @@
 import { ApplicationCommandOptionType, EmbedBuilder, Guild, User } from 'discord.js';
 
 import type { Command } from './types';
+import { getServerItem } from '../../db';
 
-export const avatar: Command = (interaction) => {
+export const avatar: Command = async (interaction) => {
   const { user, guild, options } = interaction;
 
   const server = options.getString('server') || null;
   const source = options.getUser('user') || (server ? guild : null) || user;
 
+  const embedProps = await getServerItem(guild.id, 'embeds');
+
   return interaction.reply({
     embeds: [
       new EmbedBuilder()
-        .setColor(0x0f0229)
+        .setColor(embedProps.color)
         .setTitle(!server ? (source as User).username : (source as Guild).name)
         .setDescription(
           `[Avatar Link](${

@@ -1,12 +1,12 @@
 import { configDotenv } from 'dotenv';
 
-import { BotConfig, Features } from '../types';
+import { DefaultServerConfig, DefaultUserConfig, Features } from '../types';
 
 configDotenv();
 
 export const isDevMode: boolean = !!+process.env.DEVMODE ?? false;
 
-export const defaultServerConfig: BotConfig = {
+export const defaultServerConfig: DefaultServerConfig = {
   features: {
     ping: false,
     blockLinks: false,
@@ -35,5 +35,3 @@ export const features: Features = Object.assign(
   {},
   ...Object.keys(defaultServerConfig.features).map((feature) => ({ [feature]: Boolean }))
 );
-
-export const botConfig: BotConfig = defaultServerConfig;
