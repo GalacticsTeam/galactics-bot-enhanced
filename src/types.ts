@@ -1,8 +1,7 @@
 import { ColorResolvable } from 'discord.js';
 
-import { InteractionIdentifier } from './actionHandlers/commands/types';
-
-export type Prefix = 'gt!';
+import type { InteractionIdentifier } from './actionHandlers/commands/types';
+import type { Prefix } from './actionHandlers/prefixes/types';
 
 export type Feature = 'ping' | 'blockLinks' | InteractionIdentifier;
 
