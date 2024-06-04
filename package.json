@@ -2,7 +2,6 @@
   "name": "galactics-bot-enhanced",
   "version": "1.0.0",
   "description": "Galactics Official bot",
-  "type": "module",
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch src/",
