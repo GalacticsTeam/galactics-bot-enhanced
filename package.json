@@ -2,6 +2,7 @@
   "name": "galactics-bot-enhanced",
   "version": "1.0.0",
   "description": "Galactics Official bot",
+  "type": "module",
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch src/",
@@ -22,6 +23,7 @@
     "axios": "^1.6.8",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
+    "jimp": "^0.22.12",
     "typescript": "^5.4.5"
   },
   "devDependencies": {
