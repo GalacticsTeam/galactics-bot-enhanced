@@ -12,12 +12,12 @@ import { serverInfo } from './serverInfo';
 import { slowMode } from './slowMode';
 
 export const commands = [
-  { name: 'roll-dice', interaction: diceRoll },
-  { name: 'avatar', interaction: avatar },
-  { name: 'user', interaction: user },
-  { name: 'clear', interaction: clearChat },
-  { name: 'server-info', interaction: serverInfo },
-  { name: 'slow-mode', interaction: slowMode },
+  { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
+  { name: 'avatar', type: 'avatar', interaction: avatar },
+  { name: 'user', type: 'user', interaction: user },
+  { name: 'clear', type: 'clearChat', interaction: clearChat },
+  { name: 'server-info', type: 'serverInfo', interaction: serverInfo },
+  { name: 'slow-mode', type: 'slowMode', interaction: slowMode },
 ] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
@@ -31,7 +31,7 @@ export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) 
   Object.values(commands).forEach((command) => createCommand(commandsCreator, command));
 
 const createCommandFn = (interaction: ChatInputCommandInteraction, command: Interaction[number]) =>
-  isAllowedFeature(command.interaction.name) && command.interaction(interaction);
+  isAllowedFeature(command.type) && command.interaction(interaction);
 
 const createCommand = (commandsCreator: GuildApplicationCommandManager, command: Interaction[number]) =>
-  isAllowedFeature(command.interaction.name) && commandsCreator.create(command.interaction.create);
+  isAllowedFeature(command.type) && commandsCreator.create(command.interaction.create);
