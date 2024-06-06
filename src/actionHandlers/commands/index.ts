@@ -11,6 +11,7 @@ import { clearChat } from './clearChat';
 import { serverInfo } from './serverInfo';
 import { slowMode } from './slowMode';
 import { unlockChannel } from './unlockChannel';
+import { lockChannel } from './lockChannel';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -20,6 +21,7 @@ export const commands = [
   { name: 'server-info', type: 'serverInfo', interaction: serverInfo },
   { name: 'slow-mode', type: 'slowMode', interaction: slowMode },
   { name: 'unlock-channel', type: 'unlockChannel', interaction: unlockChannel },
+  { name: 'lock-channel', type: 'lockChannel', interaction: lockChannel },
 ] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
