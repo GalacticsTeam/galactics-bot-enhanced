@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, CacheType, ChatInputCommandInteraction } from 'discord.js';
 
 import { defaultServerConfig } from '../../utils';
-import { setServerSchemaItem } from '../../db';
+import { getServerItem, setServerSchemaItem } from '../../db';
 
 import type { Channel, DefaultServerConfig, Embed, Feature, Role } from '../../types';
 import type { Command } from './types';
@@ -9,7 +9,7 @@ import type { Command } from './types';
 export const serverConfig: Command = (interaction) => {
   const serverConfigItem = interaction.options.getSubcommand();
 
-  switch (serverConfigItem as keyof Omit<DefaultServerConfig, 'isMaintenance' | 'isDevServer'>) {
+  switch (serverConfigItem as keyof Omit<DefaultServerConfig, 'isMaintenance' | 'isDevServer'> | 'list') {
     case 'features':
       const updatedFeature = Object.keys(defaultServerConfig.features).filter(
         (feature) => feature !== 'serverConfig' && feature.toLowerCase() === interaction.options.getString('feature')
@@ -40,6 +40,14 @@ export const serverConfig: Command = (interaction) => {
       const UpdatedRoleId = interaction.options.getRole('value').id;
 
       return roles(updatedRole, UpdatedRoleId, interaction);
+
+    case 'list':
+      const itemName = Object.keys(defaultServerConfig).filter(
+        (serverConfigItem) =>
+          interaction.options.getString('configuration').toLowerCase() === serverConfigItem.toLowerCase()
+      )[0] as keyof DefaultServerConfig;
+
+      return list(itemName, interaction);
   }
 };
 
@@ -132,6 +140,23 @@ serverConfig.create = {
         },
       ],
     },
+    {
+      name: 'list',
+      description: 'List all server configuration',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'configuration',
+          description: 'Server configuration item',
+          type: ApplicationCommandOptionType.String,
+          required: true,
+          choices: Object.keys(defaultServerConfig).map((item) => ({
+            name: item.toLowerCase(),
+            value: item.toLowerCase(),
+          })),
+        },
+      ],
+    },
   ],
 };
 
@@ -174,7 +199,7 @@ const channels = (updatedChannel: Channel, newValue: string, interaction: ChatIn
     })
   );
 
-const roles = async (updatedRole: Role, newValue: string, interaction: ChatInputCommandInteraction<CacheType>) =>
+const roles = (updatedRole: Role, newValue: string, interaction: ChatInputCommandInteraction<CacheType>) =>
   setServerSchemaItem(interaction.guild.id, 'roles', (prevRoles) => ({
     ...prevRoles,
     [updatedRole]: newValue,
@@ -184,3 +209,18 @@ const roles = async (updatedRole: Role, newValue: string, interaction: ChatInput
       ephemeral: true,
     })
   );
+
+const list = (itemName: keyof DefaultServerConfig, interaction: ChatInputCommandInteraction<CacheType>) => {
+  getServerItem(interaction.guild.id, itemName).then((item) =>
+    interaction.reply({
+      content: Array.isArray(item)
+        ? item.map((itemData, index) => index + 1 + '. ' + itemData).join('\n')
+        : typeof item === 'object'
+        ? Object.keys(item)
+            .map((itemData) => itemData + ': ' + (item as any)[itemData])
+            .join('\n')
+        : item + '',
+      ephemeral: true,
+    })
+  );
+};
