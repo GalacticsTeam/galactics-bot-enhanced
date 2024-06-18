@@ -1,35 +1,35 @@
-import { ChannelType, GuildMember, TextChannel, channelMention, userMention } from 'discord.js';
+import { ChannelType, GuildMember, channelMention, userMention } from 'discord.js';
 import Jimp from 'jimp';
+
+import { getServerItem } from '../db';
 
 const roles = {
   member: '1086033687109455989',
   bot: '1086033687109455985',
 };
 
-const channels = {
-  welcomeChannel: '1086033689143676980',
-  rulesChannel: '1086033688871063671',
-};
-
 export const onWelcome = async (member: GuildMember) => {
   if (member.user.bot) return member.roles.add(roles.bot);
 
-  const welcomeChannel = member.guild.channels.cache.get(channels.welcomeChannel);
+  await member.roles.add(roles.member);
+
+  const channels = await getServerItem(member.guild.id, 'channels');
+  if (!channels.welcome) return;
+
+  const welcomeChannel = member.guild.channels.cache.get(channels.welcome);
   if (welcomeChannel.type !== ChannelType.GuildText) return;
 
   const welcomeImage = (await Jimp.read('src/assets/welcomeImage.png')).scale(0.2);
   await addUserAvatar(welcomeImage, member);
   const welcomeImageBuffer = await welcomeImage.getBufferAsync('image/png');
 
-  member.roles.add(roles.member).then(() => {
-    welcomeChannel.send({ files: [welcomeImageBuffer] }).then(() => {
-      welcomeChannel.send(`
+  await welcomeChannel.send({ files: [welcomeImageBuffer] }).then(() => {
+    welcomeChannel.send(`
       >>>       \`#\` **Welcome** ${userMention(member.id)} to out server !
-      \`#\` We inform u to read our **rules** \`:\` ${channelMention(channels.rulesChannel)}
+      \`#\` We inform u to read our **rules** \`:\` ${channelMention(channels.rules ?? 'Not Set')}
       \`#\` Total members \`:\` **${member.guild.memberCount}**
       \`#\` Enjoy with us :heart_on_fire:
         `);
-    });
   });
 };
 
