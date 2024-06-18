@@ -1,17 +1,17 @@
 import { Client } from 'discord.js';
 
-import { ServerSchema, runDB } from '../db';
+import { getServerSchema, runDB } from '../db';
 import { isDevMode } from '../utils';
 import { commandsCreate } from '../actionHandlers';
 
 export const onReady = async <T extends boolean>(client: Client<T>) => {
   // Database Connection
   await runDB();
+  const servers = client.guilds.cache.map((server) => server);
 
-  const servers = await ServerSchema.find({ isDevServer: isDevMode });
-  servers.forEach((server) => {
-    const guild = client.guilds.cache.get(server.serverId);
-    const commands = guild.commands;
+  servers.forEach(async (server) => {
+    await getServerSchema(server.id);
+    const commands = server.commands;
 
     // Command Creation
     commandsCreate(commands);

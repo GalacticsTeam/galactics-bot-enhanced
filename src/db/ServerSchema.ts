@@ -22,7 +22,7 @@ export const ServerSchema = model<Server>(
 type ReturnedServerSchema = Document<unknown, {}, Server> & Server & { _id: Types.ObjectId };
 
 export const getServerSchema = async (serverId: ID): Promise<ReturnedServerSchema> =>
-  await ServerSchema.findOne({ serverId });
+  (await ServerSchema.findOne({ serverId })) ?? (await new ServerSchema({ serverId, ...defaultServerConfig }).save());
 
 export const setNewServerSchema = (serverInfo: Server) => new ServerSchema(serverInfo).save();
 
@@ -32,28 +32,23 @@ export const getServerItem = async <T extends keyof DefaultServerConfig>(
 ): Promise<DefaultServerConfig[T]> => {
   const server = await getServerSchema(serverId);
 
-  updateServerSchemaItem(server, itemName);
+  updateSchemaItem(server, itemName);
 
   return server[itemName];
 };
 
-export const updateServerSchemaItem = (server: ReturnedServerSchema, serverInfoName: keyof DefaultServerConfig) => {
-  const isArray = Array.isArray(defaultServerConfig[serverInfoName]);
-  const isObject = typeof defaultServerConfig[serverInfoName] === 'object';
+export const setServerSchemaItem = async <T extends keyof DefaultServerConfig>(
+  serverId: ID,
+  itemName: T,
+  setCallBack: (previousState: DefaultServerConfig[T]) => DefaultServerConfig[T]
+) => {
+  const server = await getServerSchema(serverId);
 
-  server.$set(
-    serverInfoName,
-    isArray
-      ? [...new Set([...(defaultServerConfig as any)[serverInfoName], ...(server as any)[serverInfoName]])]
-      : isObject
-      ? Object.assign(
-          {},
-          ...Object.keys(defaultServerConfig[serverInfoName]).map((key) => ({
-            [key]: (server[serverInfoName] as any)[key] ?? (defaultServerConfig[serverInfoName] as any)[key],
-          }))
-        )
-      : server[serverInfoName] ?? defaultServerConfig[serverInfoName]
-  );
+  updateSchemaItem(server, itemName);
+
+  server.$set(itemName, setCallBack(server[itemName]));
 
   server.save();
+
+  return server[itemName];
 };

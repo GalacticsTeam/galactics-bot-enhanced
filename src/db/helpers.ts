@@ -8,7 +8,7 @@ export const updateSchemaItem = <Schema extends DefaultServerConfig | DefaultUse
   itemName: keyof Schema
 ) => {
   const defaultConfig =
-    (schema.$model().modelName as SchemaName) === 'server' ? defaultServerConfig : defaultUserConfig;
+    (schema?.$model().modelName as SchemaName) === 'server' ? defaultServerConfig : defaultUserConfig;
 
   const isArray = Array.isArray((defaultConfig as any)[itemName]);
   const isObject = typeof (defaultConfig as any)[itemName] === 'object';
@@ -25,6 +25,4 @@ export const updateSchemaItem = <Schema extends DefaultServerConfig | DefaultUse
   const item = schema[itemName] ?? (defaultConfig as any)[itemName];
 
   schema.$set(String(itemName), isArray ? itemsArr : isObject ? itemObj : item);
-
-  schema.save();
 };
