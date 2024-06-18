@@ -16,7 +16,6 @@ export const defaultServerConfig: DefaultServerConfig = {
     clearChat: false,
     serverInfo: false,
   },
-  prefixes: ['gt!'],
   isMaintenance: false,
   isDevServer: isDevMode,
   embeds: {

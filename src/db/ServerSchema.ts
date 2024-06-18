@@ -13,7 +13,6 @@ export const ServerSchema = model<Server>(
   new Schema<Server>({
     serverId: String,
     features,
-    prefixes: [String],
     isMaintenance: Boolean,
     isDevServer: Boolean,
     embeds: { color: String },
