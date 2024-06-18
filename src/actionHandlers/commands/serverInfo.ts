@@ -1,9 +1,12 @@
 import { ChannelType, EmbedBuilder } from 'discord.js';
 
 import type { Command } from './types';
+import { getServerItem } from '../../db';
 
 export const serverInfo: Command = async (interaction) => {
   const { guild } = interaction;
+
+  const embedProps = await getServerItem(guild.id, 'embeds');
 
   const serverMembers = (await guild.members.fetch()).map((member) => member);
   const serverChannels = (await guild.channels.fetch()).map((channel) => channel);
@@ -43,7 +46,7 @@ export const serverInfo: Command = async (interaction) => {
           },
           { name: '✨ Boosts:', value: `${guild.premiumSubscriptionCount}`, inline: true }
         )
-        .setColor('#1f0557')
+        .setColor(embedProps.color)
         .setThumbnail(guild.iconURL({ size: 2048 })),
     ],
   });

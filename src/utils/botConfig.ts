@@ -2,7 +2,7 @@ import { ActivityOptions, ActivityType } from 'discord.js';
 
 import { configDotenv } from 'dotenv';
 
-import { BotConfig } from '../types';
+import type { DefaultServerConfig, DefaultUserConfig } from '../types';
 
 configDotenv();
 
@@ -15,38 +15,40 @@ export const customStatus: ActivityOptions[] = [
   { name: 'need help? /help', type: ActivityType.Watching },
 ];
 
-const devModeConfig: BotConfig = {
-  allowedFeatures: {
-    ping: true,
-    blockLinks: true,
-    diceRoll: true,
-    avatar: true,
-    user: true,
-    clearChat: true,
-    serverInfo: true,
-    slowMode: true,
-    unlockChannel: true,
-    lockChannel: true,
+export const defaultServerConfig: DefaultServerConfig = {
+  features: {
+    serverConfig: true,
+    ping: false,
+    blockLinks: false,
+    diceRoll: false,
+    avatar: false,
+    user: false,
+    clearChat: false,
+    lockChannel: false,
+    unlockChannel: false,
+    slowMode: false,
+    serverInfo: false,
   },
-  prefixes: ['gt!'],
-  serverId: '1086033687109455982',
+  channels: {
+    logs: null,
+    modLogs: null,
+  },
+  isMaintenance: false,
+  isDevServer: isDevMode,
+  embeds: {
+    color: '#000000',
+  },
 };
 
-const productionModeConfig: BotConfig = {
-  allowedFeatures: {
-    ping: true,
-    blockLinks: true,
-    diceRoll: true,
-    avatar: true,
-    user: true,
-    clearChat: true,
-    serverInfo: true,
-    slowMode: true,
-    unlockChannel: true,
-    lockChannel: true,
+export const defaultUserConfig: DefaultUserConfig = {
+  warns: {
+    number: 0,
+    reasons: [],
   },
-  prefixes: ['gt!'],
-  serverId: '673700884617625621',
 };
 
-export const botConfig: BotConfig = isDevMode ? devModeConfig : productionModeConfig;
+const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: any): DefaultServerConfig[T] =>
+  Object.assign({}, ...Object.keys(defaultServerConfig[propName]).map((prop) => ({ [prop]: value })));
+
+export const featuresType = getPropType('features', Boolean);
+export const channelsType = getPropType('channels', String || null);

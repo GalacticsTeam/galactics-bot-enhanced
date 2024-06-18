@@ -2,7 +2,7 @@ import { Client } from 'discord.js';
 
 import { customStatus } from '../utils';
 
-export const onCutsomStatus = (client: Client) => {
+export const onCustomStatus = (client: Client) => {
   let statusIndex = 0;
 
   setInterval(() => {

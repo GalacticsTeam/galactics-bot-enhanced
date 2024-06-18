@@ -12,6 +12,7 @@ import { serverInfo } from './serverInfo';
 import { slowMode } from './slowMode';
 import { unlockChannel } from './unlockChannel';
 import { lockChannel } from './lockChannel';
+import { serverConfig } from './serverConfig';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -22,6 +23,7 @@ export const commands = [
   { name: 'slow-mode', type: 'slowMode', interaction: slowMode },
   { name: 'unlock-channel', type: 'unlockChannel', interaction: unlockChannel },
   { name: 'lock-channel', type: 'lockChannel', interaction: lockChannel },
+  {name: 'server-config', type: 'serverConfig', interaction: serverConfig },
 ] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
@@ -34,8 +36,17 @@ export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
 export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) =>
   Object.values(commands).forEach((command) => createCommand(commandsCreator, command));
 
-const createCommandFn = (interaction: ChatInputCommandInteraction, command: Interaction[number]) =>
-  isAllowedFeature(command.type) && command.interaction(interaction);
+const createCommandFn = async (
+  interaction: ChatInputCommandInteraction,
+  command: Interaction[number]
+) =>
+  (await isAllowedFeature(command.type, interaction.guild.id))
+    ? command.interaction(interaction)
+    : interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
 
-const createCommand = (commandsCreator: GuildApplicationCommandManager, command: Interaction[number]) =>
-  isAllowedFeature(command.type) && commandsCreator.create(command.interaction.create);
+const createCommand = async (
+  commandsCreator: GuildApplicationCommandManager,
+  command: Interaction[number]
+) =>
+  (await isAllowedFeature(command.type, commandsCreator.guild.id)) &&
+  commandsCreator.create(command.interaction.create);
