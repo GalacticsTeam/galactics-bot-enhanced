@@ -1,6 +1,6 @@
 import { Document, Schema, Types, model } from 'mongoose';
 
-import { channelsType, defaultServerConfig, featuresType } from '../utils';
+import { channelsType, defaultServerConfig, featuresType, rolesType } from '../utils';
 import { updateSchemaItem } from './helpers';
 
 import type { DefaultServerConfig, ID } from '../types';
@@ -18,6 +18,7 @@ export const ServerSchema = model<Server>(
     isDevServer: Boolean,
     embeds: { color: String },
     channels: channelsType,
+    roles: rolesType,
   })
 );
 

@@ -8,7 +8,6 @@ configDotenv();
 
 export const isDevMode: boolean = !!+process.env.DEVMODE ?? false;
 
-
 export const customStatus: ActivityOptions[] = [
   { name: 'Galactics bot', type: ActivityType.Playing },
   { name: 'Developed by gt dev team', type: ActivityType.Watching },
@@ -29,10 +28,17 @@ export const defaultServerConfig: DefaultServerConfig = {
     unlockChannel: false,
     slowMode: false,
     serverInfo: false,
+    welcome: false,
   },
   channels: {
     logs: null,
     modLogs: null,
+    welcome: null,
+    rules: null,
+  },
+  roles: {
+    bot: null,
+    member: null,
   },
   isMaintenance: false,
   isDevServer: isDevMode,
@@ -53,3 +59,4 @@ const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: an
 
 export const featuresType = getPropType('features', Boolean);
 export const channelsType = getPropType('channels', String || null);
+export const rolesType = getPropType('roles', String || null);
