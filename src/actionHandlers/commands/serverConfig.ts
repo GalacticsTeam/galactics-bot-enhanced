@@ -3,7 +3,7 @@ import { ApplicationCommandOptionType, CacheType, ChatInputCommandInteraction } 
 import { defaultServerConfig } from '../../utils';
 import { setServerSchemaItem } from '../../db';
 
-import type { DefaultServerConfig, Embed, Feature } from '../../types';
+import type { Channel, DefaultServerConfig, Embed, Feature } from '../../types';
 import type { Command } from './types';
 
 export const serverConfig: Command = (interaction) => {
@@ -24,35 +24,16 @@ export const serverConfig: Command = (interaction) => {
       const updatedEmbedValue = interaction.options.getString('value');
 
       return embeds(updatedEmbedProp, updatedEmbedValue, interaction);
+
+    case 'channels':
+      const updatedChannel = Object.keys(defaultServerConfig.channels).filter(
+        (channel) => channel.toLowerCase() === interaction.options.getString('channel')
+      )[0] as Channel;
+
+      const UpdatedChannelId = interaction.options.getChannel('value').id;
+
+      return channels(updatedChannel, UpdatedChannelId, interaction);
   }
-};
-
-const features = (updatedFeature: Feature, interaction: ChatInputCommandInteraction<CacheType>) =>
-  setServerSchemaItem(interaction.guild.id, 'features', (prevFeatures) => ({
-    ...prevFeatures,
-    [updatedFeature]: !prevFeatures[updatedFeature],
-  })).then((newFeatures) =>
-    interaction.reply({
-      content: `Feature ${updatedFeature} is now ${newFeatures[updatedFeature] ? 'enabled' : 'disabled'}`,
-      ephemeral: true,
-    })
-  );
-
-const embeds = (updatedEmbedProp: Embed, newValue: any, interaction: ChatInputCommandInteraction<CacheType>) => {
-  if (updatedEmbedProp === 'color' && !/^#?[a-f0-9]{6}$/.test(newValue as string))
-    return interaction.reply({
-      content: 'Color must be a 6 character hexadecimal',
-    });
-
-  return setServerSchemaItem(interaction.guild.id, 'embeds', (prevEmbed) => ({
-    ...prevEmbed,
-    [updatedEmbedProp]: newValue,
-  })).then((newEmbedProps) => {
-    interaction.reply({
-      content: `Embed prop ${updatedEmbedProp} is now ${newEmbedProps[updatedEmbedProp]}`,
-      ephemeral: true,
-    });
-  });
 };
 
 serverConfig.create = {
@@ -98,5 +79,61 @@ serverConfig.create = {
         },
       ],
     },
+    {
+      name: 'channels',
+      description: 'Channels configuration',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'channel',
+          description: 'Channel to update its id',
+          type: ApplicationCommandOptionType.String,
+          required: true,
+          choices: Object.keys(defaultServerConfig.channels).map((channelId) => ({
+            name: channelId.toLowerCase(),
+            value: channelId.toLowerCase(),
+          })),
+        },
+        {
+          name: 'value',
+          description: 'new Channel Id',
+          type: ApplicationCommandOptionType.Channel,
+          required: true,
+        },
+      ],
+    },
   ],
 };
+
+const features = (updatedFeature: Feature, interaction: ChatInputCommandInteraction<CacheType>) =>
+  setServerSchemaItem(interaction.guild.id, 'features', (prevFeatures) => ({
+    ...prevFeatures,
+    [updatedFeature]: !prevFeatures[updatedFeature],
+  })).then((newFeatures) =>
+    interaction.reply({
+      content: `Feature ${updatedFeature} is now ${newFeatures[updatedFeature] ? 'enabled' : 'disabled'}`,
+      ephemeral: true,
+    })
+  );
+
+const embeds = async (updatedEmbedProp: Embed, newValue: any, interaction: ChatInputCommandInteraction<CacheType>) => {
+  if (updatedEmbedProp === 'color' && !/^#?[a-f0-9]{6}$/.test(newValue as string))
+    return interaction.reply({
+      content: 'Color must be a 6 character hexadecimal',
+    });
+
+  const newEmbedProps = await setServerSchemaItem(interaction.guild.id, 'embeds', (prevEmbed) => ({
+    ...prevEmbed,
+    [updatedEmbedProp]: newValue,
+  }));
+  interaction.reply({
+    content: `Embed prop ${updatedEmbedProp} is now ${newEmbedProps[updatedEmbedProp]}`,
+    ephemeral: true,
+  });
+};
+
+const channels = async (
+  updatedChannel: Channel,
+  newValue: string,
+  interaction: ChatInputCommandInteraction<CacheType>
+) => {};
