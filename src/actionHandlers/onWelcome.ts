@@ -3,14 +3,12 @@ import Jimp from 'jimp';
 
 import { getServerItem } from '../db';
 
-const roles = {
-  member: '1086033687109455989',
-  bot: '1086033687109455985',
-};
-
 export const onWelcome = async (member: GuildMember) => {
+  const roles = await getServerItem(member.guild.id, 'roles');
+  if (!roles.bot) return;
   if (member.user.bot) return member.roles.add(roles.bot);
 
+  if (!roles.member) return;
   await member.roles.add(roles.member);
 
   const channels = await getServerItem(member.guild.id, 'channels');

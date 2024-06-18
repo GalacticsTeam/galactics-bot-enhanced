@@ -36,6 +36,10 @@ export const defaultServerConfig: DefaultServerConfig = {
     welcome: null,
     rules: null,
   },
+  roles: {
+    bot: null,
+    member: null,
+  },
   isMaintenance: false,
   isDevServer: isDevMode,
   embeds: {
@@ -55,3 +59,4 @@ const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: an
 
 export const featuresType = getPropType('features', Boolean);
 export const channelsType = getPropType('channels', String || null);
+export const rolesType = getPropType('roles', String || null);
