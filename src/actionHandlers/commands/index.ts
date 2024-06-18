@@ -9,6 +9,7 @@ import { avatar } from './avatar';
 import { user } from './user';
 import { clearChat } from './clearChat';
 import { serverInfo } from './serverInfo';
+import { serverConfig } from './serverConfig';
 
 export const commands = {
   diceRoll: { name: 'roll-dice', interaction: diceRoll },
@@ -16,6 +17,7 @@ export const commands = {
   user: { name: 'user', interaction: user },
   clearChat: { name: 'clear', interaction: clearChat },
   serverInfo: { name: 'server-info', interaction: serverInfo },
+  serverConfig: { name: 'server-config', interaction: serverConfig },
 } as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
@@ -32,8 +34,9 @@ const createCommandFn = async <T extends InteractionIdentifier>(
   interaction: ChatInputCommandInteraction,
   command: Interaction[T]
 ) =>
-  (await isAllowedFeature(getCommandIdentifier(command.name), interaction.guild.id)) &&
-  command.interaction(interaction);
+  (await isAllowedFeature(getCommandIdentifier(command.name), interaction.guild.id))
+    ? command.interaction(interaction)
+    : interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
 
 const createCommand = async <T extends InteractionIdentifier>(
   commandsCreator: GuildApplicationCommandManager,

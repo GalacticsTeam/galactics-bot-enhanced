@@ -1,6 +1,6 @@
 import { configDotenv } from 'dotenv';
 
-import { DefaultServerConfig, DefaultUserConfig, Features } from '../types';
+import type { DefaultServerConfig, DefaultUserConfig } from '../types';
 
 configDotenv();
 
@@ -8,6 +8,7 @@ export const isDevMode: boolean = !!+process.env.DEVMODE ?? false;
 
 export const defaultServerConfig: DefaultServerConfig = {
   features: {
+    serverConfig: true,
     ping: false,
     blockLinks: false,
     diceRoll: false,
@@ -15,6 +16,10 @@ export const defaultServerConfig: DefaultServerConfig = {
     user: false,
     clearChat: false,
     serverInfo: false,
+  },
+  channels: {
+    logs: null,
+    modLogs: null,
   },
   isMaintenance: false,
   isDevServer: isDevMode,
@@ -30,7 +35,8 @@ export const defaultUserConfig: DefaultUserConfig = {
   },
 };
 
-export const features: Features = Object.assign(
-  {},
-  ...Object.keys(defaultServerConfig.features).map((feature) => ({ [feature]: Boolean }))
-);
+const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: any): DefaultServerConfig[T] =>
+  Object.assign({}, ...Object.keys(defaultServerConfig[propName]).map((prop) => ({ [prop]: value })));
+
+export const featuresType = getPropType('features', Boolean);
+export const channelsType = getPropType('channels', String || null);
