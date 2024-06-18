@@ -2,7 +2,7 @@ import { Client } from 'discord.js';
 
 import { getServerSchema, runDB } from '../db';
 import { isDevMode } from '../utils';
-import { commandsCreate } from '../actionHandlers';
+import { commandsCreate, onCustomStatus } from '../actionHandlers';
 
 export const onReady = async <T extends boolean>(client: Client<T>) => {
   // Database Connection
@@ -12,6 +12,9 @@ export const onReady = async <T extends boolean>(client: Client<T>) => {
   servers.forEach(async (server) => {
     await getServerSchema(server.id);
     const commands = server.commands;
+
+    // Custom Status
+    onCustomStatus(client);
 
     // Command Creation
     commandsCreate(commands);
