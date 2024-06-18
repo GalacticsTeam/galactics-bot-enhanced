@@ -8,6 +8,7 @@ configDotenv();
 
 export const isDevMode: boolean = !!+process.env.DEVMODE ?? false;
 
+
 export const customStatus: ActivityOptions[] = [
   { name: 'Galactics bot', type: ActivityType.Playing },
   { name: 'Developed by gt dev team', type: ActivityType.Watching },

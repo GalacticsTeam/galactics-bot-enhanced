@@ -1,5 +1,6 @@
 import { GuildMember } from 'discord.js';
 
+
 import { onWelcome } from '../actionHandlers/onWelcome';
 import { getUserSchema } from '../db';
 
