@@ -23,7 +23,7 @@ export const commands = [
   { name: 'slow-mode', type: 'slowMode', interaction: slowMode },
   { name: 'unlock-channel', type: 'unlockChannel', interaction: unlockChannel },
   { name: 'lock-channel', type: 'lockChannel', interaction: lockChannel },
-  {name: 'server-config', type: 'serverConfig', interaction: serverConfig },
+  { name: 'server-config', type: 'serverConfig', interaction: serverConfig },
 ] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
@@ -36,17 +36,11 @@ export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
 export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) =>
   Object.values(commands).forEach((command) => createCommand(commandsCreator, command));
 
-const createCommandFn = async (
-  interaction: ChatInputCommandInteraction,
-  command: Interaction[number]
-) =>
+const createCommandFn = async (interaction: ChatInputCommandInteraction, command: Interaction[number]) =>
   (await isAllowedFeature(command.type, interaction.guild.id))
     ? command.interaction(interaction)
     : interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
 
-const createCommand = async (
-  commandsCreator: GuildApplicationCommandManager,
-  command: Interaction[number]
-) =>
+const createCommand = async (commandsCreator: GuildApplicationCommandManager, command: Interaction[number]) =>
   (await isAllowedFeature(command.type, commandsCreator.guild.id)) &&
   commandsCreator.create(command.interaction.create);

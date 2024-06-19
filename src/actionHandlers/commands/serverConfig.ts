@@ -216,10 +216,10 @@ const list = (itemName: keyof DefaultServerConfig, interaction: ChatInputCommand
       content: Array.isArray(item)
         ? item.map((itemData, index) => index + 1 + '. ' + itemData).join('\n')
         : typeof item === 'object'
-        ? Object.keys(item)
-            .map((itemData) => itemData + ': ' + (item as any)[itemData])
-            .join('\n')
-        : item + '',
+          ? Object.keys(item)
+              .map((itemData) => itemData + ': ' + (item as any)[itemData])
+              .join('\n')
+          : item + '',
       ephemeral: true,
     })
   );
