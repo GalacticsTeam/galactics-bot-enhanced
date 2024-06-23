@@ -2,10 +2,11 @@ import { ColorResolvable } from 'discord.js';
 
 import type { InteractionIdentifier } from './actionHandlers/commands/types';
 
-export type Feature = 'ping' | 'blockLinks' | 'welcome' | InteractionIdentifier;
+export type Feature = 'ping' | 'blockLinks' | 'welcome' | 'autoBan' | InteractionIdentifier;
 export type Channel = 'logs' | 'modLogs' | 'welcome' | 'rules';
 export type Role = 'bot' | 'member';
 export type Embed = keyof DefaultServerConfig['embeds'];
+export type Property = keyof DefaultServerConfig['properties'];
 
 export type ID = string;
 
@@ -24,6 +25,7 @@ export interface DefaultServerConfig {
   embeds: { color: ColorResolvable };
   channels: Channels;
   roles: Roles;
+  properties: { autoBanTrigger: number };
 }
 
 export type ServerConfigItem = keyof DefaultServerConfig;

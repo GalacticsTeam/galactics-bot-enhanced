@@ -29,6 +29,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     slowMode: false,
     serverInfo: false,
     welcome: false,
+    autoBan: false,
   },
   channels: {
     logs: null,
@@ -44,6 +45,9 @@ export const defaultServerConfig: DefaultServerConfig = {
   isDevServer: isDevMode,
   embeds: {
     color: '#000000',
+  },
+  properties: {
+    autoBanTrigger: 5,
   },
 };
 
