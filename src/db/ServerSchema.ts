@@ -19,6 +19,7 @@ export const ServerSchema = model<Server>(
     embeds: { color: String },
     channels: channelsType,
     roles: rolesType,
+    properties: { autoBanTrigger: Number },
   })
 );
 

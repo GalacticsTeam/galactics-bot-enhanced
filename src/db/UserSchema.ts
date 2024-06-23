@@ -37,3 +37,20 @@ export const getUserItem = async <T extends keyof DefaultUserConfig>(
 
   return user[itemName];
 };
+
+export const setUserSchemaItem = async <T extends keyof DefaultUserConfig>(
+  serverId: ID,
+  userId: ID,
+  itemName: T,
+  setCallBack: (previousState: DefaultUserConfig[T]) => DefaultUserConfig[T]
+) => {
+  const user = await getUserSchema(serverId, userId);
+
+  updateSchemaItem(user, itemName);
+
+  user.$set(itemName, setCallBack(user[itemName]));
+
+  user.save();
+
+  return user[itemName];
+};
