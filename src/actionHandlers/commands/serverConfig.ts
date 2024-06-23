@@ -3,7 +3,7 @@ import { ApplicationCommandOptionType, CacheType, ChatInputCommandInteraction } 
 import { defaultServerConfig } from '../../utils';
 import { getServerItem, setServerSchemaItem } from '../../db';
 
-import type { Channel, DefaultServerConfig, Embed, Feature, Role } from '../../types';
+import type { Channel, DefaultServerConfig, Embed, Feature, Property, Role } from '../../types';
 import type { Command } from './types';
 
 export const serverConfig: Command = (interaction) => {
@@ -24,6 +24,14 @@ export const serverConfig: Command = (interaction) => {
       const updatedEmbedValue = interaction.options.getString('value');
 
       return embeds(updatedEmbedProp, updatedEmbedValue, interaction);
+
+    case 'properties':
+      const updatedProperty = Object.keys(defaultServerConfig.properties).filter(
+        (property) => property.toLowerCase() === interaction.options.getString('name')
+      )[0] as Property;
+      const updatedPropertyValue = interaction.options.getString('value');
+
+      return properties(updatedProperty, updatedPropertyValue, interaction);
 
     case 'channels':
       const updatedChannel = Object.keys(defaultServerConfig.channels).filter(
@@ -95,6 +103,29 @@ serverConfig.create = {
       ],
     },
     {
+      name: 'properties',
+      description: 'Server properties configuration',
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [
+        {
+          name: 'name',
+          description: 'Property name',
+          type: ApplicationCommandOptionType.String,
+          required: true,
+          choices: Object.keys(defaultServerConfig.properties).map((propName) => ({
+            name: propName.toLowerCase(),
+            value: propName.toLowerCase(),
+          })),
+        },
+        {
+          name: 'value',
+          description: 'Property value',
+          type: ApplicationCommandOptionType.String,
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'channels',
       description: 'Channels configuration',
       type: ApplicationCommandOptionType.Subcommand,
@@ -140,6 +171,7 @@ serverConfig.create = {
         },
       ],
     },
+
     {
       name: 'list',
       description: 'List all server configuration',
@@ -183,6 +215,21 @@ const embeds = (updatedEmbedProp: Embed, newValue: any, interaction: ChatInputCo
   })).then((newEmbedProps) =>
     interaction.reply({
       content: `Embed prop ${updatedEmbedProp} is now ${newEmbedProps[updatedEmbedProp]}`,
+      ephemeral: true,
+    })
+  );
+};
+
+const properties = (updatedProperty: Property, newValue: any, interaction: ChatInputCommandInteraction<CacheType>) => {
+  if (updatedProperty === 'autoBanTrigger' && !+newValue)
+    return interaction.reply({ content: 'Value must be a number', ephemeral: true });
+
+  setServerSchemaItem(interaction.guild.id, 'properties', (prevProperties) => ({
+    ...prevProperties,
+    [updatedProperty]: newValue,
+  })).then((newProperties) =>
+    interaction.reply({
+      content: `Property ${updatedProperty} is set to ${newProperties[updatedProperty]}`,
       ephemeral: true,
     })
   );
