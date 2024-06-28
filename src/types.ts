@@ -2,7 +2,7 @@ import { ColorResolvable } from 'discord.js';
 
 import type { InteractionIdentifier } from './actionHandlers/commands/types';
 
-export type Feature = 'ping' | 'blockLinks' | 'welcome' | 'autoBan' | InteractionIdentifier;
+export type Feature = 'ping' | 'blockLinks' | 'welcome' | 'autoBan' | 'repeatedWelcomes' | InteractionIdentifier;
 export type Channel = 'logs' | 'modLogs' | 'welcome' | 'rules';
 export type Role = 'bot' | 'member';
 export type Embed = keyof DefaultServerConfig['embeds'];

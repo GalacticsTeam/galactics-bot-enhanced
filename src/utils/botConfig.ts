@@ -2,7 +2,7 @@ import { ActivityOptions, ActivityType } from 'discord.js';
 
 import { configDotenv } from 'dotenv';
 
-import type { DefaultServerConfig, DefaultUserConfig } from '../types';
+import type { DefaultServerConfig, DefaultUserConfig, LocalDBServerConfig } from '../types';
 
 configDotenv();
 
@@ -34,6 +34,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     serverInfo: false,
     welcome: false,
     autoBan: false,
+    repeatedWelcomes: false,
   },
   channels: {
     logs: null,

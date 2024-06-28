@@ -2,6 +2,10 @@ import { ChannelType, GuildMember, channelMention, userMention } from 'discord.j
 import Jimp from 'jimp';
 
 import { getServerItem } from '../db';
+import { isAllowedFeature } from '../utils/helpers';
+import { getDBItem, setDBItem } from '../localdb';
+
+import type { ID } from '../types';
 
 export const onWelcome = async (member: GuildMember) => {
   const roles = await getServerItem(member.guild.id, 'roles');
@@ -10,6 +14,8 @@ export const onWelcome = async (member: GuildMember) => {
 
   if (!roles.member) return;
   await member.roles.add(roles.member);
+
+  if (await IsRepeatedJoining(member.guild.id, member.id)) return;
 
   const channels = await getServerItem(member.guild.id, 'channels');
   if (!channels.welcome) return;
@@ -36,4 +42,18 @@ const addUserAvatar = async (welcomeImage: Jimp, member: GuildMember) => {
   userImage.resize(122, 122);
   userImage.circle();
   welcomeImage.composite(userImage, 222, 36);
+};
+
+const IsRepeatedJoining = async (serverId: ID, userId: ID) => {
+  if (!(await isAllowedFeature('repeatedWelcomes', serverId))) return false;
+
+  const lastJoinedIds = await getDBItem(serverId, 'lastJoinedIds');
+  if (lastJoinedIds.includes(userId)) return true;
+
+  setDBItem(serverId, 'lastJoinedIds', (prevLastJoined) => {
+    if (prevLastJoined.length < 3) return [...prevLastJoined, userId];
+    return [...prevLastJoined.slice(1), userId];
+  });
+
+  return false;
 };
