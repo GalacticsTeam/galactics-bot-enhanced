@@ -15,6 +15,10 @@ export const customStatus: ActivityOptions[] = [
   { name: 'need help? /help', type: ActivityType.Watching },
 ];
 
+export const defaultLocalDBServerConfig: LocalDBServerConfig = {
+  lastJoinedIds: [],
+};
+
 export const defaultServerConfig: DefaultServerConfig = {
   features: {
     serverConfig: true,
@@ -49,6 +53,7 @@ export const defaultServerConfig: DefaultServerConfig = {
   properties: {
     autoBanTrigger: 5,
   },
+  ...defaultLocalDBServerConfig,
 };
 
 export const defaultUserConfig: DefaultUserConfig = {

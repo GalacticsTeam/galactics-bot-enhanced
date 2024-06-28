@@ -1,0 +1,11 @@
+{
+  "name": "localdb",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "json-server --watch db.json --port 4000"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "json-server": "^1.0.0-alpha.23"
+  }
+}
