@@ -18,7 +18,7 @@ export type Roles = { [t in Role]: string | null };
 
 export type FeatureName = keyof FeaturesSchema;
 
-export interface DefaultServerConfig {
+export interface DefaultServerConfig extends LocalDBServerConfig {
   features: Features;
   isMaintenance: boolean;
   isDevServer: boolean;
@@ -26,6 +26,10 @@ export interface DefaultServerConfig {
   channels: Channels;
   roles: Roles;
   properties: { autoBanTrigger: number };
+}
+
+export interface LocalDBServerConfig {
+  lastJoinedIds: string[];
 }
 
 export type ServerConfigItem = keyof DefaultServerConfig;
