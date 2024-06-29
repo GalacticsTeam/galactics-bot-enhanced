@@ -35,6 +35,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     welcome: false,
     autoBan: false,
     repeatedWelcomes: false,
+    modHelp: false,
   },
   channels: {
     logs: null,
@@ -53,6 +54,7 @@ export const defaultServerConfig: DefaultServerConfig = {
   },
   properties: {
     autoBanTrigger: 5,
+    modHelpMessage: 'One of our moderators will help you shortly',
   },
   ...defaultLocalDBServerConfig,
 };

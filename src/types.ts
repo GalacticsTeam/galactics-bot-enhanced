@@ -25,7 +25,7 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
   embeds: { color: ColorResolvable };
   channels: Channels;
   roles: Roles;
-  properties: { autoBanTrigger: number };
+  properties: { autoBanTrigger: number; modHelpMessage: string };
 }
 
 export interface LocalDBServerConfig {
