@@ -14,6 +14,7 @@ import { unlockChannel } from './unlockChannel';
 import { lockChannel } from './lockChannel';
 import { serverConfig } from './serverConfig';
 import { modHelp } from './modHelp';
+import { warn } from './warn';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -26,6 +27,7 @@ export const commands = [
   { name: 'lock-channel', type: 'lockChannel', interaction: lockChannel },
   { name: 'server-config', type: 'serverConfig', interaction: serverConfig },
   { name: 'mod-help', type: 'modHelp', interaction: modHelp },
+  { name: 'warn', type: 'warn', interaction: warn },
 ] as const;
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
