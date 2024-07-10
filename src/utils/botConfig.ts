@@ -36,6 +36,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     autoBan: false,
     repeatedWelcomes: false,
     modHelp: false,
+    warn: false,
   },
   channels: {
     logs: null,
