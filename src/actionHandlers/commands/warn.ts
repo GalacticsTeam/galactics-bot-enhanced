@@ -8,8 +8,8 @@ export const warn: Command = async (interaction) => {
   const warnItem = interaction.options.getSubcommand();
   const user = interaction.options.getUser('user').id;
   const reason = interaction.options.getString('reason');
-  const warnsCount = (await getUserItem(interaction.guildId, user, 'warns')).number;
-  const warnReasons = (await getUserItem(interaction.guildId, user, 'warns')).reasons;
+
+  const { number: warnsCount, reasons: warnReasons } = await getUserItem(interaction.guildId, user, 'warns');
 
   switch (warnItem) {
     case 'add':
