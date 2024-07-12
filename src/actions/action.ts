@@ -1,11 +1,11 @@
-import { Awaitable, Client, ClientEvents } from 'discord.js';
+import { Client } from 'discord.js';
 
-type action = <Event extends keyof ClientEvents>(
-  Client: Client,
-  actionType: Event,
-  actionFn: (...args: ClientEvents[Event]) => Awaitable<void>
-) => void;
+import type { Action, IntervalFn } from './types';
 
-export const action: action = (Client, actionType, actionFn) => {
+export const action: Action = (Client, actionType, actionFn) => {
   Client.on(actionType, actionFn);
+};
+
+export const interval = (client: Client, intervalFn: IntervalFn, time: number) => {
+  setInterval(() => intervalFn(client, time), time);
 };
