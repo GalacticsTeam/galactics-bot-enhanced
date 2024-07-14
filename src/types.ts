@@ -1,6 +1,7 @@
 import { ColorResolvable } from 'discord.js';
 
 import type { InteractionIdentifier } from './actionHandlers/commands/types';
+import type { Status, StatusChannel } from './actionHandlers/onServerStatus/types';
 
 export type Feature =
   | 'ping'

@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, EmbedBuilder, userMention } from 'discord
 
 import type { Command } from './types';
 import { getUserItem, setUserSchemaItem } from '../../db';
-import { onAutoBan } from '../onAutoBan';
+import { onAutoBan } from '../';
 
 export const warn: Command = async (interaction) => {
   const warnItem = interaction.options.getSubcommand();
