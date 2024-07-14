@@ -1,5 +1,4 @@
 import { ActivityOptions, ActivityType } from 'discord.js';
-
 import { configDotenv } from 'dotenv';
 
 import type { DefaultServerConfig, DefaultUserConfig, LocalDBServerConfig } from '../types';
@@ -17,6 +16,7 @@ export const customStatus: ActivityOptions[] = [
 
 export const defaultLocalDBServerConfig: LocalDBServerConfig = {
   lastJoinedIds: [],
+  statusChannels: [],
 };
 
 export const defaultServerConfig: DefaultServerConfig = {
@@ -37,12 +37,14 @@ export const defaultServerConfig: DefaultServerConfig = {
     repeatedWelcomes: false,
     modHelp: false,
     warn: false,
+    serverStatus: false,
   },
   channels: {
     logs: null,
     modLogs: null,
     welcome: null,
     rules: null,
+    statusCategory: null,
   },
   roles: {
     bot: null,
@@ -56,6 +58,7 @@ export const defaultServerConfig: DefaultServerConfig = {
   properties: {
     autoBanTrigger: 5,
     modHelpMessage: 'One of our moderators will help you shortly',
+    statuses: [],
   },
   ...defaultLocalDBServerConfig,
 };

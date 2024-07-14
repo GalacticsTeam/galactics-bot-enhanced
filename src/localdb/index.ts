@@ -22,7 +22,10 @@ export const getServerDB = async (serverId: ID): Promise<ServerConfig> => {
   return { data: requestedServer, servers };
 };
 
-export const getDBItem = async (serverId: ID, item: keyof LocalDBServerConfig) => {
+export const getDBItem = async <T extends keyof LocalDBServerConfig>(
+  serverId: ID,
+  item: T
+): Promise<LocalDBServerConfig[T]> => {
   const server = await getServerDB(serverId);
 
   return server.data?.[item];
