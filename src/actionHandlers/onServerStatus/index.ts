@@ -8,6 +8,9 @@ import { getDBItem, setDBItem } from '../../localdb';
 import type { Status, StatusChannel } from './types';
 import type { IntervalFn } from '../../actions/types';
 
+let statusesWithChannels: StatusChannel[] = [];
+let statusesWithoutChannels: Status[] = [];
+
 export const onServerStatus: IntervalFn = (client) => {
   client.guilds.cache.forEach(async (server) => {
     if (!(await isAllowedFeature('serverStatus', server.id))) return;
@@ -19,8 +22,8 @@ export const onServerStatus: IntervalFn = (client) => {
     const statuses = (await getServerItem(server.id, 'properties')).statuses;
     const statusChannels = await getDBItem(server.id, 'statusChannels');
 
-    const statusesWithChannels: StatusChannel[] = [];
-    const statusesWithoutChannels: Status[] = [];
+    statusesWithChannels = [];
+    statusesWithoutChannels = [];
 
     statuses.forEach((status) => {
       const statusChannel = statusChannels.find((channel) => channel.id === status.id);
@@ -41,21 +44,35 @@ export const onServerStatus: IntervalFn = (client) => {
       await statusChannel.setName(`｜${status.title}: ${statusCount}`);
     });
 
-    statusesWithoutChannels.forEach(async (status) => {
-      const statusCount = await getStatusCount(server, status);
+    setTimeout(
+      () =>
+        statusesWithoutChannels.forEach(async (status) => {
+          const statusCount = await getStatusCount(server, status);
 
-      server.channels
-        .create({
-          name: `｜${status.title}: ${statusCount}`,
-          type: ChannelType.GuildVoice,
-          parent: statusCategory.id,
-        })
-        .then(async (channel) => {
-          await setDBItem(server.id, 'statusChannels', (prevStatuses) => [
-            ...prevStatuses,
-            { ...status, channelId: channel.id },
-          ]);
-        });
-    });
+          const statusInvalidChannel = (await getDBItem(server.id, 'statusChannels')).find(
+            (statusCHannel) => statusCHannel.id === status.id
+          );
+          const channel = server.channels.cache.get(statusInvalidChannel?.channelId);
+
+          if (!channel)
+            await setDBItem(server.id, 'statusChannels', (prevStatuses) =>
+              prevStatuses.filter((statusChannel) => statusChannel.id !== status.id)
+            );
+
+          server.channels
+            .create({
+              name: `｜${status.title}: ${statusCount}`,
+              type: ChannelType.GuildVoice,
+              parent: statusCategory.id,
+            })
+            .then(async (channel) => {
+              await setDBItem(server.id, 'statusChannels', (prevStatuses) => [
+                ...prevStatuses,
+                { ...status, channelId: channel.id },
+              ]);
+            });
+        }),
+      1000
+    );
   });
 };
