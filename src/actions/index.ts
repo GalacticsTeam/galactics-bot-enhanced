@@ -17,5 +17,5 @@ export const invokeActions = (Client: Client) => {
   action(Client, 'guildMemberAdd', onGuildMemberAdd);
   action(Client, 'guildCreate', onGuildCreate);
 
-  interval(Client, onServerStatus, 30000);
+  interval(Client, onServerStatus, 15000);
 };
