@@ -17,6 +17,7 @@ export const customStatus: ActivityOptions[] = [
 export const defaultLocalDBServerConfig: LocalDBServerConfig = {
   lastJoinedIds: [],
   statusChannels: [],
+  tempChannels: [],
 };
 
 export const defaultServerConfig: DefaultServerConfig = {
@@ -38,6 +39,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     modHelp: false,
     warn: false,
     serverStatus: false,
+    tempChannels: false,
   },
   channels: {
     logs: null,
@@ -45,6 +47,9 @@ export const defaultServerConfig: DefaultServerConfig = {
     welcome: null,
     rules: null,
     statusCategory: null,
+    tempChannelCategory: null,
+    tempChannelGenerator: null,
+    tempChannelCommands: null,
   },
   roles: {
     bot: null,

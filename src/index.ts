@@ -7,7 +7,7 @@ import { invokeActions } from './actions';
 // =======================================================
 // Client Creation
 const client = new Client({
-  intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent'],
+  intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'MessageContent', 'GuildVoiceStates', 'GuildPresences'],
   partials: [Partials.Message, Partials.Channel],
 });
 
