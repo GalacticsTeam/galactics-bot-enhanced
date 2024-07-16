@@ -6,3 +6,4 @@ export * from './onServerStatus';
 export * from './commands';
 export * from './onWelcome';
 export * from './onAutoBan';
+export * from './onTempChannel';

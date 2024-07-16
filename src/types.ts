@@ -2,6 +2,7 @@ import { ColorResolvable } from 'discord.js';
 
 import type { InteractionIdentifier } from './actionHandlers/commands/types';
 import type { Status, StatusChannel } from './actionHandlers/onServerStatus/types';
+import type { TempChannel } from './actionHandlers/';
 
 export type Feature =
   | 'ping'
@@ -10,8 +11,17 @@ export type Feature =
   | 'autoBan'
   | 'repeatedWelcomes'
   | 'serverStatus'
+  | 'tempChannels'
   | InteractionIdentifier;
-export type Channel = 'logs' | 'modLogs' | 'welcome' | 'rules' | 'statusCategory';
+export type Channel =
+  | 'logs'
+  | 'modLogs'
+  | 'welcome'
+  | 'rules'
+  | 'statusCategory'
+  | 'tempChannelCategory'
+  | 'tempChannelGenerator'
+  | 'tempChannelCommands';
 export type Role = 'bot' | 'member';
 export type Embed = keyof DefaultServerConfig['embeds'];
 export type Property = keyof DefaultServerConfig['properties'];
@@ -39,6 +49,7 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
 export interface LocalDBServerConfig {
   lastJoinedIds: string[];
   statusChannels: StatusChannel[];
+  tempChannels: TempChannel[];
 }
 
 export type ServerConfigItem = keyof DefaultServerConfig;

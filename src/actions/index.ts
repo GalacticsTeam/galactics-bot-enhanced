@@ -7,8 +7,9 @@ import { onMessageCreate } from './onMessageCreate';
 import { onInteractionCreate } from './onInteractionCreate';
 import { onGuildCreate } from './onGuildCreate';
 import { onGuildMemberAdd } from './onGuildMemberAdd';
+import { onVoiceStateUpdate } from './onVoiceStateUpdate';
 
-import { onServerStatus } from '../actionHandlers';
+import { onEveryTempChannel, onServerStatus } from '../actionHandlers';
 
 export const invokeActions = (Client: Client) => {
   action(Client, 'ready', onReady);
@@ -16,6 +17,8 @@ export const invokeActions = (Client: Client) => {
   action(Client, 'interactionCreate', onInteractionCreate as (i: Interaction<CacheType>) => void);
   action(Client, 'guildMemberAdd', onGuildMemberAdd);
   action(Client, 'guildCreate', onGuildCreate);
+  action(Client, 'voiceStateUpdate', onVoiceStateUpdate);
 
   interval(Client, onServerStatus, 15000);
+  interval(Client, onEveryTempChannel, 5000);
 };
