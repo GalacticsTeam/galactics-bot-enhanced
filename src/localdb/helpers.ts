@@ -2,7 +2,7 @@ import { defaultLocalDBServerConfig } from '../utils';
 
 import type { LocalDBServerSchema } from './types';
 
-export const updateLocalDBItem = <Item extends keyof LocalDBServerSchema>(
+export const updatedLocalDBItem = <Item extends keyof LocalDBServerSchema>(
   server: LocalDBServerSchema,
   itemName: Item
 ): LocalDBServerSchema[Item] => {
