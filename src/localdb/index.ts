@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { defaultLocalDBServerConfig } from '../utils';
-import { updateLocalDBItem } from './helpers';
+import { updatedLocalDBItem } from './helpers';
 
 import type { ID, LocalDBServerConfig } from '../types';
 import type { ServerConfig, ServersResponse } from './types';
@@ -28,6 +28,14 @@ export const getDBItem = async <T extends keyof LocalDBServerConfig>(
 ): Promise<LocalDBServerConfig[T]> => {
   const server = await getServerDB(serverId);
 
+  LOCAL_DB_API.put('/servers', {
+    ...server.servers,
+    [server.data.serverId]: {
+      ...server.data,
+      [item]: updatedLocalDBItem(server.data, item),
+    },
+  });
+
   return server.data?.[item];
 };
 
@@ -37,7 +45,7 @@ export const setDBItem = async <T extends keyof LocalDBServerConfig>(
   callBack: (prevState: LocalDBServerConfig[T]) => LocalDBServerConfig[T]
 ) => {
   const server = await getServerDB(serverId);
-  const updatedServerItem = updateLocalDBItem(server.data, itemName);
+  const updatedServerItem = updatedLocalDBItem(server.data, itemName);
 
   LOCAL_DB_API.put('/servers', {
     ...server.servers,

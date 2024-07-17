@@ -2,7 +2,9 @@ import { ActivityType, ChannelType, Guild, GuildMember } from 'discord.js';
 
 import { setDBItem } from '../../localdb';
 
-export const createChannel = async (guild: Guild, categoryId: string, member: GuildMember, activityName: string) => {
+export const createChannel = async (guild: Guild, categoryId: string, member: GuildMember) => {
+  const activityName = getUserActivity(member);
+
   const channel = await guild.channels.create({
     name: activityName,
     type: ChannelType.GuildVoice,
@@ -16,7 +18,7 @@ export const createChannel = async (guild: Guild, categoryId: string, member: Gu
 
   channel.lockPermissions();
 
-  member.voice.setChannel(channel);
+  member.voice.setChannel(channel).catch();
 };
 
 export const getUserActivity = (member: GuildMember) => {

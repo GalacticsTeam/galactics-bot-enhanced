@@ -48,5 +48,4 @@ const createCommandFn = async (interaction: ChatInputCommandInteraction, command
     : interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
 
 const createCommand = async (commandsCreator: GuildApplicationCommandManager, command: Interaction[number]) =>
-  (await isAllowedFeature(command.type, commandsCreator.guild.id)) &&
   commandsCreator.create(command.interaction.create);
