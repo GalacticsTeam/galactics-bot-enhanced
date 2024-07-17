@@ -12,6 +12,7 @@ export type Feature =
   | 'repeatedWelcomes'
   | 'serverStatus'
   | 'tempChannels'
+  | 'roleOrganize'
   | InteractionIdentifier;
 export type Channel =
   | 'logs'

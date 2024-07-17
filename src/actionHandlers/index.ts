@@ -7,3 +7,4 @@ export * from './commands';
 export * from './onWelcome';
 export * from './onAutoBan';
 export * from './onTempChannel';
+export * from './onRoleOrganize';
