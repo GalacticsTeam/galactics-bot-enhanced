@@ -8,6 +8,7 @@ import { onInteractionCreate } from './onInteractionCreate';
 import { onGuildCreate } from './onGuildCreate';
 import { onGuildMemberAdd } from './onGuildMemberAdd';
 import { onVoiceStateUpdate } from './onVoiceStateUpdate';
+import { onGuildMemberUpdate } from './onGuildMemberUpdate';
 
 import { onEveryTempChannel, onServerStatus } from '../actionHandlers';
 
@@ -18,6 +19,7 @@ export const invokeActions = (Client: Client) => {
   action(Client, 'guildMemberAdd', onGuildMemberAdd);
   action(Client, 'guildCreate', onGuildCreate);
   action(Client, 'voiceStateUpdate', onVoiceStateUpdate);
+  action(Client, 'guildMemberUpdate', onGuildMemberUpdate);
 
   interval(Client, onServerStatus, 15000);
   interval(Client, onEveryTempChannel, 5000);

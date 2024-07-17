@@ -40,6 +40,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     warn: false,
     serverStatus: false,
     tempChannels: false,
+    roleOrganize: false,
   },
   channels: {
     logs: null,
