@@ -33,9 +33,9 @@ export const embeds = async <T extends Embed>(
 ) => {
   switch (updatedEmbedProp) {
     case 'color':
-      if (/^#?[a-f0-9]{6}$/.test(newValue as string)) return;
+      if (/^#?[a-f0-9]{6}$/.test(newValue as string)) break;
 
-      return interaction.reply({ content: 'Color must be a 6 character hexadecimal' });
+      return interaction.reply({ content: 'Color must be a 6 character hexadecimal', ephemeral: true });
   }
 
   await setServerSchemaItem(interaction.guild.id, 'embeds', (prevEmbed) => ({
@@ -56,7 +56,7 @@ export const properties = <T extends Property>(
 ) => {
   switch (updatedProperty) {
     case 'autoBanTrigger':
-      if (+newValue) return;
+      if (+newValue) break;
 
       return interaction.reply({ content: 'Value must be a number', ephemeral: true });
   }
