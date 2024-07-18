@@ -4,8 +4,6 @@ import { customStatus } from '../utils';
 import { isFeatureAllowed } from '../utils/helpers';
 
 export const onCustomStatus = async (client: Client) => {
-  if (!(await isFeatureAllowed('customStatus', client.user.id))) return;
-
   let statusIndex = 0;
 
   setInterval(() => {

@@ -13,7 +13,6 @@ export type Feature =
   | 'serverStatus'
   | 'tempChannels'
   | 'roleOrganize'
-  | 'customStatus'
   | InteractionIdentifier;
 export type Channel =
   | 'logs'

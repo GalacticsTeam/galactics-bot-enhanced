@@ -22,11 +22,11 @@ export const createChannel = async (guild: Guild, categoryId: string, member: Gu
 };
 
 export const getUserActivity = (member: GuildMember) => {
-  const activities = member.presence.activities;
+  const activities = member.presence?.activities;
   const isCustomStatus = activities?.[0].type === ActivityType.Custom;
-  const isCustomStatusOnly = activities.length === 1 && isCustomStatus;
+  const isCustomStatusOnly = activities?.length === 1 && isCustomStatus;
 
-  if (!activities.length || isCustomStatusOnly) return `｜ Talking`;
+  if (!activities?.length || isCustomStatusOnly) return `｜ Chatting`;
 
   if (activities.length > 1 && isCustomStatus) return `｜ ${activities[1].name}`;
 
