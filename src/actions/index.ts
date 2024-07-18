@@ -1,4 +1,4 @@
-import { CacheType, Client, Interaction } from 'discord.js';
+import type { CacheType, Client, Interaction } from 'discord.js';
 
 import { action, interval } from './action';
 

@@ -1,2 +1,2 @@
-export { default as crashHandling } from './crashHandling';
+export { default as onCrash } from './onCrash';
 export * from './botConfig';

@@ -1,8 +1,8 @@
-import { ColorResolvable } from 'discord.js';
+import type { ColorResolvable } from 'discord.js';
 
+import type { TempChannel } from './actionHandlers/';
 import type { InteractionIdentifier } from './actionHandlers/commands/types';
 import type { Status, StatusChannel } from './actionHandlers/onServerStatus/types';
-import type { TempChannel } from './actionHandlers/';
 
 export type Feature =
   | 'ping'
@@ -13,6 +13,7 @@ export type Feature =
   | 'serverStatus'
   | 'tempChannels'
   | 'roleOrganize'
+  | 'customStatus'
   | InteractionIdentifier;
 export type Channel =
   | 'logs'
@@ -27,15 +28,15 @@ export type Role = 'bot' | 'member';
 export type Embed = keyof DefaultServerConfig['embeds'];
 export type Property = keyof DefaultServerConfig['properties'];
 
-export type ID = string;
+type Features = { [t in Feature]: boolean };
+type Channels = { [t in Channel]: string | null };
+type Roles = { [t in Role]: string | null };
 
-export type FeaturesSchema = { [t in Feature]: BooleanConstructor };
-
-export type Features = { [t in Feature]: boolean };
-export type Channels = { [t in Channel]: string | null };
-export type Roles = { [t in Role]: string | null };
-
-export type FeatureName = keyof FeaturesSchema;
+export interface LocalDBServerConfig {
+  lastJoinedIds: string[];
+  statusChannels: StatusChannel[];
+  tempChannels: TempChannel[];
+}
 
 export interface DefaultServerConfig extends LocalDBServerConfig {
   features: Features;
@@ -46,14 +47,6 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
   roles: Roles;
   properties: { autoBanTrigger: number; modHelpMessage: string; statuses: Status[] };
 }
-
-export interface LocalDBServerConfig {
-  lastJoinedIds: string[];
-  statusChannels: StatusChannel[];
-  tempChannels: TempChannel[];
-}
-
-export type ServerConfigItem = keyof DefaultServerConfig;
 
 export interface DefaultUserConfig {
   warns: {

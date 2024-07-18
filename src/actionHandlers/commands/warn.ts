@@ -1,55 +1,41 @@
-import { ApplicationCommandOptionType, EmbedBuilder, userMention } from 'discord.js';
+import { ApplicationCommandOptionType, userMention } from 'discord.js';
+
+import { onAutoBan } from '../';
+import { getUserSchemaItem, setUserSchemaItem } from '../../db';
 
 import type { Command } from './types';
-import { getUserItem, setUserSchemaItem } from '../../db';
-import { onAutoBan } from '../';
 
 export const warn: Command = async (interaction) => {
-  const warnItem = interaction.options.getSubcommand();
+  const action = interaction.options.getSubcommand();
+
   const user = interaction.options.getUser('user').id;
   const reason = interaction.options.getString('reason');
 
-  const { number: warnsCount, reasons: warnReasons } = await getUserItem(interaction.guildId, user, 'warns');
+  const { number: count, reasons: reasons } = await getUserSchemaItem(interaction.guildId, user, 'warns');
 
-  switch (warnItem) {
+  switch (action) {
     case 'add':
       await setUserSchemaItem(interaction.guildId, user, 'warns', ({ number, reasons }) => {
         return { number: number + 1, reasons: [...reasons, `Add: ${reason}`] };
-      });
+      }).then(() => onAutoBan(interaction.guild, user));
 
-      interaction.reply({ content: `Added a warn for ${userMention(user)}`, ephemeral: true });
-
-      onAutoBan(interaction.guild, user);
-
-      return;
+      return interaction.reply({ content: `Added a warn for ${userMention(user)}`, ephemeral: true });
 
     case 'remove':
-      if (warnsCount === 0) {
-        interaction.reply({ content: `This user has no warns`, ephemeral: true });
-        return;
-      }
+      if (!count) return interaction.reply({ content: `This user has no warns`, ephemeral: true });
 
       await setUserSchemaItem(interaction.guildId, user, 'warns', ({ number, reasons }) => {
         return { number: number - 1, reasons: [...reasons, `Remove: ${reason}`] };
       });
 
-      interaction.reply({ content: `Removed a warn for ${userMention(user)}`, ephemeral: true });
-
-      return;
+      return interaction.reply({ content: `Removed a warn for ${userMention(user)}`, ephemeral: true });
 
     case 'list':
-      if (warnReasons.length === 0) {
-        interaction.reply({
-          content: `Warns count: ${warnsCount} `,
-        });
-        return;
-      }
+      if (!reasons.length) return interaction.reply({ content: `Warns count: ${count} ` });
 
-      interaction.reply({
-        content: `Warns count: ${warnsCount} \nReasons:\n${warnReasons.map((reason) => `> ${reason}`).join('\n')}`,
+      return interaction.reply({
+        content: `Warns count: ${count} \nReasons:\n${reasons.map((reason) => `> ${reason}`).join('\n')}`,
       });
-
-      return;
   }
 };
 

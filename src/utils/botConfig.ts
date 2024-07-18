@@ -11,7 +11,7 @@ export const customStatus: ActivityOptions[] = [
   { name: 'Galactics bot', type: ActivityType.Playing },
   { name: 'Developed by gt dev team', type: ActivityType.Watching },
   { name: 'Have fun', type: ActivityType.Watching },
-  { name: 'need help? /help', type: ActivityType.Watching },
+  { name: 'need help? /mod-help', type: ActivityType.Watching },
 ];
 
 export const defaultLocalDBServerConfig: LocalDBServerConfig = {
@@ -41,6 +41,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     serverStatus: false,
     tempChannels: false,
     roleOrganize: false,
+    customStatus: false,
   },
   channels: {
     logs: null,

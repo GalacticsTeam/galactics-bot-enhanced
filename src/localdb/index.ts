@@ -1,53 +1,55 @@
 import axios from 'axios';
 
 import { defaultLocalDBServerConfig } from '../utils';
-import { updatedLocalDBItem } from './helpers';
+import { setDefaultLocalDBItem } from './helpers';
 
-import type { ID, LocalDBServerConfig } from '../types';
+import type { LocalDBServerConfig } from '../types';
 import type { ServerConfig, ServersResponse } from './types';
 
-const LOCAL_DB_API = axios.create({ baseURL: 'http://localhost:4000' });
+const localDB = axios.create({ baseURL: 'http://localhost:4000' });
 
-export const getServerDB = async (serverId: ID): Promise<ServerConfig> => {
-  const servers = (await LOCAL_DB_API.get<ServersResponse>('/servers')).data;
+export const getLocalDB = async (serverId: string): Promise<ServerConfig> => {
+  const servers = (await localDB.get<ServersResponse>('/servers')).data;
 
   const requestedServer = servers[serverId];
 
   if (!requestedServer)
-    return LOCAL_DB_API.put<ServerConfig, ServerConfig>('/servers', {
-      ...servers,
-      [serverId]: { serverId, ...defaultLocalDBServerConfig },
-    }).then(() => ({ data: { serverId, ...defaultLocalDBServerConfig }, servers }));
+    return localDB
+      .put<ServerConfig, ServerConfig>('/servers', {
+        ...servers,
+        [serverId]: { serverId, ...defaultLocalDBServerConfig },
+      })
+      .then(() => ({ data: { serverId, ...defaultLocalDBServerConfig }, servers }));
 
   return { data: requestedServer, servers };
 };
 
-export const getDBItem = async <T extends keyof LocalDBServerConfig>(
-  serverId: ID,
+export const getLocalDBItem = async <T extends keyof LocalDBServerConfig>(
+  serverId: string,
   item: T
 ): Promise<LocalDBServerConfig[T]> => {
-  const server = await getServerDB(serverId);
+  const server = await getLocalDB(serverId);
 
-  LOCAL_DB_API.put('/servers', {
+  localDB.put('/servers', {
     ...server.servers,
     [server.data.serverId]: {
       ...server.data,
-      [item]: updatedLocalDBItem(server.data, item),
+      [item]: setDefaultLocalDBItem(server.data, item),
     },
   });
 
   return server.data?.[item];
 };
 
-export const setDBItem = async <T extends keyof LocalDBServerConfig>(
-  serverId: ID,
+export const setLocalDBItem = async <T extends keyof LocalDBServerConfig>(
+  serverId: string,
   itemName: T,
   callBack: (prevState: LocalDBServerConfig[T]) => LocalDBServerConfig[T]
 ) => {
-  const server = await getServerDB(serverId);
-  const updatedServerItem = updatedLocalDBItem(server.data, itemName);
+  const server = await getLocalDB(serverId);
+  const updatedServerItem = setDefaultLocalDBItem(server.data, itemName);
 
-  LOCAL_DB_API.put('/servers', {
+  localDB.put('/servers', {
     ...server.servers,
     [server.data.serverId]: {
       ...server.data,
@@ -56,4 +58,4 @@ export const setDBItem = async <T extends keyof LocalDBServerConfig>(
   });
 };
 
-export const getLocalDBStatus = async () => (await LOCAL_DB_API.get('/')).status;
+export const getLocalDBStatus = async () => (await localDB.get('/')).status;

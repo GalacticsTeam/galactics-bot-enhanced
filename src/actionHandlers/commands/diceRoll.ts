@@ -4,13 +4,14 @@ import type { Command } from './types';
 
 export const diceRoll: Command = (interaction) => {
   const { options } = interaction;
-  const maxNumber = options.getNumber('limit') ?? null;
 
-  if (maxNumber && (maxNumber > 1000 || maxNumber < 1))
-    return interaction.reply({ content: 'Invalid number', ephemeral: true });
+  const maxNumber = options.getInteger('limit') ?? 6;
 
-  return interaction.reply({
-    content: `${Math.floor(Math.random() * (maxNumber ?? 6))}`,
+  if (maxNumber > 1000 || maxNumber < 1)
+    return interaction.reply({ content: 'Number must be between 1 and 1000', ephemeral: true });
+
+  interaction.reply({
+    content: `${Math.floor(Math.random() * maxNumber)}`,
     ephemeral: true,
   });
 };
@@ -23,7 +24,7 @@ diceRoll.create = {
       name: 'limit',
       description: 'dice roll upper limit',
       required: false,
-      type: ApplicationCommandOptionType.Number,
+      type: ApplicationCommandOptionType.Integer,
     },
   ],
 };

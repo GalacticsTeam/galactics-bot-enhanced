@@ -1,10 +1,10 @@
-import { EmbedBuilder, Guild, TextChannel } from 'discord.js';
+import { ChannelType, EmbedBuilder, Guild } from 'discord.js';
 
-import { getServerSchema, getUserItem, setUserSchemaItem } from '../db';
-import { isAllowedFeature } from '../utils/helpers';
+import { getServerSchema, getUserSchemaItem, setUserSchemaItem } from '../db';
+import { isFeatureAllowed } from '../utils/helpers';
 
 export const onAutoBan = async (guild: Guild, memberId: string) => {
-  if (!(await isAllowedFeature('autoBan', guild.id))) return;
+  if (!(await isFeatureAllowed('autoBan', guild.id))) return;
 
   const {
     properties: { autoBanTrigger },
@@ -12,14 +12,16 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
     embeds: { color },
   } = await getServerSchema(guild.id);
 
-  const userWarns = await getUserItem(guild.id, memberId, 'warns');
+  const userWarns = await getUserSchemaItem(guild.id, memberId, 'warns');
 
   if (userWarns.number < autoBanTrigger) return;
 
-  guild.members.ban(memberId, { reason: `Auto-banned after ${userWarns.number} warns` }).then(() => {
-    const logsChannel = guild.channels.cache.get(logsChannelId) as TextChannel;
+  guild.members.ban(memberId, { reason: `Auto-banned after ${userWarns.number} warns` }).then(async () => {
+    const logsChannel = guild.channels.cache.get(logsChannelId);
 
-    setUserSchemaItem(guild.id, memberId, 'warns', (prevWarns) => ({
+    if (logsChannel.type !== ChannelType.GuildText) return;
+
+    await setUserSchemaItem(guild.id, memberId, 'warns', (prevWarns) => ({
       number: 0,
       reasons: [...prevWarns.reasons, `--auto-ban-reset--`],
     }));

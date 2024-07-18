@@ -1,4 +1,4 @@
-import { ID, LocalDBServerConfig } from '../types';
+import type { LocalDBServerConfig } from '../types';
 
 export interface ServerConfig {
   data: LocalDBServerSchema;
@@ -6,9 +6,9 @@ export interface ServerConfig {
 }
 
 export interface ServersResponse {
-  [serverId: ID]: LocalDBServerSchema;
+  [serverId: string]: LocalDBServerSchema;
 }
 
 export interface LocalDBServerSchema extends LocalDBServerConfig {
-  serverId: ID;
+  serverId: string;
 }

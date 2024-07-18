@@ -1,36 +1,9 @@
-import { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
+import type { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
 
-import { getCommandIdentifierIndex, isAllowedFeature } from '../../utils/helpers';
+import { getCommandIdentifierIndex, isFeatureAllowed } from '../../utils/helpers';
+import { commands } from './commands';
 
-import type { Interaction, InteractionName } from './types';
-
-import { diceRoll } from './diceRoll';
-import { avatar } from './avatar';
-import { user } from './user';
-import { clearChat } from './clearChat';
-import { serverInfo } from './serverInfo';
-import { slowMode } from './slowMode';
-import { unlockChannel } from './unlockChannel';
-import { lockChannel } from './lockChannel';
-import { serverConfig } from './serverConfig';
-import { modHelp } from './modHelp';
-import { warn } from './warn';
-import { serverStatus } from './serverStatus';
-
-export const commands = [
-  { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
-  { name: 'avatar', type: 'avatar', interaction: avatar },
-  { name: 'user', type: 'user', interaction: user },
-  { name: 'clear', type: 'clearChat', interaction: clearChat },
-  { name: 'server-info', type: 'serverInfo', interaction: serverInfo },
-  { name: 'slow-mode', type: 'slowMode', interaction: slowMode },
-  { name: 'unlock-channel', type: 'unlockChannel', interaction: unlockChannel },
-  { name: 'lock-channel', type: 'lockChannel', interaction: lockChannel },
-  { name: 'server-config', type: 'serverConfig', interaction: serverConfig },
-  { name: 'mod-help', type: 'modHelp', interaction: modHelp },
-  { name: 'warn', type: 'warn', interaction: warn },
-  { name: 'server-status', type: 'serverStatus', interaction: serverStatus },
-] as const;
+import type { Interaction, InteractionCreate, InteractionName } from './types';
 
 export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
   const interactionName = interaction.commandName as InteractionName;
@@ -39,13 +12,31 @@ export const commandsHandler = (interaction: ChatInputCommandInteraction) => {
   command.name === interactionName && createCommandFn(interaction, command);
 };
 
-export const commandsCreate = (commandsCreator: GuildApplicationCommandManager) =>
-  Object.values(commands).forEach((command) => createCommand(commandsCreator, command));
+const createCommandFn = async (interaction: ChatInputCommandInteraction, command: Interaction[number]) => {
+  if (!(await isFeatureAllowed(command.type, interaction.guild.id)))
+    return interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
 
-const createCommandFn = async (interaction: ChatInputCommandInteraction, command: Interaction[number]) =>
-  (await isAllowedFeature(command.type, interaction.guild.id))
-    ? command.interaction(interaction)
-    : interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
+  command.interaction(interaction);
+};
 
-const createCommand = async (commandsCreator: GuildApplicationCommandManager, command: Interaction[number]) =>
-  commandsCreator.create(command.interaction.create);
+export const createAllCommands = (commandManager: GuildApplicationCommandManager) =>
+  Object.values(commands).forEach(async (command) => {
+    if (!(await isFeatureAllowed(command.type, commandManager.guild.id))) return;
+
+    commandManager.create(command.interaction.create);
+  });
+
+export const createCommand = (commandManager: GuildApplicationCommandManager, interactionCreate: InteractionCreate) =>
+  commandManager.create(interactionCreate);
+
+export const deleteCommand = async (
+  commandManager: GuildApplicationCommandManager,
+  interactionCreate: InteractionCreate
+) => {
+  const commandToDelete = (await commandManager.fetch()).find((command) => command.name === interactionCreate.name);
+  if (!commandToDelete) return;
+
+  commandManager.delete(commandToDelete);
+};
+
+export * from './commands';

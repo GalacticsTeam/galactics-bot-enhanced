@@ -1,14 +1,14 @@
 import { ChannelType, GuildMember, channelMention, userMention } from 'discord.js';
 import Jimp from 'jimp';
 
-import { getServerItem } from '../db';
-import { isAllowedFeature } from '../utils/helpers';
-import { getDBItem, setDBItem } from '../localdb';
-
-import type { ID } from '../types';
+import { getServerSchemaItem } from '../db';
+import { isFeatureAllowed } from '../utils/helpers';
+import { getLocalDBItem, setLocalDBItem } from '../localdb';
 
 export const onWelcome = async (member: GuildMember) => {
-  const roles = await getServerItem(member.guild.id, 'roles');
+  if (!(await isFeatureAllowed('welcome', member.guild.id))) return;
+
+  const roles = await getServerSchemaItem(member.guild.id, 'roles');
   if (!roles.bot) return;
   if (member.user.bot) return member.roles.add(roles.bot);
 
@@ -17,7 +17,7 @@ export const onWelcome = async (member: GuildMember) => {
 
   if (await IsRepeatedJoining(member.guild.id, member.id)) return;
 
-  const channels = await getServerItem(member.guild.id, 'channels');
+  const channels = await getServerSchemaItem(member.guild.id, 'channels');
   if (!channels.welcome) return;
 
   const welcomeChannel = member.guild.channels.cache.get(channels.welcome);
@@ -44,13 +44,13 @@ const addUserAvatar = async (welcomeImage: Jimp, member: GuildMember) => {
   welcomeImage.composite(userImage, 222, 36);
 };
 
-const IsRepeatedJoining = async (serverId: ID, userId: ID) => {
-  if (!(await isAllowedFeature('repeatedWelcomes', serverId))) return false;
+const IsRepeatedJoining = async (serverId: string, userId: string) => {
+  if (!(await isFeatureAllowed('repeatedWelcomes', serverId))) return false;
 
-  const lastJoinedIds = await getDBItem(serverId, 'lastJoinedIds');
+  const lastJoinedIds = await getLocalDBItem(serverId, 'lastJoinedIds');
   if (lastJoinedIds.includes(userId)) return true;
 
-  setDBItem(serverId, 'lastJoinedIds', (prevLastJoined) => {
+  setLocalDBItem(serverId, 'lastJoinedIds', (prevLastJoined) => {
     if (prevLastJoined.length < 3) return [...prevLastJoined, userId];
     return [...prevLastJoined.slice(1), userId];
   });

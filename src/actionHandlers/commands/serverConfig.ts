@@ -1,59 +1,65 @@
-import { ApplicationCommandOptionType, CacheType, ChatInputCommandInteraction } from 'discord.js';
+import { ApplicationCommandOptionType } from 'discord.js';
 
 import { defaultServerConfig } from '../../utils';
-import { getServerItem, setServerSchemaItem } from '../../db';
+import { channels, embeds, features, list, properties, roles, getUpdatedItem } from '../onServerConfig';
 
-import type { Channel, DefaultServerConfig, Embed, Feature, Property, Role } from '../../types';
 import type { Command } from './types';
+import type { ServerConfigOption } from '../onServerConfig/types';
+import type { DefaultServerConfig, Embed } from '../../types';
 
 export const serverConfig: Command = (interaction) => {
-  const serverConfigItem = interaction.options.getSubcommand();
+  const serverConfigItem = interaction.options.getSubcommand() as ServerConfigOption;
 
-  switch (serverConfigItem as keyof Omit<DefaultServerConfig, 'isMaintenance' | 'isDevServer'> | 'list') {
+  switch (serverConfigItem) {
     case 'features':
-      const updatedFeature = Object.keys(defaultServerConfig.features).filter(
+      const updatedFeature = getUpdatedItem(
+        serverConfigItem,
         (feature) => feature !== 'serverConfig' && feature.toLowerCase() === interaction.options.getString('feature')
-      )[0] as Feature;
+      );
 
       return features(updatedFeature, interaction);
 
     case 'embeds':
-      const updatedEmbedProp = Object.keys(defaultServerConfig.embeds).filter(
+      const updatedEmbedValue = interaction.options.getString('value') as DefaultServerConfig['embeds'][Embed];
+      const updatedEmbedProp = getUpdatedItem(
+        serverConfigItem,
         (embedProp) => embedProp.toLowerCase() === interaction.options.getString('name')
-      )[0] as Embed;
-      const updatedEmbedValue = interaction.options.getString('value');
+      );
 
       return embeds(updatedEmbedProp, updatedEmbedValue, interaction);
 
     case 'properties':
-      const updatedProperty = Object.keys(defaultServerConfig.properties).filter(
-        (property) => property.toLowerCase() === interaction.options.getString('name')
-      )[0] as Property;
       const updatedPropertyValue = interaction.options.getString('value');
+      const updatedProperty = getUpdatedItem(
+        serverConfigItem,
+        (prop) => prop.toLowerCase() === interaction.options.getString('name')
+      );
 
       return properties(updatedProperty, updatedPropertyValue, interaction);
 
     case 'channels':
-      const updatedChannel = Object.keys(defaultServerConfig.channels).filter(
-        (channel) => channel.toLowerCase() === interaction.options.getString('channel')
-      )[0] as Channel;
       const UpdatedChannelId = interaction.options.getChannel('value').id;
+      const updatedChannel = getUpdatedItem(
+        serverConfigItem,
+        (channel) => channel.toLowerCase() === interaction.options.getString('channel')
+      );
 
       return channels(updatedChannel, UpdatedChannelId, interaction);
 
     case 'roles':
-      const updatedRole = Object.keys(defaultServerConfig.roles).filter(
-        (role) => role.toLowerCase() === interaction.options.getString('role')
-      )[0] as Role;
       const UpdatedRoleId = interaction.options.getRole('value').id;
+      const updatedRole = getUpdatedItem(
+        serverConfigItem,
+        (role) => role.toLowerCase() === interaction.options.getString('role')
+      );
 
       return roles(updatedRole, UpdatedRoleId, interaction);
 
     case 'list':
-      const itemName = Object.keys(defaultServerConfig).filter(
-        (serverConfigItem) =>
-          interaction.options.getString('configuration').toLowerCase() === serverConfigItem.toLowerCase()
-      )[0] as keyof DefaultServerConfig;
+      const itemName = getUpdatedItem(
+        serverConfigItem,
+        (item) => item.toLowerCase() === interaction.options.getString('configuration')
+      );
 
       return list(itemName, interaction);
   }
@@ -190,84 +196,4 @@ serverConfig.create = {
       ],
     },
   ],
-};
-
-const features = (updatedFeature: Feature, interaction: ChatInputCommandInteraction<CacheType>) =>
-  setServerSchemaItem(interaction.guild.id, 'features', (prevFeatures) => ({
-    ...prevFeatures,
-    [updatedFeature]: !prevFeatures[updatedFeature],
-  })).then((newFeatures) =>
-    interaction.reply({
-      content: `Feature ${updatedFeature} is now ${newFeatures[updatedFeature] ? 'enabled' : 'disabled'}`,
-      ephemeral: true,
-    })
-  );
-
-const embeds = (updatedEmbedProp: Embed, newValue: any, interaction: ChatInputCommandInteraction<CacheType>) => {
-  if (updatedEmbedProp === 'color' && !/^#?[a-f0-9]{6}$/.test(newValue as string))
-    return interaction.reply({
-      content: 'Color must be a 6 character hexadecimal',
-    });
-
-  setServerSchemaItem(interaction.guild.id, 'embeds', (prevEmbed) => ({
-    ...prevEmbed,
-    [updatedEmbedProp]: newValue,
-  })).then((newEmbedProps) =>
-    interaction.reply({
-      content: `Embed prop ${updatedEmbedProp} is now ${newEmbedProps[updatedEmbedProp]}`,
-      ephemeral: true,
-    })
-  );
-};
-
-const properties = (updatedProperty: Property, newValue: any, interaction: ChatInputCommandInteraction<CacheType>) => {
-  if (updatedProperty === 'autoBanTrigger' && !+newValue)
-    return interaction.reply({ content: 'Value must be a number', ephemeral: true });
-
-  setServerSchemaItem(interaction.guild.id, 'properties', (prevProperties) => ({
-    ...prevProperties,
-    [updatedProperty]: newValue,
-  })).then((newProperties) =>
-    interaction.reply({
-      content: `Property ${updatedProperty} is set to ${newProperties[updatedProperty]}`,
-      ephemeral: true,
-    })
-  );
-};
-
-const channels = (updatedChannel: Channel, newValue: string, interaction: ChatInputCommandInteraction<CacheType>) =>
-  setServerSchemaItem(interaction.guild.id, 'channels', (prevChannels) => ({
-    ...prevChannels,
-    [updatedChannel]: newValue,
-  })).then((newChannels) =>
-    interaction.reply({
-      content: `Channel ${updatedChannel} is set to <#${newChannels[updatedChannel]}>`,
-      ephemeral: true,
-    })
-  );
-
-const roles = (updatedRole: Role, newValue: string, interaction: ChatInputCommandInteraction<CacheType>) =>
-  setServerSchemaItem(interaction.guild.id, 'roles', (prevRoles) => ({
-    ...prevRoles,
-    [updatedRole]: newValue,
-  })).then((newRoles) =>
-    interaction.reply({
-      content: `Role ${updatedRole} is set to <@&${newRoles[updatedRole]}>`,
-      ephemeral: true,
-    })
-  );
-
-const list = (itemName: keyof DefaultServerConfig, interaction: ChatInputCommandInteraction<CacheType>) => {
-  getServerItem(interaction.guild.id, itemName).then((item) =>
-    interaction.reply({
-      content: Array.isArray(item)
-        ? item.map((itemData, index) => index + 1 + '. ' + itemData).join('\n')
-        : typeof item === 'object'
-          ? Object.keys(item)
-              .map((itemData) => itemData + ': ' + (item as any)[itemData])
-              .join('\n')
-          : item + '',
-      ephemeral: true,
-    })
-  );
 };
