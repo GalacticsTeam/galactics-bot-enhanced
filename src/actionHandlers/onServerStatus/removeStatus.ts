@@ -9,7 +9,8 @@ import {
 } from 'discord.js';
 
 import { setServerSchemaItem } from '../../db';
-import { getDBItem, setDBItem } from '../../localdb';
+import { getLocalDBItem, setLocalDBItem } from '../../localdb';
+import { getProperty } from '../../utils/helpers';
 
 import type { Status } from './types';
 
@@ -29,7 +30,7 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<b
     componentType: ComponentType.StringSelect,
   });
   const statusId = statusToRemove.values[0];
-  const statusWithChannel = await getDBItem(statusToRemove.guild.id, 'statusChannels');
+  const statusWithChannel = await getLocalDBItem(statusToRemove.guild.id, 'statusChannels');
 
   await setServerSchemaItem(statusToRemove.guild.id, 'properties', (prevProperties) => ({
     ...prevProperties,
@@ -40,13 +41,26 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<b
         statusWithChannel.find((status) => status.id === statusId).channelId
       );
 
-      statusChannel.delete();
+      statusChannel.delete().catch(console.log);
     })
     .then(async () => {
-      await setDBItem(statusToRemove.guild.id, 'statusChannels', (prevStatuses) =>
+      await setLocalDBItem(statusToRemove.guild.id, 'statusChannels', (prevStatuses) =>
         prevStatuses.filter((status) => status.id !== statusId)
       );
 
       statusToRemove.reply({ content: `Status has been removed.`, ephemeral: true });
     });
+};
+
+export const removeStatus = async (interaction: ChatInputCommandInteraction<CacheType>) => {
+  const statuses = await getProperty(interaction.guild.id, 'statuses');
+  if (!statuses.length) return interaction.reply({ content: 'No statuses to remove.', ephemeral: true });
+
+  interaction
+    .reply({
+      content: "Please Choose the status you'd like to remove.",
+      components: [removeStatusMenu(statuses)],
+      ephemeral: true,
+    })
+    .then((res) => removeStatusMenuHandler(res));
 };

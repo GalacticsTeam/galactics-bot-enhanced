@@ -1,26 +1,25 @@
 import { ApplicationCommandOptionType, EmbedBuilder, TextChannel } from 'discord.js';
 
-import { getServerItem } from '../../db';
+import { getChannel, getEmbed, getProperty } from '../../utils/helpers';
 
 import type { Command } from './types';
 
 export const modHelp: Command = async (interaction) => {
   const { guild, user, channel, options } = interaction;
 
-  const serverChannels = await getServerItem(guild.id, 'channels');
-  if (!serverChannels.modLogs)
-    return interaction.reply({ content: 'Mod logs are disabled on this server.', ephemeral: true });
+  const modLogsChannel = await getChannel(guild, 'modLogs');
+  if (!modLogsChannel) return interaction.reply({ content: 'Invalid ModLogs', ephemeral: true });
 
-  const serverProperties = await getServerItem(guild.id, 'properties');
-  const serverEmbeds = await getServerItem(guild.id, 'embeds');
+  const helpMessage = await getProperty(guild.id, 'modHelpMessage');
+  const embedColor = await getEmbed(guild.id, 'color');
 
   const problem = options.getString('problem');
-  const modLog = guild.channels.cache.get(serverChannels.modLogs) as TextChannel;
+  const modLogChannel = guild.channels.cache.get(modLogsChannel.id) as TextChannel;
 
   const fields = [{ name: 'Channel', value: `${channel}` }];
   if (problem) fields.unshift({ name: 'Problem', value: problem });
 
-  modLog
+  modLogChannel
     .send({
       content: 'Help needed!',
       embeds: [
@@ -29,12 +28,12 @@ export const modHelp: Command = async (interaction) => {
           .setFooter({ text: guild.name, iconURL: guild.iconURL({ extension: 'png', size: 4096 }) })
           .setTimestamp(new Date())
           .addFields(...fields)
-          .setColor(serverEmbeds.color),
+          .setColor(embedColor),
       ],
     })
     .then(() => {
       interaction.reply({
-        content: serverProperties.modHelpMessage,
+        content: helpMessage,
         ephemeral: true,
       });
     });

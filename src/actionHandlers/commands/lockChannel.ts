@@ -1,19 +1,19 @@
-import { PermissionFlagsBits, TextChannel } from 'discord.js';
+import { ChannelType, PermissionFlagsBits } from 'discord.js';
 
-import { Command } from './types';
-import { getServerItem } from '../../db';
+import { getRole } from '../../utils/helpers';
 
-const roles = {
-  member: '1086033687109455989',
-};
+import type { Command } from './types';
 
 export const lockChannel: Command = async (interaction) => {
-  const roles = await getServerItem(interaction.guild.id, 'roles');
-  if (!roles.member) return interaction.reply({ content: 'No member role set', ephemeral: true });
+  const { guild, channel } = interaction;
 
-  const channel = interaction.channel as TextChannel;
+  const memberRole = await getRole(guild, 'member');
+
+  if (!memberRole) return interaction.reply({ content: 'Invalid Role', ephemeral: true });
+  if (channel.type !== ChannelType.GuildText) return;
+
   channel.permissionOverwrites
-    .set([{ id: roles.member, deny: PermissionFlagsBits.SendMessages }])
+    .set([{ id: memberRole.id, deny: PermissionFlagsBits.SendMessages }])
     .then(() => interaction.reply({ content: 'Channel locked', ephemeral: true }));
 };
 

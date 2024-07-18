@@ -1,7 +1,7 @@
 import { Client, Partials } from 'discord.js';
 import { configDotenv } from 'dotenv';
 
-import { crashHandling, isDevMode } from './utils';
+import { onCrash, isDevMode } from './utils';
 import { invokeActions } from './actions';
 
 // =======================================================
@@ -14,7 +14,7 @@ const client = new Client({
 // =======================================================
 // Configurations
 configDotenv();
-crashHandling();
+onCrash();
 
 // =======================================================
 // Actions Invoker

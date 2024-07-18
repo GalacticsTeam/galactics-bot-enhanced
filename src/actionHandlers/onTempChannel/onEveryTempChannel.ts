@@ -1,23 +1,27 @@
-import { CategoryChannel } from 'discord.js';
+import { ChannelType } from 'discord.js';
 
-import { getServerItem } from '../../db';
-import { setDBItem } from '../../localdb';
+import { getServerSchemaItem } from '../../db';
+import { setLocalDBItem } from '../../localdb';
+import { createChannel } from './helpers';
+import { isFeatureAllowed } from '../../utils/helpers';
 
 import type { IntervalFn } from '../../actions/types';
-import { createChannel } from './helpers';
 
 export const onEveryTempChannel: IntervalFn = (client) => {
   client.guilds.cache.forEach(async (server) => {
-    const channels = await getServerItem(server.id, 'channels');
-    const categoryId = channels.tempChannelCategory;
-    const commandsId = channels.tempChannelCommands;
-    const generatorId = channels.tempChannelGenerator;
+    if (!(await isFeatureAllowed('tempChannels', server.id))) return;
 
-    const category = server.channels.cache.get(categoryId) as CategoryChannel;
+    const {
+      tempChannelCategory: categoryId,
+      tempChannelGenerator: generatorId,
+      tempChannelCommands: commandsId,
+    } = await getServerSchemaItem(server.id, 'channels');
+
+    const category = server.channels.cache.get(categoryId);
     const commandsChannel = server.channels.cache.get(commandsId);
     const generatorChannel = server.channels.cache.get(generatorId);
 
-    if (!category || !commandsChannel || !generatorChannel) return;
+    if (category?.type !== ChannelType.GuildCategory || !commandsChannel || !generatorChannel) return;
 
     category.children.cache.forEach(async (channel) => {
       if (channel.id === generatorId && channel.members.size > 0) {
@@ -29,9 +33,9 @@ export const onEveryTempChannel: IntervalFn = (client) => {
       if (channel.id === commandsId || channel.id === generatorId) return;
 
       if (channel.members.size === 0) {
-        await channel.delete().catch();
+        await channel.delete().catch(console.log);
 
-        await setDBItem(server.id, 'tempChannels', (prevTempChannels) =>
+        await setLocalDBItem(server.id, 'tempChannels', (prevTempChannels) =>
           prevTempChannels.filter((tempChannel) => tempChannel.channelId !== channel.id)
         );
       }

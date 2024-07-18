@@ -1,52 +1,50 @@
 import { Schema, model } from 'mongoose';
 
-import { updateSchemaItem } from './';
+import { setDefaultSchemaItem } from './';
 import { defaultUserConfig } from '../utils';
 
-import type { DefaultUserConfig, ID } from '../types';
+import type { DefaultUserConfig } from '../types';
 import type { ReturnedSchema } from './types';
 
-export interface User extends DefaultUserConfig {
+interface DefaultUserSchema extends DefaultUserConfig {
   serverId: string;
   userId: string;
 }
 
-export const UserSchema = model<User>(
+export const UserSchema = model<DefaultUserSchema>(
   'user',
-  new Schema<User>({
+  new Schema<DefaultUserSchema>({
     serverId: String,
     userId: String,
     warns: { number: Number, reasons: [String] },
   })
 );
 
-type ReturnedUserSchema = ReturnedSchema<User>;
-
-export const getUserSchema = async (serverId: ID, userId: ID): Promise<ReturnedUserSchema> =>
+export const getUserSchema = async (serverId: string, userId: string): Promise<ReturnedSchema<DefaultUserSchema>> =>
   (await UserSchema.findOne({ serverId, userId })) ??
   (await new UserSchema({ serverId, userId, ...defaultUserConfig }).save());
 
-export const getUserItem = async <T extends keyof DefaultUserConfig>(
-  serverId: ID,
-  userId: ID,
+export const getUserSchemaItem = async <T extends keyof DefaultUserConfig>(
+  serverId: string,
+  userId: string,
   itemName: T
 ): Promise<DefaultUserConfig[T]> => {
   const user = await getUserSchema(serverId, userId);
 
-  updateSchemaItem(user, itemName);
+  setDefaultSchemaItem(user, itemName);
 
   return user[itemName];
 };
 
 export const setUserSchemaItem = async <T extends keyof DefaultUserConfig>(
-  serverId: ID,
-  userId: ID,
+  serverId: string,
+  userId: string,
   itemName: T,
   setCallBack: (previousState: DefaultUserConfig[T]) => DefaultUserConfig[T]
 ) => {
   const user = await getUserSchema(serverId, userId);
 
-  updateSchemaItem(user, itemName);
+  setDefaultSchemaItem(user, itemName);
 
   user.$set(itemName, setCallBack(user[itemName]));
 

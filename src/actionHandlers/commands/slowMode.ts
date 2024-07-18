@@ -5,15 +5,14 @@ import type { Command } from './types';
 export const slowMode: Command = (interaction) => {
   const { options, channel } = interaction;
 
-  const duration = options.getNumber('duration');
+  const duration = options.getInteger('duration');
 
-  channel.setRateLimitPerUser(duration, 'Change slow mode');
-
-  // remove slow-mode from channel
-  if (duration === 0) return interaction.reply({ content: `Slow mode has been removed`, ephemeral: true });
-
-  // adding slow-mode to the channel
-  interaction.reply({ content: `Channel slow mode is set to ${duration}s`, ephemeral: true });
+  channel.setRateLimitPerUser(duration, 'Change slow mode').then(() =>
+    interaction.reply({
+      content: duration ? `Channel slow mode is set to ${duration}s` : `Slow mode has been removed`,
+      ephemeral: true,
+    })
+  );
 };
 
 slowMode.create = {
@@ -23,7 +22,7 @@ slowMode.create = {
     {
       name: 'duration',
       description: 'Slow mode duration in seconds',
-      type: ApplicationCommandOptionType.Number,
+      type: ApplicationCommandOptionType.Integer,
       required: true,
     },
   ],

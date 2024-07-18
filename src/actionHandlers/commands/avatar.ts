@@ -1,27 +1,27 @@
 import { ApplicationCommandOptionType, EmbedBuilder, Guild, User } from 'discord.js';
 
+import { getEmbed } from '../../utils/helpers';
+
 import type { Command } from './types';
-import { getServerItem } from '../../db';
 
 export const avatar: Command = async (interaction) => {
   const { user, guild, options } = interaction;
 
-  const server = options.getString('server') || null;
-  const source = options.getUser('user') || (server ? guild : null) || user;
+  const isServer = options.getSubcommand() === 'server';
+  const source = isServer ? guild : options.getUser('member') ?? user;
 
-  const embedProps = await getServerItem(guild.id, 'embeds');
+  const color = await getEmbed(guild.id, 'color');
 
-  return interaction.reply({
+  const name = isServer ? (source as Guild).name : (source as User).displayName;
+  const avatarURL = isServer ? (source as Guild).iconURL({ size: 2048 }) : (source as User).avatarURL({ size: 2048 });
+
+  interaction.reply({
     embeds: [
       new EmbedBuilder()
-        .setColor(embedProps.color)
-        .setTitle(!server ? (source as User).username : (source as Guild).name)
-        .setDescription(
-          `[Avatar Link](${
-            !server ? (source as User).avatarURL({ size: 2048 }) : (source as Guild).iconURL({ size: 2048 })
-          })`
-        )
-        .setImage(!server ? (source as User).avatarURL({ size: 2048 }) : (source as Guild).iconURL({ size: 2048 })),
+        .setColor(color)
+        .setTitle(name)
+        .setDescription(`[Avatar Link](${avatarURL})`)
+        .setImage(avatarURL),
     ],
     ephemeral: true,
   });
@@ -29,25 +29,20 @@ export const avatar: Command = async (interaction) => {
 
 avatar.create = {
   name: 'avatar',
-  description: "Get's your avatar",
+  description: 'Get avatar of a user or this server',
   options: [
     {
       name: 'user',
-      description: "Get's user's avatar",
+      description: 'Get your avatar',
       required: false,
-      type: ApplicationCommandOptionType.User,
+      type: ApplicationCommandOptionType.Subcommand,
+      options: [{ name: 'member', description: "Get member's avatar", type: ApplicationCommandOptionType.User }],
     },
     {
       name: 'server',
-      description: "Get's this server's avatar",
+      description: "Get this server's avatar",
       required: false,
-      type: ApplicationCommandOptionType.String,
-      choices: [
-        {
-          name: 'server',
-          value: 'server',
-        },
-      ],
+      type: ApplicationCommandOptionType.Subcommand,
     },
   ],
 };

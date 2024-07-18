@@ -1,15 +1,6 @@
-import { Guild } from 'discord.js';
+import type { Guild } from 'discord.js';
 
-import { setServerSchemaItem } from '../../db';
-
-import type { ID } from '../../types';
 import type { Status } from './types';
-
-export const addSchemaStatus = (serverId: ID, status: Status) =>
-  setServerSchemaItem(serverId, 'properties', (prevProperties) => ({
-    ...prevProperties,
-    statuses: [...prevProperties.statuses, status],
-  }));
 
 export const getStatusCount = async (guild: Guild, status: Status) => {
   switch (status.type) {

@@ -1,25 +1,28 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 
 import { getServerSchema, runDB } from '../db';
 import { isDevMode } from '../utils';
-import { commandsCreate, onCustomStatus } from '../actionHandlers';
+import { createAllCommands, onCustomStatus } from '../actionHandlers';
 import { getLocalDBStatus } from '../localdb';
 
 export const onReady = async <T extends boolean>(client: Client<T>) => {
-  // Database Connection
-  await runDB();
   const localDBStatus = await getLocalDBStatus();
 
-  const servers = client.guilds.cache.map((server) => server);
+  // Database Connection
+  await runDB();
+
+  // Custom Status
+  onCustomStatus(client);
+
+  const servers = client.guilds.cache.toJSON();
   servers.forEach(async (server) => {
-    await getServerSchema(server.id);
     const commands = server.commands;
 
-    // Custom Status
-    onCustomStatus(client);
+    // Server Schema
+    await getServerSchema(server.id);
 
     // Command Creation
-    commandsCreate(commands);
+    createAllCommands(commands);
   });
 
   // Bot Up Messages

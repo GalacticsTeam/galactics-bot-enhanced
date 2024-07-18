@@ -1,8 +1,10 @@
-import { Collection, Guild, GuildMember, PartialGuildMember, Role } from 'discord.js';
+import type { Collection, Guild, GuildMember, PartialGuildMember, Role } from 'discord.js';
 
-import { getDifference } from '../utils/helpers';
+import { getDifference, isFeatureAllowed } from '../utils/helpers';
 
-export const onRoleOrganize = (oldMember: GuildMember | PartialGuildMember, newMember: GuildMember) => {
+export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember, newMember: GuildMember) => {
+  if (!(await isFeatureAllowed('roleOrganize', newMember.guild.id))) return;
+
   const member = newMember ?? oldMember;
 
   const separators = getRoleSeparators(member.guild);

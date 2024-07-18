@@ -1,4 +1,4 @@
-import { Awaitable, Client, ClientEvents } from 'discord.js';
+import type { Awaitable, Client, ClientEvents } from 'discord.js';
 
 export type Action = <Event extends keyof ClientEvents>(
   Client: Client,

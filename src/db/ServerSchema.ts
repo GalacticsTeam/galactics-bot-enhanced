@@ -1,17 +1,18 @@
-import { Document, Schema, Types, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 import { channelsType, defaultServerConfig, featuresType, rolesType } from '../utils';
-import { updateSchemaItem } from './helpers';
+import { setDefaultSchemaItem } from './helpers';
 
-import type { DefaultServerConfig, ID } from '../types';
+import type { DefaultServerConfig } from '../types';
+import { ReturnedSchema } from './types';
 
-export interface Server extends DefaultServerConfig {
+interface DefaultServerSchema extends DefaultServerConfig {
   serverId: string;
 }
 
-export const ServerSchema = model<Server>(
+export const ServerSchema = model<DefaultServerSchema>(
   'server',
-  new Schema<Server>({
+  new Schema<DefaultServerSchema>({
     serverId: String,
     features: featuresType,
     isMaintenance: Boolean,
@@ -23,32 +24,30 @@ export const ServerSchema = model<Server>(
   })
 );
 
-type ReturnedServerSchema = Document<unknown, {}, Server> & Server & { _id: Types.ObjectId };
-
-export const getServerSchema = async (serverId: ID): Promise<ReturnedServerSchema> =>
+export const getServerSchema = async (serverId: string): Promise<ReturnedSchema<DefaultServerSchema>> =>
   (await ServerSchema.findOne({ serverId })) ?? (await new ServerSchema({ serverId, ...defaultServerConfig }).save());
 
-export const setNewServerSchema = (serverInfo: Server) => new ServerSchema(serverInfo).save();
+export const createServerSchema = (serverInfo: DefaultServerSchema) => new ServerSchema(serverInfo).save();
 
-export const getServerItem = async <T extends keyof DefaultServerConfig>(
-  serverId: ID,
+export const getServerSchemaItem = async <T extends keyof DefaultServerConfig>(
+  serverId: string,
   itemName: T
 ): Promise<DefaultServerConfig[T]> => {
   const server = await getServerSchema(serverId);
 
-  updateSchemaItem(server, itemName);
+  setDefaultSchemaItem(server, itemName);
 
   return server[itemName];
 };
 
 export const setServerSchemaItem = async <T extends keyof DefaultServerConfig>(
-  serverId: ID,
+  serverId: string,
   itemName: T,
   setCallBack: (previousState: DefaultServerConfig[T]) => DefaultServerConfig[T]
 ) => {
   const server = await getServerSchema(serverId);
 
-  updateSchemaItem(server, itemName);
+  setDefaultSchemaItem(server, itemName);
 
   server.$set(itemName, setCallBack(server[itemName]));
 

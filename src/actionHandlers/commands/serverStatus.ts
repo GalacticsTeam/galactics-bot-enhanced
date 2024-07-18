@@ -1,9 +1,6 @@
-import { ApplicationCommandOptionType, CacheType, ChatInputCommandInteraction } from 'discord.js';
-import { v4 as id } from 'uuid';
+import { ApplicationCommandOptionType } from 'discord.js';
 
-import { addSchemaStatus } from '../onServerStatus/helpers';
-import { getServerItem } from '../../db';
-import { removeStatusMenu, removeStatusMenuHandler } from '../onServerStatus/removeStatus';
+import { addStatus, removeStatus } from '../onServerStatus';
 
 import type { Command } from './types';
 import type { Status } from '../onServerStatus/types';
@@ -27,7 +24,7 @@ export const serverStatus: Command = (interaction) => {
 
 serverStatus.create = {
   name: 'server-status',
-  description: "Update server's status..",
+  description: "Update server's status",
   options: [
     {
       name: 'add',
@@ -80,35 +77,4 @@ serverStatus.create = {
       type: ApplicationCommandOptionType.Subcommand,
     },
   ],
-};
-
-const addStatus = async (title: string, type: Status['type'], interaction: ChatInputCommandInteraction<CacheType>) => {
-  switch (type) {
-    case 'role':
-      const role = interaction.options.getRole('role');
-
-      return addSchemaStatus(interaction.guild.id, { title, type, value: role.id, id: id() }).then(() => {
-        interaction.reply({ content: `Status "${title}" added successfully.`, ephemeral: true });
-      });
-
-    case 'youtube':
-      const channel = interaction.options.getString('channel');
-
-      return addSchemaStatus(interaction.guild.id, { title, type, value: channel, id: id() }).then(() => {
-        interaction.reply({ content: `Status "${title}" added successfully.`, ephemeral: true });
-      });
-  }
-};
-
-const removeStatus = async (interaction: ChatInputCommandInteraction<CacheType>) => {
-  const statuses = (await getServerItem(interaction.guild.id, 'properties')).statuses;
-  if (!statuses.length) return interaction.reply({ content: 'No statuses to remove.', ephemeral: true });
-
-  interaction
-    .reply({
-      content: "Please Choose the status you'd like to remove.",
-      components: [removeStatusMenu(statuses)],
-      ephemeral: true,
-    })
-    .then((res) => removeStatusMenuHandler(res));
 };

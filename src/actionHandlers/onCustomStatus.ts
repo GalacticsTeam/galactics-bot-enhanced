@@ -1,15 +1,18 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 
 import { customStatus } from '../utils';
+import { isFeatureAllowed } from '../utils/helpers';
 
-export const onCustomStatus = (client: Client) => {
+export const onCustomStatus = async (client: Client) => {
+  if (!(await isFeatureAllowed('customStatus', client.user.id))) return;
+
   let statusIndex = 0;
 
   setInterval(() => {
     if (statusIndex === customStatus.length) statusIndex = 0;
 
-    const status = customStatus[statusIndex];
-    client.user.setActivity(status.name, { type: status.type });
+    const { name, type } = customStatus[statusIndex];
+    client.user.setActivity(name, { type });
 
     statusIndex++;
   }, 5000);
