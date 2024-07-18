@@ -31,7 +31,7 @@ export const onServerStatus: IntervalFn = (client) => {
     statusesWithChannels.forEach(async (status) => {
       const statusChannel = server.channels.cache.get(status.channelId);
       const statusCount = await getStatusCount(server, status);
-      if (!statusChannel || !statusCount) return statusesWithoutChannels.push(status);
+      if (!statusChannel || (!statusCount && statusCount !== 0)) return statusesWithoutChannels.push(status);
 
       await statusChannel.setName(`｜${status.title}: ${statusCount}`);
     });

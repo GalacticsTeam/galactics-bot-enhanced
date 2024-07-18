@@ -16,7 +16,7 @@ export const addStatus = async (
   const value = role?.id ?? channel;
 
   addSchemaStatus(interaction.guild.id, { title, type, value, id: id() }).then(() => {
-    interaction.reply({ content: `Status "${title}" added successfully.`, ephemeral: true });
+    interaction.reply({ content: `Status "${title}" is being added.`, ephemeral: true });
   });
 };
 
