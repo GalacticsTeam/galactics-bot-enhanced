@@ -30,8 +30,8 @@ export const onMaintenance = async (guild: Guild) => {
 
     case false:
       members.forEach(async (member) => {
-        const memberRoles = member.roles.cache.filter((role) =>
-          member.user.bot ? role.name !== member.user.displayName : role
+        const memberRoles = member.roles.cache.filter(
+          (role) => role.tags.botId !== member.user.id && !role.tags.premiumSubscriberRole
         );
 
         await member.roles.remove(memberRoles);
