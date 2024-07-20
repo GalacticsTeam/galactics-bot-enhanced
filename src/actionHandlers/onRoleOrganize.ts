@@ -38,7 +38,7 @@ const getRoleSeparators = (guild: Guild) =>
 
 const getIsSeparator = (role: Role) => role.name.startsWith('⠀⠀') && role.name.endsWith('⠀⠀');
 
-const getGreaterSeparators = (separators: Collection<string, Role>, role: Role) =>
+export const getGreaterSeparators = (separators: Collection<string, Role>, role: Role) =>
   separators
     .filter((separator) => separator.position > role.position)
     .sort((a, b) => a.position - b.position)
@@ -48,7 +48,12 @@ const hasSiblingRoles = (memberRoles: Role[], role: Role, separators: Collection
   const upperSeparator = separators.find((separator) => separator.position > role.position);
   const lowerSeparator = separators.reverse().find((separator) => separator.position < role.position);
 
-  return memberRoles.some(
-    (memberRole) => memberRole.position < upperSeparator.position && memberRole.position > lowerSeparator.position
+  return (
+    memberRoles.filter((memberRole) => {
+      if (!upperSeparator && lowerSeparator) return memberRole.position > lowerSeparator.position;
+      if (upperSeparator && !lowerSeparator) return memberRole.position < upperSeparator.position;
+
+      return memberRole.position > lowerSeparator.position && memberRole.position < upperSeparator.position;
+    }).length > 1
   );
 };
