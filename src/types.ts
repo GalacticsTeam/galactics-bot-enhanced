@@ -23,7 +23,7 @@ export type Channel =
   | 'tempChannelCategory'
   | 'tempChannelGenerator'
   | 'tempChannelCommands';
-export type Role = 'bot' | 'member';
+export type Role = 'bot' | 'member' | 'maintenance';
 export type Embed = keyof DefaultServerConfig['embeds'];
 export type Property = keyof DefaultServerConfig['properties'];
 
