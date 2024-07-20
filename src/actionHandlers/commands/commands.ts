@@ -10,6 +10,7 @@ import { serverConfig } from './serverConfig';
 import { modHelp } from './modHelp';
 import { warn } from './warn';
 import { serverStatus } from './serverStatus';
+import { maintenance } from './maintenance';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -24,4 +25,5 @@ export const commands = [
   { name: 'mod-help', type: 'modHelp', interaction: modHelp },
   { name: 'warn', type: 'warn', interaction: warn },
   { name: 'server-status', type: 'serverStatus', interaction: serverStatus },
+  { name: 'maintenance', type: 'maintenance', interaction: maintenance },
 ] as const;

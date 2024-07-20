@@ -41,6 +41,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     serverStatus: false,
     tempChannels: false,
     roleOrganize: false,
+    maintenance: false,
   },
   channels: {
     logs: null,
@@ -55,6 +56,7 @@ export const defaultServerConfig: DefaultServerConfig = {
   roles: {
     bot: null,
     member: null,
+    maintenance: null,
   },
   isMaintenance: false,
   isDevServer: isDevMode,
