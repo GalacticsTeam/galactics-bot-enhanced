@@ -22,13 +22,14 @@ export const createChannel = async (guild: Guild, categoryId: string, member: Gu
 };
 
 export const getUserActivity = (member: GuildMember) => {
-  const activities = member.presence?.activities;
-  const isCustomStatus = activities?.[0].type === ActivityType.Custom;
-  const isCustomStatusOnly = activities?.length === 1 && isCustomStatus;
+  const activities = member.presence?.activities?.filter(
+    (activity) =>
+      activity.type !== ActivityType.Custom &&
+      // TODO: Replace with the correct enum type when it get's released
+      activity.name !== 'Hang Status'
+  );
 
-  if (!activities?.length || isCustomStatusOnly) return `｜ Chatting`;
-
-  if (activities.length > 1 && isCustomStatus) return `｜ ${activities[1].name}`;
+  if (!activities?.length) return `｜ Chatting`;
 
   return `｜ ${activities[0].name}`;
 };
