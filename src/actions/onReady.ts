@@ -27,6 +27,7 @@ export const onReady = async <T extends boolean>(client: Client<T>) => {
 
   // Bot Up Messages
   console.log(`Test Mode is set to ${isDevMode}`);
+  console.log(`Bot's Dev Name: ${process.env.DEVNAME}`);
   console.log(`Logged in as ${client.user.tag}`);
   console.log(`Serving on ${servers.length} servers`);
   console.log(`Local DB Status: ${localDBStatus}`);
