@@ -11,6 +11,7 @@ import { modHelp } from './modHelp';
 import { warn } from './warn';
 import { serverStatus } from './serverStatus';
 import { maintenance } from './maintenance';
+import { morseTranslate } from './morseTranslate';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -26,4 +27,5 @@ export const commands = [
   { name: 'warn', type: 'warn', interaction: warn },
   { name: 'server-status', type: 'serverStatus', interaction: serverStatus },
   { name: 'maintenance', type: 'maintenance', interaction: maintenance },
+  { name: 'morse-translate', type: 'morseTranslate', interaction: morseTranslate },
 ] as const;
