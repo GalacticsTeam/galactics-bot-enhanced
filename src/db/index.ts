@@ -17,7 +17,7 @@ export const runDB = async () => {
       strict: true,
       deprecationErrors: true,
     },
-    dbName: 'discordBot' + (isDevMode ? 'Dev' : ''),
+    dbName: 'discordBot' + (isDevMode ? (process.env.DEVNAME ?? 'Dev') : ''),
   })
     .then(() => console.log('Connected to MongoDB server'))
     .catch(console.log);
