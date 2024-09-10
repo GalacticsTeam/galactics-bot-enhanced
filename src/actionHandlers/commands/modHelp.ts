@@ -25,7 +25,7 @@ export const modHelp: Command = async (interaction) => {
       embeds: [
         new EmbedBuilder()
           .setAuthor({ name: user.displayName, iconURL: user.displayAvatarURL({ extension: 'png', size: 4096 }) })
-          .setFooter({ text: guild.name, iconURL: guild.iconURL({ extension: 'png', size: 4096 }) })
+          .setFooter({ text: guild.name, iconURL: guild.iconURL({ extension: 'png', size: 4096 }) ?? undefined })
           .setTimestamp(new Date())
           .addFields(...fields)
           .setColor(embedColor),

@@ -8,7 +8,7 @@ import type { Status } from '../onServerStatus/types';
 export const serverStatus: Command = (interaction) => {
   const { options } = interaction;
 
-  const action = (options.getSubcommandGroup() as 'add') || (options.getSubcommand() as 'remove');
+  const action = (options.getSubcommandGroup() as 'add' | null) || (options.getSubcommand() as 'remove');
 
   switch (action) {
     case 'add':

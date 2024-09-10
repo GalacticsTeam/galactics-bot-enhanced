@@ -8,7 +8,7 @@ import type { Command } from './types';
 export const warn: Command = async (interaction) => {
   const action = interaction.options.getSubcommand();
 
-  const user = interaction.options.getUser('user').id;
+  const user = interaction.options.getUser('user', true).id;
   const reason = interaction.options.getString('reason');
 
   const { number: count, reasons: reasons } = await getUserSchemaItem(interaction.guildId, user, 'warns');

@@ -17,9 +17,11 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
   if (userWarns.number < autoBanTrigger) return;
 
   guild.members.ban(memberId, { reason: `Auto-banned after ${userWarns.number} warns` }).then(async () => {
+    if (!logsChannelId) return;
+
     const logsChannel = guild.channels.cache.get(logsChannelId);
 
-    if (logsChannel.type !== ChannelType.GuildText) return;
+    if (logsChannel?.type !== ChannelType.GuildText) return;
 
     await setUserSchemaItem(guild.id, memberId, 'warns', (prevWarns) => ({
       number: 0,
@@ -38,10 +40,9 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
           )
           .setAuthor({
             name: guild.name,
-            iconURL: guild.iconURL({ size: 2048 }),
+            iconURL: guild.iconURL({ size: 2048 }) ?? undefined,
           })
           .setThumbnail(guild.iconURL({ size: 2048 })),
-        ,
       ],
     });
   });

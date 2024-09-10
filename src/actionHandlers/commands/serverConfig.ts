@@ -29,7 +29,7 @@ export const serverConfig: Command = (interaction) => {
       return embeds(updatedEmbedProp, updatedEmbedValue, interaction);
 
     case 'properties':
-      const updatedPropertyValue = interaction.options.getString('value');
+      const updatedPropertyValue = interaction.options.getString('value', true);
       const updatedProperty = getUpdatedItem(
         serverConfigItem,
         (prop) => prop.toLowerCase() === interaction.options.getString('name')
@@ -38,7 +38,7 @@ export const serverConfig: Command = (interaction) => {
       return properties(updatedProperty, updatedPropertyValue, interaction);
 
     case 'channels':
-      const UpdatedChannelId = interaction.options.getChannel('value').id;
+      const UpdatedChannelId = interaction.options.getChannel('value', true).id;
       const updatedChannel = getUpdatedItem(
         serverConfigItem,
         (channel) => channel.toLowerCase() === interaction.options.getString('channel')
@@ -47,7 +47,7 @@ export const serverConfig: Command = (interaction) => {
       return channels(updatedChannel, UpdatedChannelId, interaction);
 
     case 'roles':
-      const UpdatedRoleId = interaction.options.getRole('value').id;
+      const UpdatedRoleId = interaction.options.getRole('value', true).id;
       const updatedRole = getUpdatedItem(
         serverConfigItem,
         (role) => role.toLowerCase() === interaction.options.getString('role')

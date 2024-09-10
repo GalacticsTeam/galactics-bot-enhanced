@@ -21,7 +21,7 @@ export const onWelcome = async (member: GuildMember) => {
   if (!channels.welcome) return;
 
   const welcomeChannel = member.guild.channels.cache.get(channels.welcome);
-  if (welcomeChannel.type !== ChannelType.GuildText) return;
+  if (welcomeChannel?.type !== ChannelType.GuildText) return;
 
   const welcomeImage = (await Jimp.read('src/assets/welcomeImage.png')).scale(0.2);
   await addUserAvatar(welcomeImage, member);

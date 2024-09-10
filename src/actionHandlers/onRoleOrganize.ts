@@ -51,6 +51,8 @@ const hasSiblingRoles = (memberRoles: Role[], role: Role, separators: Collection
   return !!memberRoles.find((memberRole) => {
     if (upperSeparator && !lowerSeparator) return memberRole.position < upperSeparator.position;
 
-    return memberRole.position > lowerSeparator.position && memberRole.position < upperSeparator.position;
+    return (
+      memberRole.position > (lowerSeparator?.position ?? 0) && memberRole.position < (upperSeparator?.position ?? 0)
+    );
   });
 };

@@ -44,6 +44,8 @@ export const onServerStatus: IntervalFn = (client) => {
           const statusInvalidChannel = (await getLocalDBItem(server.id, 'statusChannels')).find(
             (statusCHannel) => statusCHannel.id === status.id
           );
+          if (!statusInvalidChannel) return;
+
           const channel = server.channels.cache.get(statusInvalidChannel?.channelId);
 
           if (!channel)

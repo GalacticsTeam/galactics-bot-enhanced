@@ -1,11 +1,13 @@
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, ChannelType } from 'discord.js';
 
 import type { Command } from './types';
 
 export const slowMode: Command = (interaction) => {
   const { options, channel } = interaction;
 
-  const duration = options.getInteger('duration');
+  if (channel?.type !== ChannelType.GuildText) return;
+
+  const duration = options.getInteger('duration', true);
 
   channel.setRateLimitPerUser(duration, 'Change slow mode').then(() =>
     interaction.reply({

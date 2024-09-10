@@ -7,6 +7,8 @@ import type { Command } from './types';
 export const lockChannel: Command = async (interaction) => {
   const { guild, channel } = interaction;
 
+  if (!channel) return;
+
   const memberRole = await getRole(guild, 'member');
 
   if (!memberRole) return interaction.reply({ content: 'Invalid Role', ephemeral: true });

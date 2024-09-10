@@ -11,6 +11,8 @@ export * from './helpers';
 configDotenv();
 
 export const runDB = async () => {
+  if (!process.env.MONGODB_TOKEN) return console.log('No MongoDB token provided');
+
   connect(process.env.MONGODB_TOKEN, {
     serverApi: {
       version: ServerApiVersion.v1,

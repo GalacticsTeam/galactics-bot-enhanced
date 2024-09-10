@@ -15,8 +15,8 @@ export const serverInfo: Command = async (interaction) => {
   const usersCount = serverMembers.filter((member) => !member.user.bot).length;
   const botsCount = guild.memberCount - usersCount;
 
-  const textChannelsCount = serverChannels.filter((channel) => channel.type === ChannelType.GuildText).length;
-  const voiceChannelsCount = serverChannels.filter((channel) => channel.type === ChannelType.GuildVoice).length;
+  const textChannelsCount = serverChannels.filter((channel) => channel?.type === ChannelType.GuildText).length;
+  const voiceChannelsCount = serverChannels.filter((channel) => channel?.type === ChannelType.GuildVoice).length;
 
   const owner = await guild.fetchOwner();
 
@@ -25,7 +25,7 @@ export const serverInfo: Command = async (interaction) => {
       new EmbedBuilder()
         .setAuthor({
           name: guild.name,
-          iconURL: guild.iconURL({ size: 2048 }),
+          iconURL: guild.iconURL({ size: 2048 }) ?? undefined,
         })
         .addFields(
           { name: '🆔 Server ID:', value: guild.id, inline: true },
