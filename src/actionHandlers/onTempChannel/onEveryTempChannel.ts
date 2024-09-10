@@ -17,6 +17,8 @@ export const onEveryTempChannel: IntervalFn = (client) => {
       tempChannelCommands: commandsId,
     } = await getServerSchemaItem(server.id, 'channels');
 
+    if (!categoryId || !generatorId || !commandsId) return;
+
     const category = server.channels.cache.get(categoryId);
     const commandsChannel = server.channels.cache.get(commandsId);
     const generatorChannel = server.channels.cache.get(generatorId);
@@ -28,16 +30,6 @@ export const onEveryTempChannel: IntervalFn = (client) => {
         channel.members.forEach((member) => {
           createChannel(server, categoryId, member);
         });
-      }
-
-      if (channel.id === commandsId || channel.id === generatorId) return;
-
-      if (channel.members.size === 0) {
-        await channel.delete().catch(console.log);
-
-        await setLocalDBItem(server.id, 'tempChannels', (prevTempChannels) =>
-          prevTempChannels.filter((tempChannel) => tempChannel.channelId !== channel.id)
-        );
       }
     });
   });

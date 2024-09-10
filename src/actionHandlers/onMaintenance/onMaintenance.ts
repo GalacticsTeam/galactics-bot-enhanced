@@ -8,6 +8,8 @@ export const onMaintenance = async (guild: Guild) => {
   const isMaintenance = await getServerSchemaItem(guild.id, 'isMaintenance');
   const { member, bot, maintenance } = await getServerSchemaItem(guild.id, 'roles');
 
+  if (!bot || !member || !maintenance) return;
+
   const botRole = guild.roles.cache.get(bot);
   const memberRole = guild.roles.cache.get(member);
   const maintenanceRole = guild.roles.cache.get(maintenance);
@@ -31,7 +33,7 @@ export const onMaintenance = async (guild: Guild) => {
     case false:
       members.forEach(async (member) => {
         const memberRoles = member.roles.cache.filter(
-          (role) => role.tags.botId !== member.user.id && !role.tags.premiumSubscriberRole
+          (role) => role.tags?.botId !== member.user.id && !role.tags?.premiumSubscriberRole
         );
 
         await member.roles.remove(memberRoles);

@@ -27,7 +27,7 @@ export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember
     if (getIsSeparator(role)) return;
 
     const greaterSeparators = getGreaterSeparators(separators, role);
-    if (!greaterSeparators.length) return;
+    if (!greaterSeparators.length || member.roles.cache.has(greaterSeparators[0].id)) return;
 
     member.roles.add(greaterSeparators[0]);
   });
@@ -38,7 +38,7 @@ const getRoleSeparators = (guild: Guild) =>
 
 const getIsSeparator = (role: Role) => role.name.startsWith('⠀⠀') && role.name.endsWith('⠀⠀');
 
-export const getGreaterSeparators = (separators: Collection<string, Role>, role: Role) =>
+const getGreaterSeparators = (separators: Collection<string, Role>, role: Role) =>
   separators
     .filter((separator) => separator.position > role.position)
     .sort((a, b) => a.position - b.position)
@@ -48,12 +48,11 @@ const hasSiblingRoles = (memberRoles: Role[], role: Role, separators: Collection
   const upperSeparator = separators.find((separator) => separator.position > role.position);
   const lowerSeparator = separators.reverse().find((separator) => separator.position < role.position);
 
-  return (
-    memberRoles.filter((memberRole) => {
-      if (!upperSeparator && lowerSeparator) return memberRole.position > lowerSeparator.position;
-      if (upperSeparator && !lowerSeparator) return memberRole.position < upperSeparator.position;
+  return !!memberRoles.find((memberRole) => {
+    if (upperSeparator && !lowerSeparator) return memberRole.position < upperSeparator.position;
 
-      return memberRole.position > lowerSeparator.position && memberRole.position < upperSeparator.position;
-    }).length > 1
-  );
+    return (
+      memberRole.position > (lowerSeparator?.position ?? 0) && memberRole.position < (upperSeparator?.position ?? 0)
+    );
+  });
 };

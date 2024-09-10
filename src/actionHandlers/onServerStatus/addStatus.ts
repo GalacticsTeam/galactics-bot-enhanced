@@ -1,17 +1,13 @@
-import type { CacheType, ChatInputCommandInteraction } from 'discord.js';
 import { v4 as id } from 'uuid';
 
 import { setServerSchemaItem } from '../../db';
 
 import type { Status, StatusType } from './types';
+import type { CommandInteraction } from '../commands/types';
 
-export const addStatus = async (
-  title: string,
-  type: StatusType,
-  interaction: ChatInputCommandInteraction<CacheType>
-) => {
-  const role = interaction.options.getRole('role');
-  const channel = interaction.options.getString('channel');
+export const addStatus = async (title: string, type: StatusType, interaction: CommandInteraction) => {
+  const role = interaction.options.getRole('role', true);
+  const channel = interaction.options.getString('channel', true);
 
   const value = role?.id ?? channel;
 

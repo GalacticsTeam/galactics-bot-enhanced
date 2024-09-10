@@ -1,3 +1,5 @@
+import type { Command } from './types';
+
 import { diceRoll } from './diceRoll';
 import { avatar } from './avatar';
 import { user } from './user';
@@ -28,4 +30,10 @@ export const commands = [
   { name: 'server-status', type: 'serverStatus', interaction: serverStatus },
   { name: 'maintenance', type: 'maintenance', interaction: maintenance },
   { name: 'morse-translate', type: 'morseTranslate', interaction: morseTranslate },
-] as const;
+] as const satisfies CommandLayout[];
+
+interface CommandLayout {
+  name: string;
+  type: string;
+  interaction: Command;
+}

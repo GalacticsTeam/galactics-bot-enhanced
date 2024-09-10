@@ -7,7 +7,7 @@ const urlRegex =
 
 const isGifOrSticker = (part: string) => part.includes('gif') || part.includes('sticker');
 
-export const onLinkSend = async (msg: Message) => {
+export const onLinkSend = async (msg: Message<true>) => {
   if (!(await isFeatureAllowed('blockLinks', msg.guild.id))) return;
 
   const isUrl = msg.content.split(' ').some((part) => urlRegex.test(part) && !isGifOrSticker(part));

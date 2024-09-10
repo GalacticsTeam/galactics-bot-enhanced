@@ -10,6 +10,8 @@ export const user: Command = async (interaction) => {
 
   const guildUser = guild.members.cache.get(options.getUser('user')?.id ?? user.id);
 
+  if (!guildUser) return interaction.reply({ content: 'Invalid User', ephemeral: true });
+
   const color = await getEmbed(guild.id, 'color');
   const warns = await getUserSchemaItem(guild.id, guildUser.id, 'warns');
 
@@ -27,13 +29,13 @@ export const user: Command = async (interaction) => {
           },
           {
             name: 'Joined Server:',
-            value: `**<t:${parseInt(`${guildUser.joinedTimestamp / 1000}`, 10)}:R>**`,
+            value: `**<t:${parseInt(`${guildUser.joinedTimestamp ?? 0 / 1000}`, 10)}:R>**`,
             inline: true,
           }
         )
         .setThumbnail(userAvatarUrl)
         .setColor(color)
-        .setFooter({ text: guildUser.user.tag, iconURL: userAvatarUrl }),
+        .setFooter({ text: guildUser.user.tag, iconURL: userAvatarUrl ?? undefined }),
     ],
     ephemeral: false,
   });
@@ -46,7 +48,6 @@ user.create = {
     {
       name: 'user',
       description: "get server member's data",
-      required: false,
       type: ApplicationCommandOptionType.User,
     },
   ],

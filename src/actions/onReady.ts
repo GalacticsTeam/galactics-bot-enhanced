@@ -5,7 +5,7 @@ import { isDevMode } from '../utils';
 import { createAllCommands, onCustomStatus } from '../actionHandlers';
 import { getLocalDBStatus } from '../localdb';
 
-export const onReady = async <T extends boolean>(client: Client<T>) => {
+export const onReady = async (client: Client<true>) => {
   const localDBStatus = await getLocalDBStatus();
 
   // Database Connection

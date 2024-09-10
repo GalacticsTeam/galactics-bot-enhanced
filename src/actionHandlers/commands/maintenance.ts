@@ -1,4 +1,4 @@
-import { onMaintenance } from '../onMaintenance';
+import { onMaintenance } from '../';
 
 import type { Command } from './types';
 

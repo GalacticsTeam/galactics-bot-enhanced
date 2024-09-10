@@ -7,7 +7,7 @@ import type { InteractionIdentifier, InteractionName } from '../actionHandlers/c
 import type { Channel, Feature, Role, Embed, Property } from '../types';
 
 export const isFeatureAllowed = <T extends Feature>(feature: T, serverId: string) =>
-  getServerSchemaItem(serverId as string, 'features').then((features) => features[feature]);
+  getServerSchemaItem(serverId, 'features').then((features) => features[feature]);
 
 export const getCommandIdentifierIndex = (interactionName: InteractionName): number =>
   commands.findIndex((command) => command.name === interactionName);
@@ -18,10 +18,10 @@ export const getCommandTypeIndex = (interactionType: InteractionIdentifier): num
 export const getDifference = <T extends any[]>(arr1: T, arr2: T): T => arr1.filter((x) => !arr2.includes(x)) as T;
 
 export const getChannel = async <T extends Channel>(guild: Guild, channel: T) =>
-  guild.channels.cache.get((await getServerSchemaItem(guild.id, 'channels'))[channel]);
+  guild.channels.cache.get((await getServerSchemaItem(guild.id, 'channels'))[channel]!);
 
 export const getRole = async <T extends Role>(guild: Guild, role: T) =>
-  guild.roles.cache.get((await getServerSchemaItem(guild.id, 'roles'))[role]);
+  guild.roles.cache.get((await getServerSchemaItem(guild.id, 'roles'))[role]!);
 
 export const getEmbed = async <T extends Embed>(serverId: string, embed: T) =>
   (await getServerSchemaItem(serverId, 'embeds'))[embed];
