@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
 import { onMorseTranslate } from '../';
+import { formatMorseCode } from '../onMorseTranslate/helpers';
 
 import type { Command } from './types';
 
@@ -14,7 +15,7 @@ export const morseTranslate: Command = (interaction) => {
   if (!translatedText)
     return interaction.reply({ content: 'Invalid Text (alphabetical/numbers only)', ephemeral: true });
 
-  interaction.reply({ content: translatedText, ephemeral: true });
+  interaction.reply({ content: formatMorseCode(translatedText), ephemeral: true });
 };
 
 morseTranslate.create = {

@@ -16,3 +16,6 @@ export const filterAllowedMorseChars = (text: string) => {
 const morseCodeRegex =
   /^[.-]{1,5}(?:[ \t]+[.-]{1,5})*(?:[ \t]+[.-]{1,5}(?:[ \t]+[.-]{1,5})*)*(?:[ \t]*\/[ \t]*[.-]{1,5}(?:[ \t]+[.-]{1,5})*)*$/;
 export const checkIfMorseCode = (text: string) => morseCodeRegex.test(text);
+
+export const formatMorseCode = (morseCode: string) =>
+  morseCode.startsWith('- ') ? `\\- ${morseCode.slice(2)}` : morseCode;
