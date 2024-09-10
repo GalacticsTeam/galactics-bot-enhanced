@@ -1,18 +1,18 @@
-import type { ChatInputCommandInteraction, GuildApplicationCommandManager } from 'discord.js';
+import type { GuildApplicationCommandManager } from 'discord.js';
 
 import { getCommandIdentifierIndex, isFeatureAllowed } from '../../utils/helpers';
 import { commands } from './commands';
 
-import type { Interaction, InteractionCreate, InteractionName } from './types';
+import type { CommandInteraction, Interaction, InteractionCreate, InteractionName } from './types';
 
-export const commandsHandler = (interaction: ChatInputCommandInteraction<'cached'>) => {
+export const commandsHandler = (interaction: CommandInteraction) => {
   const interactionName = interaction.commandName as InteractionName;
   const command = commands[getCommandIdentifierIndex(interactionName)];
 
   command.name === interactionName && createCommandFn(interaction, command);
 };
 
-const createCommandFn = async (interaction: ChatInputCommandInteraction<'cached'>, command: Interaction[number]) => {
+const createCommandFn = async (interaction: CommandInteraction, command: Interaction[number]) => {
   if (!(await isFeatureAllowed(command.type, interaction.guild.id)))
     return interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
 

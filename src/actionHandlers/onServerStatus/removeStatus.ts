@@ -1,6 +1,4 @@
 import {
-  ChatInputCommandInteraction,
-  CacheType,
   StringSelectMenuBuilder,
   StringSelectMenuOptionBuilder,
   ActionRowBuilder,
@@ -13,6 +11,7 @@ import { getLocalDBItem, setLocalDBItem } from '../../localdb';
 import { getProperty } from '../../utils/helpers';
 
 import type { Status } from './types';
+import type { CommandInteraction } from '../commands/types';
 
 export const removeStatusMenu = (statuses: Status[]) => {
   const statusesSelectMenu = new StringSelectMenuBuilder()
@@ -52,7 +51,7 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<t
     });
 };
 
-export const removeStatus = async (interaction: ChatInputCommandInteraction<'cached'>) => {
+export const removeStatus = async (interaction: CommandInteraction) => {
   const statuses = await getProperty(interaction.guild.id, 'statuses');
   if (!statuses.length) return interaction.reply({ content: 'No statuses to remove.', ephemeral: true });
 
