@@ -8,7 +8,7 @@ export const avatar: Command = async (interaction) => {
   const { user, guild, options } = interaction;
 
   const isServer = options.getSubcommand() === 'server';
-  const source = isServer ? guild : options.getUser('member') ?? user;
+  const source = isServer ? guild : (options.getUser('member') ?? user);
 
   const color = await getEmbed(guild.id, 'color');
 

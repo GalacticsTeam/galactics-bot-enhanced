@@ -29,16 +29,6 @@ export const onEveryTempChannel: IntervalFn = (client) => {
           createChannel(server, categoryId, member);
         });
       }
-
-      if (channel.id === commandsId || channel.id === generatorId) return;
-
-      if (channel.members.size === 0) {
-        await channel.delete().catch(console.log);
-
-        await setLocalDBItem(server.id, 'tempChannels', (prevTempChannels) =>
-          prevTempChannels.filter((tempChannel) => tempChannel.channelId !== channel.id)
-        );
-      }
     });
   });
 };

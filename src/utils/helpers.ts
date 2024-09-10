@@ -7,7 +7,7 @@ import type { InteractionIdentifier, InteractionName } from '../actionHandlers/c
 import type { Channel, Feature, Role, Embed, Property } from '../types';
 
 export const isFeatureAllowed = <T extends Feature>(feature: T, serverId: string) =>
-  getServerSchemaItem(serverId as string, 'features').then((features) => features[feature]);
+  getServerSchemaItem(serverId, 'features').then((features) => features[feature]);
 
 export const getCommandIdentifierIndex = (interactionName: InteractionName): number =>
   commands.findIndex((command) => command.name === interactionName);
