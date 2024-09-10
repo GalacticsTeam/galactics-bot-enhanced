@@ -25,7 +25,7 @@ export const removeStatusMenu = (statuses: Status[]) => {
   return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(statusesSelectMenu);
 };
 
-export const removeStatusMenuHandler = async (interaction: InteractionResponse<boolean>) => {
+export const removeStatusMenuHandler = async (interaction: InteractionResponse<true>) => {
   const statusToRemove = await interaction.awaitMessageComponent({
     componentType: ComponentType.StringSelect,
   });
@@ -38,10 +38,10 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<b
   }))
     .then(() => {
       const statusChannel = statusToRemove.guild.channels.cache.get(
-        statusWithChannel.find((status) => status.id === statusId).channelId
+        statusWithChannel.find((status) => status.id === statusId)?.channelId ?? ''
       );
 
-      statusChannel.delete().catch(console.log);
+      statusChannel?.delete().catch(console.log);
     })
     .then(async () => {
       await setLocalDBItem(statusToRemove.guild.id, 'statusChannels', (prevStatuses) =>
@@ -52,7 +52,7 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<b
     });
 };
 
-export const removeStatus = async (interaction: ChatInputCommandInteraction<CacheType>) => {
+export const removeStatus = async (interaction: ChatInputCommandInteraction<'cached'>) => {
   const statuses = await getProperty(interaction.guild.id, 'statuses');
   if (!statuses.length) return interaction.reply({ content: 'No statuses to remove.', ephemeral: true });
 

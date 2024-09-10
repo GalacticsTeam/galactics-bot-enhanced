@@ -18,7 +18,7 @@ onCrash();
 
 // =======================================================
 // Actions Invoker
-invokeActions(client);
+invokeActions(client as Client<true>);
 
 // =======================================================
 // Client initialization

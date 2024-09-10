@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "target": "ES5",
     "skipLibCheck": true,
     "strict": true,

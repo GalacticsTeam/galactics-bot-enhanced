@@ -17,6 +17,8 @@ export const onEveryTempChannel: IntervalFn = (client) => {
       tempChannelCommands: commandsId,
     } = await getServerSchemaItem(server.id, 'channels');
 
+    if (!categoryId || !generatorId || !commandsId) return;
+
     const category = server.channels.cache.get(categoryId);
     const commandsChannel = server.channels.cache.get(commandsId);
     const generatorChannel = server.channels.cache.get(generatorId);

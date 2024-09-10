@@ -1,4 +1,4 @@
-import type { CacheType, Client, Interaction } from 'discord.js';
+import type { CacheType, Client, Interaction, Message } from 'discord.js';
 
 import { action, interval } from './action';
 
@@ -12,9 +12,9 @@ import { onGuildMemberUpdate } from './onGuildMemberUpdate';
 
 import { onEveryTempChannel, onServerStatus } from '../actionHandlers';
 
-export const invokeActions = (Client: Client) => {
+export const invokeActions = (Client: Client<true>) => {
   action(Client, 'ready', onReady);
-  action(Client, 'messageCreate', onMessageCreate);
+  action(Client, 'messageCreate', onMessageCreate as (m: Message) => void);
   action(Client, 'interactionCreate', onInteractionCreate as (i: Interaction<CacheType>) => void);
   action(Client, 'guildMemberAdd', onGuildMemberAdd);
   action(Client, 'guildCreate', onGuildCreate);

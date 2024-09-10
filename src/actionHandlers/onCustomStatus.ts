@@ -10,7 +10,7 @@ export const onCustomStatus = async (client: Client) => {
     if (statusIndex === customStatus.length) statusIndex = 0;
 
     const { name, type } = customStatus[statusIndex];
-    client.user.setActivity(name, { type });
+    client.user?.setActivity(name, { type });
 
     statusIndex++;
   }, 5000);

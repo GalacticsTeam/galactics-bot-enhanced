@@ -8,10 +8,10 @@ import type { Status, StatusType } from './types';
 export const addStatus = async (
   title: string,
   type: StatusType,
-  interaction: ChatInputCommandInteraction<CacheType>
+  interaction: ChatInputCommandInteraction<'cached'>
 ) => {
-  const role = interaction.options.getRole('role');
-  const channel = interaction.options.getString('channel');
+  const role = interaction.options.getRole('role', true);
+  const channel = interaction.options.getString('channel', true);
 
   const value = role?.id ?? channel;
 

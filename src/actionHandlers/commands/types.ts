@@ -2,7 +2,8 @@ import type { ApplicationCommandDataResolvable, ChatInputCommandInteraction } fr
 
 import { commands } from './commands';
 
-export type Command = Record<`create`, InteractionCreate> & ((interaction: ChatInputCommandInteraction) => void);
+export type Command = Record<`create`, InteractionCreate> &
+  ((interaction: ChatInputCommandInteraction<'cached'>) => void);
 
 export type Interaction = typeof commands;
 export type InteractionIdentifier = Interaction[number]['type'];

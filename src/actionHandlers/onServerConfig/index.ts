@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, CacheType } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 
 import { setServerSchemaItem, getServerSchemaItem } from '../../db';
 import { commands, createCommand, deleteCommand } from '../commands';
@@ -6,7 +6,7 @@ import { checkItemType } from '../../utils/helpers';
 
 import type { Feature, Property, DefaultServerConfig, Embed, Channel, Role } from '../../types';
 
-export const features = async (updatedFeature: Feature, interaction: ChatInputCommandInteraction<CacheType>) => {
+export const features = async (updatedFeature: Feature, interaction: ChatInputCommandInteraction<'cached'>) => {
   await setServerSchemaItem(interaction.guild.id, 'features', (prevFeatures) => ({
     ...prevFeatures,
     [updatedFeature]: !prevFeatures[updatedFeature],
@@ -29,7 +29,7 @@ export const features = async (updatedFeature: Feature, interaction: ChatInputCo
 export const embeds = async <T extends Embed>(
   updatedEmbedProp: T,
   newValue: DefaultServerConfig['embeds'][T],
-  interaction: ChatInputCommandInteraction<CacheType>
+  interaction: ChatInputCommandInteraction<'cached'>
 ) => {
   switch (updatedEmbedProp) {
     case 'color':
@@ -52,7 +52,7 @@ export const embeds = async <T extends Embed>(
 export const properties = <T extends Property>(
   updatedProperty: T,
   newValue: DefaultServerConfig['properties'][T],
-  interaction: ChatInputCommandInteraction<CacheType>
+  interaction: ChatInputCommandInteraction<'cached'>
 ) => {
   switch (updatedProperty) {
     case 'autoBanTrigger':
@@ -75,7 +75,7 @@ export const properties = <T extends Property>(
 export const channels = (
   updatedChannel: Channel,
   newValue: string,
-  interaction: ChatInputCommandInteraction<CacheType>
+  interaction: ChatInputCommandInteraction<'cached'>
 ) =>
   setServerSchemaItem(interaction.guild.id, 'channels', (prevChannels) => ({
     ...prevChannels,
@@ -87,7 +87,7 @@ export const channels = (
     })
   );
 
-export const roles = (updatedRole: Role, newValue: string, interaction: ChatInputCommandInteraction<CacheType>) =>
+export const roles = (updatedRole: Role, newValue: string, interaction: ChatInputCommandInteraction<'cached'>) =>
   setServerSchemaItem(interaction.guild.id, 'roles', (prevRoles) => ({
     ...prevRoles,
     [updatedRole]: newValue,
@@ -98,7 +98,7 @@ export const roles = (updatedRole: Role, newValue: string, interaction: ChatInpu
     })
   );
 
-export const list = (itemName: keyof DefaultServerConfig, interaction: ChatInputCommandInteraction<CacheType>) => {
+export const list = (itemName: keyof DefaultServerConfig, interaction: ChatInputCommandInteraction<'cached'>) => {
   getServerSchemaItem(interaction.guild.id, itemName).then((item) => {
     const { isArray, isObj } = checkItemType(item);
     const ArrItems = isArray && (item as []).map((itemData, index) => index + 1 + '. ' + itemData).join('\n');
