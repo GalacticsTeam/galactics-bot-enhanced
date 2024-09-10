@@ -1,24 +1,10 @@
 import { englishToMorseMap, morseToEnglishMap } from './const';
 
-export const morseEncode = (englishText: string) => {
-  let morseText: string = '';
+export const morseEncode = (englishText: string) =>
+  englishText.split('').reduce((morseText, char) => morseText + `${englishToMorseMap.get(char.toLowerCase())} `, ' ');
 
-  for (let char of englishText) {
-    morseText += `${englishToMorseMap.get(char.toLowerCase())} `;
-  }
-
-  return morseText;
-};
-
-export const morseDecode = (morseText: string) => {
-  let englishText = '';
-
-  for (let char of morseText.split(' ')) {
-    englishText += morseToEnglishMap.get(char);
-  }
-
-  return englishText;
-};
+export const morseDecode = (morseText: string) =>
+  morseText.split(' ').reduce((englishText, char) => englishText + morseToEnglishMap.get(char), '');
 
 export const filterAllowedMorseChars = (text: string) => {
   const filteredTextArr = text.match(/[a-zA-Z0-9\s]+/);

@@ -3,6 +3,7 @@ import { ALPHABETICAL_CHARS, DECIMAL_NUMBERS } from '../../utils/const';
 export const morseChars =
   '.- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --.. .---- ..--- ...-- ....- ..... -.... --... ---.. ----. ----- /';
 
+// Added the space character as equivalent to "/" in morse chars.
 export const englishCharsArr = (ALPHABETICAL_CHARS + DECIMAL_NUMBERS + ' ').split('');
 export const morseCharsArr = morseChars.split(' ');
 
