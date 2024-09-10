@@ -1,7 +1,8 @@
 import { ALPHABETICAL_CHARS, DECIMAL_NUMBERS } from '../../utils/const';
 
+// "t" letter has a "\" before it to handle discord Markdown syntax
 export const morseChars =
-  '.- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --.. .---- ..--- ...-- ....- ..... -.... --... ---.. ----. ----- /';
+  '.- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... \\- ..- ...- .-- -..- -.-- --.. .---- ..--- ...-- ....- ..... -.... --... ---.. ----. ----- /';
 
 // Added the space character as equivalent to "/" in morse chars.
 export const englishCharsArr = (ALPHABETICAL_CHARS + DECIMAL_NUMBERS + ' ').split('');
