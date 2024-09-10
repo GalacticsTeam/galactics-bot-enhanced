@@ -1,7 +1,7 @@
 import { englishToMorseMap, morseToEnglishMap } from './const';
 
 export const morseEncode = (englishText: string) =>
-  englishText.split('').reduce((morseText, char) => morseText + `${englishToMorseMap.get(char.toLowerCase())} `, ' ');
+  englishText.split('').reduce((morseText, char) => morseText + `${englishToMorseMap.get(char.toLowerCase())} `, '');
 
 export const morseDecode = (morseText: string) =>
   morseText.split(' ').reduce((englishText, char) => englishText + morseToEnglishMap.get(char), '');
