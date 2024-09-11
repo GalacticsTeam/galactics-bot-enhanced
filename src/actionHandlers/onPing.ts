@@ -5,5 +5,7 @@ import { isFeatureAllowed } from '../utils/helpers';
 export const onPing = async (msg: Message<true>) => {
   if (!(await isFeatureAllowed('ping', msg.guild.id))) return;
 
-  msg.content.toLowerCase() === 'ping' && msg.reply({ content: 'Pong!' });
+  if (msg.content.toLowerCase() !== 'ping') return;
+
+  msg.reply({ content: 'Pong!' });
 };

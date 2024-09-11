@@ -12,16 +12,16 @@ export const setDefaultSchemaItem = <Schema extends DefaultServerConfig | Defaul
     (schema?.$model().modelName as SchemaName) === 'server' ? defaultServerConfig : defaultUserConfig;
   const { isArray, isObj, isString } = checkItemType(itemName);
 
-  const itemsArr = isArray && [...new Set([...(defaultConfig as any)[itemName], ...(schema as any)[itemName]])];
+  const itemsArr = isArray && [...new Set([...(defaultConfig as never)[itemName], ...(schema as never)[itemName]])];
   const itemObj =
     isObj &&
     Object.assign(
       {},
-      ...Object.keys((defaultConfig as any)[itemName]).map((key) => ({
-        [key]: (schema[itemName] as any)[key] ?? ((defaultConfig as any)[itemName] as any)[key],
+      ...Object.keys((defaultConfig as never)[itemName]).map((key) => ({
+        [key]: (schema[itemName] as never)[key] ?? (defaultConfig as never)[itemName][key],
       }))
     );
-  const item = (isString && schema[itemName]) ?? (defaultConfig as any)[itemName];
+  const item = (isString && schema[itemName]) ?? (defaultConfig as never)[itemName];
 
   schema.$set(String(itemName), itemsArr || itemObj || item);
 };

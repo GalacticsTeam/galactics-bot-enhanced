@@ -6,4 +6,4 @@ export type Action = <Event extends keyof ClientEvents>(
   actionFn: (...args: ClientEvents[Event]) => Awaitable<void>
 ) => void;
 
-export type IntervalFn = (client: Client, time: number) => void;
+export type IntervalFn = (client: Client<true>, time: number) => void;

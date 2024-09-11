@@ -9,7 +9,9 @@ export const commandsHandler = (interaction: CommandInteraction) => {
   const interactionName = interaction.commandName as InteractionName;
   const command = commands[getCommandIdentifierIndex(interactionName)];
 
-  command.name === interactionName && createCommandFn(interaction, command);
+  if (command.name !== interactionName) return;
+
+  createCommandFn(interaction, command);
 };
 
 const createCommandFn = async (interaction: CommandInteraction, command: Interaction[number]) => {

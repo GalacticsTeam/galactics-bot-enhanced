@@ -79,7 +79,7 @@ export const defaultUserConfig: DefaultUserConfig = {
   },
 };
 
-const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: any): DefaultServerConfig[T] =>
+const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: unknown): DefaultServerConfig[T] =>
   Object.assign({}, ...Object.keys(defaultServerConfig[propName]).map((prop) => ({ [prop]: value })));
 
 export const featuresType = getPropType('features', Boolean);
