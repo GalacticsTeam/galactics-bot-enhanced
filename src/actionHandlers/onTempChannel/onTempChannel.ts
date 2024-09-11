@@ -43,7 +43,7 @@ export const onTempChannel = async (oldState: VoiceState, newState: VoiceState) 
 
       generatorChannel.permissionOverwrites
         .edit(newState?.member?.id ?? '', { Connect: false, SendMessages: false, ReadMessageHistory: false })
-        .then((_) =>
+        .then(() =>
           setTimeout(() => newState.member && generatorChannel.permissionOverwrites.delete(newState?.member.id), 3000)
         );
     });
@@ -65,7 +65,7 @@ export const onTempChannel = async (oldState: VoiceState, newState: VoiceState) 
   oldState.channel
     .delete()
     .then(
-      async (_) =>
+      async () =>
         await setLocalDBItem(voiceState.guild.id, 'tempChannels', (prevTempChannels) =>
           prevTempChannels.filter((tempChannel) => tempChannel.channelId !== oldDbVc?.channelId)
         )

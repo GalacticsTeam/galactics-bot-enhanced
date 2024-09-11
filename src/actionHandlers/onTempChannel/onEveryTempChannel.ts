@@ -1,7 +1,6 @@
 import { ChannelType } from 'discord.js';
 
 import { getServerSchemaItem } from '../../db';
-import { setLocalDBItem } from '../../localdb';
 import { createChannel } from './helpers';
 import { isFeatureAllowed } from '../../utils/helpers';
 

@@ -1,0 +1,27 @@
+name: Run Code Tests Script
+on:
+  push:
+    branches: [master, dev]
+  pull_request:
+    branches: [master, dev]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: 'actions/setup-node@v1'
+        with:
+          node-version: '18.17.1'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install prettier and eslint
+        run: npm install -g prettier eslint
+
+      - name: Run tests
+        run: npm run test

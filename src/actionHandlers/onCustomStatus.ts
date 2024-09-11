@@ -1,7 +1,6 @@
 import type { Client } from 'discord.js';
 
 import { customStatus } from '../utils';
-import { isFeatureAllowed } from '../utils/helpers';
 
 export const onCustomStatus = async (client: Client) => {
   let statusIndex = 0;

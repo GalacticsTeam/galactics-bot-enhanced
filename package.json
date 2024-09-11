@@ -5,14 +5,14 @@
   "main": "index.ts",
   "scripts": {
     "dev": "tsx watch src/",
-    "test": "tsc",
+    "test": "tsc && eslint && prettier --check .",
     "build": "tsc --noEmit false --outDir dist/",
     "start": "npm run build && node ./dist/index.js",
     "prepare": "husky"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omarlawaty/galactics-bot-enhanced.git"
+    "url": "git+https://github.com/galacticsTeam/galactics-bot-enhanced.git"
   },
   "keywords": [
     "bot"
@@ -30,13 +30,17 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.10.0",
     "@types/uuid": "^10.0.0",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
     "husky": "^9.0.11",
-    "prettier": "^3.3.2",
-    "tsx": "^4.11.0"
+    "prettier": "^3.3.3",
+    "tsx": "^4.11.0",
+    "typescript-eslint": "^8.5.0"
   },
   "bugs": {
-    "url": "https://github.com/omarlawaty/galactics-bot-enhanced/issues"
+    "url": "https://github.com/galacticsTeam/galactics-bot-enhanced/issues"
   },
-  "homepage": "https://github.com/omarlawaty/galactics-bot-enhanced#readme"
+  "homepage": "https://github.com/galacticsTeam/galactics-bot-enhanced#readme"
 }

@@ -100,7 +100,7 @@ export const list = (itemName: keyof DefaultServerConfig, interaction: CommandIn
     const ObjItems =
       isObj &&
       Object.keys(item)
-        .map((itemData) => itemData + ': ' + (item as any)[itemData])
+        .map((itemData) => itemData + ': ' + (item as Record<string, unknown>)[itemData])
         .join('\n');
 
     return interaction.reply({

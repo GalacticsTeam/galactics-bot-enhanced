@@ -9,16 +9,16 @@ export const setDefaultLocalDBItem = <Item extends keyof LocalDBServerSchema>(
 ): LocalDBServerSchema[Item] => {
   const { isArray, isObj, isString } = checkItemType(server[itemName]);
 
-  const itemsArr = isArray && [...new Set([...(defaultLocalDBServerConfig as any)[itemName], ...server[itemName]])];
+  const itemsArr = isArray && [...new Set([...(defaultLocalDBServerConfig as never)[itemName], ...server[itemName]])];
   const itemObj =
     isObj &&
     Object.assign(
       {},
-      ...Object.keys((defaultLocalDBServerConfig as any)[itemName]).map((key) => ({
-        [key]: (server[itemName] as any)[key] ?? ((defaultLocalDBServerConfig as any)[itemName] as any)[key],
+      ...Object.keys((defaultLocalDBServerConfig as never)[itemName]).map((key) => ({
+        [key]: (server[itemName] as never)[key] ?? ((defaultLocalDBServerConfig as never)[itemName] as never)[key],
       }))
     );
-  const item = (isString && server[itemName]) ?? (defaultLocalDBServerConfig as any)[itemName];
+  const item = (isString && server[itemName]) ?? (defaultLocalDBServerConfig as never)[itemName];
 
   return itemsArr || itemObj || item;
 };

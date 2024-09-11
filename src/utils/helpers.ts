@@ -15,7 +15,7 @@ export const getCommandIdentifierIndex = (interactionName: InteractionName): num
 export const getCommandTypeIndex = (interactionType: InteractionIdentifier): number =>
   commands.findIndex((command) => command.type === interactionType);
 
-export const getDifference = <T extends any[]>(arr1: T, arr2: T): T => arr1.filter((x) => !arr2.includes(x)) as T;
+export const getDifference = <T extends unknown[]>(arr1: T, arr2: T): T => arr1.filter((x) => !arr2.includes(x)) as T;
 
 export const getChannel = async <T extends Channel>(guild: Guild, channel: T) =>
   guild.channels.cache.get((await getServerSchemaItem(guild.id, 'channels'))[channel]!);
@@ -29,7 +29,7 @@ export const getEmbed = async <T extends Embed>(serverId: string, embed: T) =>
 export const getProperty = async <T extends Property>(serverId: string, property: T) =>
   (await getServerSchemaItem(serverId, 'properties'))[property];
 
-export const checkItemType = (item: any): { isArray: boolean; isObj: boolean; isString: boolean } => {
+export const checkItemType = (item: unknown): { isArray: boolean; isObj: boolean; isString: boolean } => {
   const isArray = Array.isArray(item);
   const isObj = typeof item === 'object';
 
