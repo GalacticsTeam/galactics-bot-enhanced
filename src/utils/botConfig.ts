@@ -5,7 +5,8 @@ import type { DefaultServerConfig, DefaultUserConfig, LocalDBServerConfig } from
 
 configDotenv();
 
-export const isDevMode: boolean = !!+process.env.DEVMODE! ?? false;
+export const isDevMode = !!+process.env.DEVMODE! ?? false;
+export const localDBPort = isDevMode ? 4000 : 4001;
 
 export const customStatus: ActivityOptions[] = [
   { name: 'Galactics bot', type: ActivityType.Playing },

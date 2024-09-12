@@ -2,7 +2,8 @@
   "name": "localdb",
   "version": "1.0.0",
   "scripts": {
-    "server": "json-server --watch db.json --port 4000"
+    "server": "json-server --watch db.json --port 4000",
+    "server-production": "json-server --watch db.json --port 4001"
   },
   "license": "ISC",
   "devDependencies": {
