@@ -1,0 +1,19 @@
+name: Run pro depolymnet script
+on:
+  push:
+    branches: [master]
+
+jobs:
+  pro-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: 'actions/setup-node@v1'
+        with:
+          node-version: '18.17.1'
+
+      - name: Send deployment request
+        env:
+          ServerIP: ${{ secrets.ServerIP }}
+        run: |
+          curl -X GET http://$ServerIP/production
