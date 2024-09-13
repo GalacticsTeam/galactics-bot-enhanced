@@ -3,6 +3,7 @@ import type { ColorResolvable } from 'discord.js';
 import type { TempChannel } from './actionHandlers/';
 import type { InteractionIdentifier } from './actionHandlers/commands/types';
 import type { Status, StatusChannel } from './actionHandlers/onServerStatus/types';
+import type { YoutubeChannel } from './db';
 
 export type Feature =
   | 'ping'
@@ -44,7 +45,12 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
   embeds: { color: ColorResolvable };
   channels: Channels;
   roles: Roles;
-  properties: { autoBanTrigger: number; modHelpMessage: string; statuses: Status[] };
+  properties: {
+    autoBanTrigger: number;
+    modHelpMessage: string;
+    statuses: Status[];
+    youtubeChannels: YoutubeChannel[];
+  };
 }
 
 export interface DefaultUserConfig {

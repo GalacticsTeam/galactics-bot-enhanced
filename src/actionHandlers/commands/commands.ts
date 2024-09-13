@@ -14,6 +14,7 @@ import { warn } from './warn';
 import { serverStatus } from './serverStatus';
 import { maintenance } from './maintenance';
 import { morseTranslate } from './morseTranslate';
+import { addYoutubeChannel } from './addYoutubeChannel';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -30,6 +31,7 @@ export const commands = [
   { name: 'server-status', type: 'serverStatus', interaction: serverStatus },
   { name: 'maintenance', type: 'maintenance', interaction: maintenance },
   { name: 'morse-translate', type: 'morseTranslate', interaction: morseTranslate },
+  { name: 'add-youtube-channel', type: 'addYoutubeChannel', interaction: addYoutubeChannel },
 ] as const satisfies CommandLayout[];
 
 interface CommandLayout {

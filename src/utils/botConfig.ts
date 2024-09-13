@@ -44,6 +44,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     roleOrganize: false,
     maintenance: false,
     morseTranslate: false,
+    addYoutubeChannel: false,
   },
   channels: {
     logs: null,
@@ -69,6 +70,7 @@ export const defaultServerConfig: DefaultServerConfig = {
     autoBanTrigger: 5,
     modHelpMessage: 'One of our moderators will help you shortly',
     statuses: [],
+    youtubeChannels: [],
   },
   ...defaultLocalDBServerConfig,
 };
