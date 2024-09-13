@@ -6,6 +6,8 @@ import { setDefaultSchemaItem } from './helpers';
 import type { DefaultServerConfig } from '../types';
 import { ReturnedSchema } from './types';
 
+import { YoutubeChannelsSchema } from './YoutubeChannelsSchema';
+
 interface DefaultServerSchema extends DefaultServerConfig {
   serverId: string;
 }
@@ -20,7 +22,12 @@ export const ServerSchema = model<DefaultServerSchema>(
     embeds: { color: String },
     channels: channelsType,
     roles: rolesType,
-    properties: { autoBanTrigger: Number, modHelpMessage: String, statuses: [] },
+    properties: {
+      autoBanTrigger: Number,
+      modHelpMessage: String,
+      statuses: [],
+      youtubeChannels: [YoutubeChannelsSchema],
+    },
   })
 );
 
