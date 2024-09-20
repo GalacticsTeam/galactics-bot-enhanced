@@ -1,6 +1,6 @@
 import type { Client } from 'discord.js';
 
-import { customStatus } from '../utils';
+import { customStatus } from '../const';
 
 export const onCustomStatus = async (client: Client) => {
   let statusIndex = 0;
