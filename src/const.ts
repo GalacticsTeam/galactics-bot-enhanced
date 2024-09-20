@@ -4,38 +4,36 @@ import type {
   ChannelsConfig,
   DefaultUserConfig,
   EmbedsConfig,
-  FeaturesConfig,
+  Feature,
   LocalDBServerConfig,
   PropertiesConfig,
   RolesConfig,
 } from './types';
 
-export const features: FeaturesConfig = {
-  notAllowed: [
-    'serverConfig',
-    'ping',
-    'blockLinks',
-    'diceRoll',
-    'avatar',
-    'user',
-    'clearChat',
-    'lockChannel',
-    'unlockChannel',
-    'slowMode',
-    'serverInfo',
-    'welcome',
-    'autoBan',
-    'repeatedWelcomes',
-    'modHelp',
-    'warn',
-    'serverStatus',
-    'tempChannels',
-    'roleOrganize',
-    'maintenance',
-    'morseTranslate',
-  ],
-  allowed: ['serverConfig'],
-};
+export const notAllowedFeatures: Exclude<Feature, (typeof allowedFeatures)[number]>[] = [
+  'ping',
+  'blockLinks',
+  'diceRoll',
+  'avatar',
+  'user',
+  'clearChat',
+  'lockChannel',
+  'unlockChannel',
+  'slowMode',
+  'serverInfo',
+  'welcome',
+  'autoBan',
+  'repeatedWelcomes',
+  'modHelp',
+  'warn',
+  'serverStatus',
+  'tempChannels',
+  'roleOrganize',
+  'maintenance',
+  'morseTranslate',
+];
+
+export const allowedFeatures = ['serverConfig'] as const satisfies Feature[];
 
 export const channels: ChannelsConfig = [
   'logs',

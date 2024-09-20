@@ -1,6 +1,6 @@
 import { configDotenv } from 'dotenv';
 
-import { channels, embeds, features, localDB, properties, roles, user } from '../const';
+import { allowedFeatures, channels, embeds, localDB, notAllowedFeatures, properties, roles, user } from '../const';
 
 import type { Channels, DefaultServerConfig, DefaultUserConfig, Features, Roles } from '../types';
 
@@ -16,7 +16,7 @@ const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: un
   Object.assign({}, ...Object.keys(defaultServerConfig[propName]).map((prop) => ({ [prop]: value })));
 
 export const defaultServerConfig: DefaultServerConfig = {
-  features: { ...getFeatures(features.allowed, true), ...getFeatures(features.notAllowed) },
+  features: { ...getFeatures(allowedFeatures, true), ...getFeatures(notAllowedFeatures) },
   channels: channels.reduce((acc, channel) => ({ ...acc, [channel]: null }), {} as Channels),
   roles: roles.reduce((acc, role) => ({ ...acc, [role]: null }), {} as Roles),
   isMaintenance: false,

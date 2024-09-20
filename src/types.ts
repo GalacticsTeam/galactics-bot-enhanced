@@ -62,11 +62,6 @@ export interface DefaultUserConfig {
   };
 }
 
-export interface FeaturesConfig {
-  notAllowed: Feature[];
-  allowed: Feature[];
-}
-
 export type ChannelsConfig = Channel[];
 
 export type RolesConfig = Role[];
