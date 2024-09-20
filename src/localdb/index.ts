@@ -1,25 +1,26 @@
 import axios from 'axios';
 
-import { defaultLocalDBServerConfig, localDBPort } from '../utils';
+import { localDBPort } from '../utils';
 import { setDefaultLocalDBItem } from './helpers';
+import { localDB } from '../const';
 
 import type { LocalDBServerConfig } from '../types';
 import type { ServerConfig, ServersResponse } from './types';
 
-const localDB = axios.create({ baseURL: 'http://localhost:' + localDBPort });
+const localDBBase = axios.create({ baseURL: 'http://localhost:' + localDBPort });
 
 export const getLocalDB = async (serverId: string): Promise<ServerConfig> => {
-  const servers = (await localDB.get<ServersResponse>('/servers')).data;
+  const servers = (await localDBBase.get<ServersResponse>('/servers')).data;
 
   const requestedServer = servers[serverId];
 
   if (!requestedServer)
-    return localDB
+    return localDBBase
       .put<ServerConfig, ServerConfig>('/servers', {
         ...servers,
-        [serverId]: { serverId, ...defaultLocalDBServerConfig },
+        [serverId]: { serverId, ...localDB },
       })
-      .then(() => ({ data: { serverId, ...defaultLocalDBServerConfig }, servers }));
+      .then(() => ({ data: { serverId, ...localDB }, servers }));
 
   return { data: requestedServer, servers };
 };
@@ -30,7 +31,7 @@ export const getLocalDBItem = async <T extends keyof LocalDBServerConfig>(
 ): Promise<LocalDBServerConfig[T]> => {
   const server = await getLocalDB(serverId);
 
-  localDB.put('/servers', {
+  localDBBase.put('/servers', {
     ...server.servers,
     [server.data.serverId]: {
       ...server.data,
@@ -49,7 +50,7 @@ export const setLocalDBItem = async <T extends keyof LocalDBServerConfig>(
   const server = await getLocalDB(serverId);
   const updatedServerItem = setDefaultLocalDBItem(server.data, itemName);
 
-  localDB.put('/servers', {
+  localDBBase.put('/servers', {
     ...server.servers,
     [server.data.serverId]: {
       ...server.data,
@@ -58,4 +59,4 @@ export const setLocalDBItem = async <T extends keyof LocalDBServerConfig>(
   });
 };
 
-export const getLocalDBStatus = async () => (await localDB.get('/')).status;
+export const getLocalDBStatus = async () => (await localDBBase.get('/')).status;

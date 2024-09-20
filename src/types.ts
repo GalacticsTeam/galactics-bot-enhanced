@@ -24,12 +24,20 @@ export type Channel =
   | 'tempChannelGenerator'
   | 'tempChannelCommands';
 export type Role = 'bot' | 'member' | 'maintenance';
-export type Embed = keyof DefaultServerConfig['embeds'];
-export type Property = keyof DefaultServerConfig['properties'];
+export type Embed = keyof Embeds;
+export type Property = keyof Properties;
 
-type Features = { [t in Feature]: boolean };
-type Channels = { [t in Channel]: string | null };
-type Roles = { [t in Role]: string | null };
+export type Features = Record<Feature, boolean>;
+export type Channels = Record<Channel, string | null>;
+export type Roles = Record<Role, string | null>;
+export interface Embeds {
+  color: ColorResolvable;
+}
+export interface Properties {
+  autoBanTrigger: number;
+  modHelpMessage: string;
+  statuses: Status[];
+}
 
 export interface LocalDBServerConfig {
   lastJoinedIds: string[];
@@ -41,10 +49,10 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
   features: Features;
   isMaintenance: boolean;
   isDevServer: boolean;
-  embeds: { color: ColorResolvable };
+  embeds: Embeds;
   channels: Channels;
   roles: Roles;
-  properties: { autoBanTrigger: number; modHelpMessage: string; statuses: Status[] };
+  properties: Properties;
 }
 
 export interface DefaultUserConfig {
@@ -53,3 +61,16 @@ export interface DefaultUserConfig {
     reasons: string[];
   };
 }
+
+export interface FeaturesConfig {
+  notAllowed: Feature[];
+  allowed: Feature[];
+}
+
+export type ChannelsConfig = Channel[];
+
+export type RolesConfig = Role[];
+
+export type EmbedsConfig = Embeds;
+
+export type PropertiesConfig = Properties;

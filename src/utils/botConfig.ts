@@ -1,87 +1,32 @@
-import { ActivityOptions, ActivityType } from 'discord.js';
 import { configDotenv } from 'dotenv';
 
-import type { DefaultServerConfig, DefaultUserConfig, LocalDBServerConfig } from '../types';
+import { channels, embeds, features, localDB, properties, roles, user } from '../const';
+
+import type { Channels, DefaultServerConfig, DefaultUserConfig, Features, Roles } from '../types';
 
 configDotenv();
 
 export const isDevMode = !!+process.env.DEVMODE! ?? false;
 export const localDBPort = isDevMode ? 4000 : 4001;
 
-export const customStatus: ActivityOptions[] = [
-  { name: 'Galactics bot', type: ActivityType.Playing },
-  { name: 'Developed by gt dev team', type: ActivityType.Watching },
-  { name: 'Have fun', type: ActivityType.Watching },
-  { name: 'need help? /mod-help', type: ActivityType.Watching },
-];
-
-export const defaultLocalDBServerConfig: LocalDBServerConfig = {
-  lastJoinedIds: [],
-  statusChannels: [],
-  tempChannels: [],
-};
-
-export const defaultServerConfig: DefaultServerConfig = {
-  features: {
-    serverConfig: true,
-    ping: false,
-    blockLinks: false,
-    diceRoll: false,
-    avatar: false,
-    user: false,
-    clearChat: false,
-    lockChannel: false,
-    unlockChannel: false,
-    slowMode: false,
-    serverInfo: false,
-    welcome: false,
-    autoBan: false,
-    repeatedWelcomes: false,
-    modHelp: false,
-    warn: false,
-    serverStatus: false,
-    tempChannels: false,
-    roleOrganize: false,
-    maintenance: false,
-    morseTranslate: false,
-  },
-  channels: {
-    logs: null,
-    modLogs: null,
-    welcome: null,
-    rules: null,
-    statusCategory: null,
-    tempChannelCategory: null,
-    tempChannelGenerator: null,
-    tempChannelCommands: null,
-  },
-  roles: {
-    bot: null,
-    member: null,
-    maintenance: null,
-  },
-  isMaintenance: false,
-  isDevServer: isDevMode,
-  embeds: {
-    color: '#000000',
-  },
-  properties: {
-    autoBanTrigger: 5,
-    modHelpMessage: 'One of our moderators will help you shortly',
-    statuses: [],
-  },
-  ...defaultLocalDBServerConfig,
-};
-
-export const defaultUserConfig: DefaultUserConfig = {
-  warns: {
-    number: 0,
-    reasons: [],
-  },
-};
+const getFeatures = (features: (keyof Features)[], isAllowed: boolean = false) =>
+  features.reduce((acc, feature) => ({ ...acc, [feature]: isAllowed }), {} as Features);
 
 const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: unknown): DefaultServerConfig[T] =>
   Object.assign({}, ...Object.keys(defaultServerConfig[propName]).map((prop) => ({ [prop]: value })));
+
+export const defaultServerConfig: DefaultServerConfig = {
+  features: { ...getFeatures(features.allowed, true), ...getFeatures(features.notAllowed) },
+  channels: channels.reduce((acc, channel) => ({ ...acc, [channel]: null }), {} as Channels),
+  roles: roles.reduce((acc, role) => ({ ...acc, [role]: null }), {} as Roles),
+  isMaintenance: false,
+  isDevServer: isDevMode,
+  embeds: embeds,
+  properties: properties,
+  ...localDB,
+};
+
+export const defaultUserConfig: DefaultUserConfig = user;
 
 export const featuresType = getPropType('features', Boolean);
 export const channelsType = getPropType('channels', String || null);
