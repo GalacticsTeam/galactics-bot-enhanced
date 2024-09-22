@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { localDBPort } from '../utils';
 import { setDefaultLocalDBItem } from './helpers';
-import { localDB } from '../const';
+import configs from '../const';
 
 import type { LocalDBServerConfig } from '../types';
 import type { ServerConfig, ServersResponse } from './types';
@@ -18,9 +18,9 @@ export const getLocalDB = async (serverId: string): Promise<ServerConfig> => {
     return localDBBase
       .put<ServerConfig, ServerConfig>('/servers', {
         ...servers,
-        [serverId]: { serverId, ...localDB },
+        [serverId]: { serverId, ...configs.localDB },
       })
-      .then(() => ({ data: { serverId, ...localDB }, servers }));
+      .then(() => ({ data: { serverId, ...configs.localDB }, servers }));
 
   return { data: requestedServer, servers };
 };

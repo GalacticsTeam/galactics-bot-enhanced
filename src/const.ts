@@ -1,16 +1,19 @@
 import { ActivityType, type ActivityOptions } from 'discord.js';
 
 import type {
-  ChannelsConfig,
+  Channel,
+  CheckDuplicates,
   DefaultUserConfig,
-  EmbedsConfig,
+  Embeds,
   Feature,
   LocalDBServerConfig,
-  PropertiesConfig,
-  RolesConfig,
+  Properties,
+  Role,
 } from './types';
 
-export const notAllowedFeatures: Exclude<Feature, (typeof allowedFeatures)[number]>[] = [
+const allowedFeatures = ['serverConfig'] as const satisfies Feature[];
+
+const notAllowedFeatures = [
   'ping',
   'blockLinks',
   'diceRoll',
@@ -31,11 +34,9 @@ export const notAllowedFeatures: Exclude<Feature, (typeof allowedFeatures)[numbe
   'roleOrganize',
   'maintenance',
   'morseTranslate',
-];
+] as const satisfies Exclude<Feature, (typeof allowedFeatures)[number]>[];
 
-export const allowedFeatures = ['serverConfig'] as const satisfies Feature[];
-
-export const channels: ChannelsConfig = [
+const channels = [
   'logs',
   'modLogs',
   'welcome',
@@ -44,36 +45,62 @@ export const channels: ChannelsConfig = [
   'tempChannelCategory',
   'tempChannelGenerator',
   'tempChannelCommands',
-];
+] as const satisfies Channel[];
 
-export const roles: RolesConfig = ['bot', 'member', 'maintenance'];
+const roles = ['bot', 'member', 'maintenance'] as const satisfies Role[];
 
-export const embeds: EmbedsConfig = {
+const embeds = {
   color: '#000000',
-};
+} as const satisfies Embeds;
 
-export const properties: PropertiesConfig = {
+const properties = {
   autoBanTrigger: 5,
   modHelpMessage: 'One of our moderators will help you shortly',
   statuses: [],
-};
+} as const satisfies Properties;
 
-export const localDB: LocalDBServerConfig = {
+const localDB = {
   lastJoinedIds: [],
   statusChannels: [],
   tempChannels: [],
-};
+} as const satisfies LocalDBServerConfig;
 
-export const user: DefaultUserConfig = {
+const user = {
   warns: {
     number: 0,
     reasons: [],
   },
-};
+} as const satisfies DefaultUserConfig;
 
-export const customStatus: ActivityOptions[] = [
+const customStatus = [
   { name: 'Galactics bot', type: ActivityType.Playing },
   { name: 'Developed by gt dev team', type: ActivityType.Watching },
   { name: 'Have fun', type: ActivityType.Watching },
   { name: 'need help? /mod-help', type: ActivityType.Watching },
-];
+] as const satisfies ActivityOptions[];
+
+interface Configs {
+  notAllowedFeatures: CheckDuplicates<typeof notAllowedFeatures>;
+  allowedFeatures: CheckDuplicates<typeof allowedFeatures>;
+  channels: CheckDuplicates<typeof channels>;
+  roles: CheckDuplicates<typeof roles>;
+  embeds: Embeds;
+  properties: Properties;
+  localDB: LocalDBServerConfig;
+  user: DefaultUserConfig;
+  customStatus: CheckDuplicates<typeof customStatus>;
+}
+
+const configs: Configs = {
+  notAllowedFeatures,
+  allowedFeatures,
+  channels,
+  roles,
+  embeds,
+  properties,
+  localDB,
+  user,
+  customStatus,
+};
+
+export default configs;
