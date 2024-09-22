@@ -62,10 +62,8 @@ export interface DefaultUserConfig {
   };
 }
 
-export type ChannelsConfig = Channel[];
-
-export type RolesConfig = Role[];
-
-export type EmbedsConfig = Embeds;
-
-export type PropertiesConfig = Properties;
+export type CheckDuplicates<T extends unknown[], U extends unknown[] = []> = T extends [infer F, ...infer R]
+  ? F extends U[number]
+    ? CheckDuplicates<R, U>
+    : CheckDuplicates<R, [...U, F]>
+  : U;

@@ -1,10 +1,12 @@
 import { configDotenv } from 'dotenv';
 
-import { allowedFeatures, channels, embeds, localDB, notAllowedFeatures, properties, roles, user } from '../const';
+import configs from '../const';
 
 import type { Channels, DefaultServerConfig, DefaultUserConfig, Features, Roles } from '../types';
 
 configDotenv();
+
+const { allowedFeatures, channels, notAllowedFeatures, roles, user, localDB } = configs;
 
 export const isDevMode = !!+process.env.DEVMODE! ?? false;
 export const localDBPort = isDevMode ? 4000 : 4001;
@@ -16,14 +18,13 @@ const getPropType = <T extends keyof DefaultServerConfig>(propName: T, value: un
   Object.assign({}, ...Object.keys(defaultServerConfig[propName]).map((prop) => ({ [prop]: value })));
 
 export const defaultServerConfig: DefaultServerConfig = {
+  ...configs,
+  ...localDB,
   features: { ...getFeatures(allowedFeatures, true), ...getFeatures(notAllowedFeatures) },
   channels: channels.reduce((acc, channel) => ({ ...acc, [channel]: null }), {} as Channels),
   roles: roles.reduce((acc, role) => ({ ...acc, [role]: null }), {} as Roles),
   isMaintenance: false,
   isDevServer: isDevMode,
-  embeds: embeds,
-  properties: properties,
-  ...localDB,
 };
 
 export const defaultUserConfig: DefaultUserConfig = user;

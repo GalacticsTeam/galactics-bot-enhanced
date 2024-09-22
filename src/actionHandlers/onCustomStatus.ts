@@ -1,14 +1,14 @@
 import type { Client } from 'discord.js';
 
-import { customStatus } from '../const';
+import configs from '../const';
 
 export const onCustomStatus = async (client: Client) => {
   let statusIndex = 0;
 
   setInterval(() => {
-    if (statusIndex === customStatus.length) statusIndex = 0;
+    if (statusIndex === configs.customStatus.length) statusIndex = 0;
 
-    const { name, type } = customStatus[statusIndex];
+    const { name, type } = configs.customStatus[statusIndex];
     client.user?.setActivity(name, { type });
 
     statusIndex++;
