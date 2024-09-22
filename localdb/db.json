@@ -1,31 +1,3 @@
 {
-  "servers": {
-    "1086033687109455982": {
-      "serverId": "1086033687109455982",
-      "lastJoinedIds": [],
-      "statusChannels": [
-        {
-          "title": "member",
-          "type": "role",
-          "value": "1086033687109455989",
-          "id": "00f02e78-728c-47dc-bacd-3b40c69969c6",
-          "channelId": "1282656592550035530"
-        },
-        {
-          "title": "member",
-          "type": "role",
-          "value": "1086033687109455989",
-          "id": "59def774-3cfb-47da-b7ed-0696dfbf5863",
-          "channelId": "1282656595037388840"
-        }
-      ],
-      "tempChannels": []
-    },
-    "673700884617625621": {
-      "serverId": "673700884617625621",
-      "lastJoinedIds": [],
-      "statusChannels": [],
-      "tempChannels": []
-    }
-  }
+  "servers": {}
 }
