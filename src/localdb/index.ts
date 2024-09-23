@@ -1,8 +1,8 @@
 import axios from 'axios';
 
+import configs from '../configs';
 import { localDBPort } from '../utils';
 import { setDefaultLocalDBItem } from './helpers';
-import configs from '../const';
 
 import type { LocalDBServerConfig } from '../types';
 import type { ServerConfig, ServersResponse } from './types';

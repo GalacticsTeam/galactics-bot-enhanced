@@ -1,6 +1,6 @@
 import { configDotenv } from 'dotenv';
 
-import configs from '../const';
+import configs from '../configs';
 
 import type { Channels, DefaultServerConfig, DefaultUserConfig, Features, Roles } from '../types';
 

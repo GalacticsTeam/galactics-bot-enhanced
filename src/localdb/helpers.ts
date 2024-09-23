@@ -1,4 +1,4 @@
-import configs from '../const';
+import configs from '../configs';
 import { checkItemType } from '../utils/helpers';
 
 import type { LocalDBServerSchema } from './types';
