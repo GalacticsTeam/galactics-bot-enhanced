@@ -47,7 +47,7 @@ const channels = [
   'tempChannelCommands',
 ] as const satisfies Channel[];
 
-const roles = ['bot', 'member', 'maintenance'] as const satisfies Role[];
+const roles = ['bot', 'member', 'maintenance', 'lowestAuthorizedRole'] as const satisfies Role[];
 
 const embeds = {
   color: '#000000',
