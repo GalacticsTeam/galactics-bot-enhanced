@@ -8,6 +8,9 @@
     "test": "tsc && eslint && prettier --check .",
     "build": "tsc --noEmit false --outDir dist/",
     "start": "npm run build && node ./dist/index.js",
+    "server": "cd ./localdb && npm run server",
+    "lint": "eslint .",
+    "format": "prettier --write .",
     "prepare": "husky"
   },
   "repository": {
