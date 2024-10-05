@@ -1,4 +1,4 @@
-import type { Guild } from 'discord.js';
+import type { Guild, Role as GuildRole } from 'discord.js';
 
 import { commands } from '../actionHandlers/commands';
 import { getServerSchemaItem } from '../db';
@@ -39,3 +39,11 @@ export const checkItemType = (item: unknown): { isArray: boolean; isObj: boolean
     isString: !isArray && !isObj,
   };
 };
+
+export const getIsRoleSeparator = (role: GuildRole) => role.name.startsWith('⠀⠀') && role.name.endsWith('⠀⠀');
+
+export const getRoleSeparators = (guild: Guild) =>
+  guild.roles.cache.filter(getIsRoleSeparator).sort((a, b) => a.position - b.position);
+
+export const getRolesWithoutSeparators = (roles: GuildRole[]) =>
+  roles.filter((role) => !getIsRoleSeparator(role)).sort((a, b) => b.position - a.position);

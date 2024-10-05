@@ -1,6 +1,6 @@
-import type { Collection, Guild, GuildMember, PartialGuildMember, Role } from 'discord.js';
+import type { Collection, GuildMember, PartialGuildMember, Role } from 'discord.js';
 
-import { getDifference, isFeatureAllowed } from '../utils/helpers';
+import { getDifference, getIsRoleSeparator, getRoleSeparators, isFeatureAllowed } from '../utils';
 
 export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember, newMember: GuildMember) => {
   if (!(await isFeatureAllowed('roleOrganize', newMember.guild.id))) return;
@@ -15,7 +15,7 @@ export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember
   const addedRoles = getDifference(afterUpdateRoles, beforeUpdateRoles);
 
   removedRoles.forEach((role) => {
-    if (getIsSeparator(role)) return;
+    if (getIsRoleSeparator(role)) return;
 
     const greaterSeparators = getGreaterSeparators(separators, role);
     if (!greaterSeparators.length || hasSiblingRoles(afterUpdateRoles, role, separators)) return;
@@ -24,7 +24,7 @@ export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember
   });
 
   addedRoles.forEach((role) => {
-    if (getIsSeparator(role)) return;
+    if (getIsRoleSeparator(role)) return;
 
     const greaterSeparators = getGreaterSeparators(separators, role);
     if (!greaterSeparators.length || member.roles.cache.has(greaterSeparators[0].id)) return;
@@ -32,11 +32,6 @@ export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember
     member.roles.add(greaterSeparators[0]);
   });
 };
-
-const getRoleSeparators = (guild: Guild) =>
-  guild.roles.cache.filter(getIsSeparator).sort((a, b) => a.position - b.position);
-
-const getIsSeparator = (role: Role) => role.name.startsWith('⠀⠀') && role.name.endsWith('⠀⠀');
 
 const getGreaterSeparators = (separators: Collection<string, Role>, role: Role) =>
   separators
