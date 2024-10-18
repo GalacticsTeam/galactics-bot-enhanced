@@ -4,7 +4,6 @@ import { setDefaultSchemaItem } from '@db';
 import { defaultUserConfig } from '@utils';
 import type { DefaultUserConfig } from '@types';
 
-import type { DefaultUserConfig } from '../types';
 import type { ReturnedSchema } from './types';
 
 interface DefaultUserSchema extends DefaultUserConfig {
