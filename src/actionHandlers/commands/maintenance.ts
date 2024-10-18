@@ -1,4 +1,4 @@
-import { onMaintenance } from '../';
+import { onMaintenance } from '@actionHandlers';
 
 import type { Command } from './types';
 

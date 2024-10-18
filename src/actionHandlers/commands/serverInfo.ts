@@ -1,6 +1,6 @@
 import { ChannelType, EmbedBuilder } from 'discord.js';
 
-import { getEmbed } from '../../utils/helpers';
+import { getEmbed } from '@utils';
 
 import type { Command } from './types';
 

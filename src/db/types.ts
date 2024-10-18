@@ -1,6 +1,6 @@
 import type { Document, Types } from 'mongoose';
 
-import { defaultServerConfig, defaultUserConfig } from '../utils';
+import { defaultServerConfig, defaultUserConfig } from '@utils';
 
 export type ReturnedSchema<Schema extends typeof defaultServerConfig | typeof defaultUserConfig> = Document<
   unknown,

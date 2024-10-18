@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import configs from '../configs';
-import { localDBPort } from '../utils';
-import { setDefaultLocalDBItem } from './helpers';
+import configs from '@configs';
+import { localDBPort } from '@utils';
+import type { LocalDBServerConfig } from '@types';
 
-import type { LocalDBServerConfig } from '../types';
+import { setDefaultLocalDBItem } from './helpers';
 import type { ServerConfig, ServersResponse } from './types';
 
 const localDBBase = axios.create({ baseURL: 'http://localhost:' + localDBPort });

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ChannelType, PermissionsBitField } from 'discord.js';
+import { ApplicationCommandOptionType, ChannelType, type PermissionsBitField } from 'discord.js';
 
 import type { Command } from './types';
 

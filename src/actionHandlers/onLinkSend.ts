@@ -1,6 +1,6 @@
 import type { GuildMember, Message } from 'discord.js';
 
-import { getRole, getRolesWithoutSeparators, isFeatureAllowed } from '../utils/helpers';
+import { getRole, getRolesWithoutSeparators, isFeatureAllowed } from '@utils';
 
 const urlRegex =
   /(?:(?:https?|ftp):\/\/|\b(?:[a-z\d]+\.com))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))?/;

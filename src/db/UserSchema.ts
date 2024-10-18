@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
 
-import { setDefaultSchemaItem } from './';
-import { defaultUserConfig } from '../utils';
+import { setDefaultSchemaItem } from '@db';
+import { defaultUserConfig } from '@utils';
+import type { DefaultUserConfig } from '@types';
 
-import type { DefaultUserConfig } from '../types';
 import type { ReturnedSchema } from './types';
 
 interface DefaultUserSchema extends DefaultUserConfig {

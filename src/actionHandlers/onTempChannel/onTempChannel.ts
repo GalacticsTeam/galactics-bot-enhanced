@@ -1,9 +1,10 @@
 import { ChannelType, VoiceState } from 'discord.js';
 
-import { getServerSchemaItem } from '../../db';
+import { getServerSchemaItem } from '@db';
+import { isFeatureAllowed } from '@utils';
+import { getLocalDBItem, setLocalDBItem } from '@localdb';
+
 import { createChannel } from './helpers';
-import { getLocalDBItem, setLocalDBItem } from '../../localdb';
-import { isFeatureAllowed } from '../../utils/helpers';
 
 export const onTempChannel = async (oldState: VoiceState, newState: VoiceState) => {
   const voiceState = newState ?? oldState;

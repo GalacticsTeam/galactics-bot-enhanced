@@ -1,8 +1,7 @@
 import { configDotenv } from 'dotenv';
 
-import configs from '../configs';
-
-import type { Channels, DefaultServerConfig, DefaultUserConfig, Features, Roles } from '../types';
+import configs from '@configs';
+import type { Channels, DefaultServerConfig, DefaultUserConfig, Features, Roles } from '@types';
 
 configDotenv();
 

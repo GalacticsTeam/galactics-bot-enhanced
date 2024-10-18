@@ -1,8 +1,8 @@
 import type { ColorResolvable } from 'discord.js';
 
-import type { TempChannel } from './actionHandlers/';
-import type { InteractionIdentifier } from './actionHandlers/commands/types';
-import type { Status, StatusChannel } from './actionHandlers/onServerStatus/types';
+import type { TempChannel } from '@actionHandlers';
+import type { InteractionIdentifier } from '@commands/types';
+import type { Status, StatusChannel } from '@actionHandlers/onServerStatus/types';
 
 export type Feature =
   | 'ping'
@@ -14,16 +14,7 @@ export type Feature =
   | 'tempChannels'
   | 'roleOrganize'
   | InteractionIdentifier;
-export type Channel =
-  | 'logs'
-  | 'modLogs'
-  | 'welcome'
-  | 'rules'
-  | 'statusCategory'
-  | 'tempChannelCategory'
-  | 'tempChannelGenerator'
-  | 'tempChannelCommands';
-export type Role = 'bot' | 'member' | 'maintenance' | 'lowestAuthorizedRole';
+
 export type Embed = keyof Embeds;
 export type Property = keyof Properties;
 

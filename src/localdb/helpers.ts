@@ -1,5 +1,5 @@
-import configs from '../configs';
-import { checkItemType } from '../utils/helpers';
+import configs from '@configs';
+import { checkItemType } from '@utils';
 
 import type { LocalDBServerSchema } from './types';
 

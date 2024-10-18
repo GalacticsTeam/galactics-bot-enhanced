@@ -1,6 +1,6 @@
 import type { VoiceState } from 'discord.js';
 
-import { onTempChannel } from '../actionHandlers';
+import { onTempChannel } from '@actionHandlers';
 
 export const onVoiceStateUpdate = async (oldState: VoiceState, newState: VoiceState) => {
   const voiceState = oldState ?? newState;

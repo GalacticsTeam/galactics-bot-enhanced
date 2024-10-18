@@ -1,6 +1,6 @@
-import { ApplicationCommandOptionType, EmbedBuilder, Guild, User } from 'discord.js';
+import { ApplicationCommandOptionType, EmbedBuilder, type Guild, type User } from 'discord.js';
 
-import { getEmbed } from '../../utils/helpers';
+import { getEmbed } from '@utils';
 
 import type { Command } from './types';
 

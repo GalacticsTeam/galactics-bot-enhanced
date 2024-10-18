@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, userMention } from 'discord.js';
 
-import { onAutoBan } from '../';
-import { getUserSchemaItem, setUserSchemaItem } from '../../db';
+import { onAutoBan } from '@actionHandlers';
+import { getUserSchemaItem, setUserSchemaItem } from '@db';
 
 import type { Command } from './types';
 
@@ -31,7 +31,7 @@ export const warn: Command = async (interaction) => {
       return interaction.reply({ content: `Removed a warn for ${userMention(user)}`, ephemeral: true });
 
     case 'list':
-      if (!reasons.length) return interaction.reply({ content: `Warns count: ${count} ` });
+      if (!reasons.length) return interaction.reply({ content: `Warns count: ${count}`, ephemeral: true });
 
       return interaction.reply({
         content: `Warns count: ${count} \nReasons:\n${reasons.map((reason) => `> ${reason}`).join('\n')}`,

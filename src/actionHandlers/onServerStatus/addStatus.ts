@@ -1,9 +1,9 @@
 import { v4 as id } from 'uuid';
 
-import { setServerSchemaItem } from '../../db';
+import { setServerSchemaItem } from '@db';
+import type { CommandInteraction } from '@commands/types';
 
 import type { Status, StatusType } from './types';
-import type { CommandInteraction } from '../commands/types';
 
 export const addStatus = async (title: string, type: StatusType, interaction: CommandInteraction) => {
   const role = interaction.options.getRole('role', true);

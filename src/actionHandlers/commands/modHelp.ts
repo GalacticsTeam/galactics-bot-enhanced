@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, EmbedBuilder, TextChannel } from 'discord.js';
 
-import { getChannel, getEmbed, getProperty } from '../../utils/helpers';
+import { getChannel, getEmbed, getProperty } from '@utils';
 
 import type { Command } from './types';
 

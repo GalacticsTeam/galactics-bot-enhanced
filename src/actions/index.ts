@@ -10,7 +10,7 @@ import { onGuildMemberAdd } from './onGuildMemberAdd';
 import { onVoiceStateUpdate } from './onVoiceStateUpdate';
 import { onGuildMemberUpdate } from './onGuildMemberUpdate';
 
-import { onEveryTempChannel, onServerStatus } from '../actionHandlers';
+import { onEveryTempChannel, onServerStatus } from '@actionHandlers';
 
 export const invokeActions = (Client: Client<true>) => {
   action(Client, 'ready', onReady);

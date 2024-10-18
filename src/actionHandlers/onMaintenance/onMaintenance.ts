@@ -1,6 +1,6 @@
 import type { Guild } from 'discord.js';
 
-import { getServerSchemaItem, setServerSchemaItem } from '../../db';
+import { getServerSchemaItem, setServerSchemaItem } from '@db';
 
 export const onMaintenance = async (guild: Guild) => {
   const members = (await guild.members.fetch()).toJSON();

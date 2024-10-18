@@ -1,9 +1,9 @@
 import { ChannelType, GuildMember, channelMention, userMention } from 'discord.js';
 import Jimp from 'jimp';
 
-import { getServerSchemaItem } from '../db';
-import { isFeatureAllowed } from '../utils/helpers';
-import { getLocalDBItem, setLocalDBItem } from '../localdb';
+import { getServerSchemaItem } from '@db';
+import { isFeatureAllowed } from '@utils';
+import { getLocalDBItem, setLocalDBItem } from '@localdb';
 
 export const onWelcome = async (member: GuildMember) => {
   if (!(await isFeatureAllowed('welcome', member.guild.id))) return;

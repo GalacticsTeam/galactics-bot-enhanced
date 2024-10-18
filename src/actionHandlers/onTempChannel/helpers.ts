@@ -1,6 +1,6 @@
 import { ActivityType, ChannelType, Guild, GuildMember } from 'discord.js';
 
-import { setLocalDBItem } from '../../localdb';
+import { setLocalDBItem } from '@localdb';
 
 export const createChannel = async (guild: Guild, categoryId: string, member: GuildMember) => {
   const activityName = getUserActivity(member);

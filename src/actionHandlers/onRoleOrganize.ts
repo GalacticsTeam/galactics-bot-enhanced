@@ -1,6 +1,6 @@
 import type { Collection, GuildMember, PartialGuildMember, Role } from 'discord.js';
 
-import { getDifference, getIsRoleSeparator, getRoleSeparators, isFeatureAllowed } from '../utils';
+import { getDifference, getIsRoleSeparator, getRoleSeparators, isFeatureAllowed } from '@utils';
 
 export const onRoleOrganize = async (oldMember: GuildMember | PartialGuildMember, newMember: GuildMember) => {
   if (!(await isFeatureAllowed('roleOrganize', newMember.guild.id))) return;

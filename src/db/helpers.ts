@@ -1,7 +1,6 @@
-import { defaultServerConfig, defaultUserConfig } from '../utils';
-import { checkItemType } from '../utils/helpers';
+import { defaultServerConfig, defaultUserConfig, checkItemType } from '@utils';
+import type { DefaultServerConfig, DefaultUserConfig } from '@types';
 
-import type { DefaultServerConfig, DefaultUserConfig } from '../types';
 import type { ReturnedSchema, SchemaName } from './types';
 
 export const setDefaultSchemaItem = <Schema extends DefaultServerConfig | DefaultUserConfig>(

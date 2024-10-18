@@ -1,6 +1,6 @@
 import type { Message } from 'discord.js';
 
-import { onPing, onLinkSend } from '../actionHandlers';
+import { onPing, onLinkSend } from '@actionHandlers';
 
 export const onMessageCreate = async (msg: Message<true>) => {
   if (msg.author.bot) return;
