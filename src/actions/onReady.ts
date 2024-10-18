@@ -1,9 +1,9 @@
 import type { Client } from 'discord.js';
 
-import { getServerSchema, runDB } from '../db';
-import { isDevMode } from '../utils';
-import { createAllCommands, onCustomStatus } from '../actionHandlers';
-import { getLocalDBStatus } from '../localdb';
+import { isDevMode } from '@utils';
+import { getLocalDBStatus } from '@localdb';
+import { getServerSchema, runDB } from '@db';
+import { createAllCommands, onCustomStatus } from '@actionHandlers';
 
 export const onReady = async (client: Client<true>) => {
   const localDBStatus = await getLocalDBStatus();

@@ -1,10 +1,9 @@
 import type { Guild, Role as GuildRole } from 'discord.js';
 
-import { commands } from '../actionHandlers/commands';
-import { getServerSchemaItem } from '../db';
-
-import type { InteractionIdentifier, InteractionName } from '../actionHandlers/commands/types';
-import type { Channel, Feature, Role, Embed, Property } from '../types';
+import { commands } from '@commands';
+import { getServerSchemaItem } from '@db';
+import type { InteractionIdentifier, InteractionName } from '@commands/types';
+import type { Channel, Feature, Role, Embed, Property } from '@types';
 
 export const isFeatureAllowed = <T extends Feature>(feature: T, serverId: string) =>
   getServerSchemaItem(serverId, 'features').then((features) => features[feature]);

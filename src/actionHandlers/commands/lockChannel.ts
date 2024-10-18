@@ -1,6 +1,6 @@
 import { ChannelType, PermissionFlagsBits } from 'discord.js';
 
-import { getRole } from '../../utils/helpers';
+import { getRole } from '@utils';
 
 import type { Command } from './types';
 

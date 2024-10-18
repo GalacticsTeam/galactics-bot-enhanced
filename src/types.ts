@@ -1,8 +1,8 @@
 import type { ColorResolvable } from 'discord.js';
 
-import type { TempChannel } from './actionHandlers/';
-import type { InteractionIdentifier } from './actionHandlers/commands/types';
-import type { Status, StatusChannel } from './actionHandlers/onServerStatus/types';
+import type { TempChannel } from '@actionHandlers';
+import type { InteractionIdentifier } from '@commands/types';
+import type { Status, StatusChannel } from '@actionHandlers/onServerStatus/types';
 
 export type Feature =
   | 'ping'

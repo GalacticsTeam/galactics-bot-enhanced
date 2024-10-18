@@ -9,7 +9,7 @@ import type {
   LocalDBServerConfig,
   Properties,
   Role,
-} from './types';
+} from '@types';
 
 const allowedFeatures = ['serverConfig'] as const satisfies Feature[];
 

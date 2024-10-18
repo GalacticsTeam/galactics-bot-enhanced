@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 
-import { getEmbed } from '../../utils/helpers';
-import { getUserSchemaItem } from '../../db';
+import { getEmbed } from '@utils';
+import { getUserSchemaItem } from '@db';
 
 import type { Command } from './types';
 

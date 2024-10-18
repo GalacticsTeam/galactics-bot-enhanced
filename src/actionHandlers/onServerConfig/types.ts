@@ -1,4 +1,4 @@
-import type { Channel, DefaultServerConfig, Embed, Feature, Property, Role } from '../../types';
+import type { Channel, DefaultServerConfig, Embed, Feature, Property, Role } from '@types';
 
 export type ServerConfigOption = keyof Omit<DefaultServerConfig, 'isMaintenance' | 'isDevServer'> | 'list';
 

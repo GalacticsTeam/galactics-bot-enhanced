@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
 
-import { channelsType, defaultServerConfig, featuresType, rolesType } from '../utils';
-import { setDefaultSchemaItem } from './helpers';
+import { channelsType, defaultServerConfig, featuresType, rolesType } from '@utils';
+import type { DefaultServerConfig } from '@types';
 
-import type { DefaultServerConfig } from '../types';
+import { setDefaultSchemaItem } from './helpers';
 import { ReturnedSchema } from './types';
 
 interface DefaultServerSchema extends DefaultServerConfig {

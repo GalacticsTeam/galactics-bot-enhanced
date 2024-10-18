@@ -1,4 +1,4 @@
-import type { LocalDBServerConfig } from '../types';
+import type { LocalDBServerConfig } from '@types';
 
 export interface ServerConfig {
   data: LocalDBServerSchema;

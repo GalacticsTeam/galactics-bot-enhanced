@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
-import { addStatus, removeStatus } from '../onServerStatus';
+import { addStatus, removeStatus } from '@actionHandlers';
+import type { Status } from '@actionHandlers/onServerStatus/types';
 
 import type { Command } from './types';
-import type { Status } from '../onServerStatus/types';
 
 export const serverStatus: Command = (interaction) => {
   const { options } = interaction;

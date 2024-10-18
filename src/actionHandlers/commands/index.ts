@@ -1,8 +1,8 @@
 import type { GuildApplicationCommandManager } from 'discord.js';
 
-import { getCommandIdentifierIndex, isFeatureAllowed } from '../../utils/helpers';
-import { commands } from './commands';
+import { getCommandIdentifierIndex, isFeatureAllowed } from '@utils';
 
+import { commands } from './commands';
 import type { CommandInteraction, Interaction, InteractionCreate, InteractionName } from './types';
 
 export const commandsHandler = (interaction: CommandInteraction) => {

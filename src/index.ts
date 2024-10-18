@@ -1,8 +1,8 @@
 import { Client, Partials } from 'discord.js';
 import { configDotenv } from 'dotenv';
 
-import { onCrash, isDevMode } from './utils';
-import { invokeActions } from './actions';
+import { onCrash, isDevMode } from '@utils';
+import { invokeActions } from '@actions';
 
 // =======================================================
 // Client Creation

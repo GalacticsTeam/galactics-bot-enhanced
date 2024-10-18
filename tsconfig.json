@@ -14,7 +14,28 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@actionHandlers/*": ["./src/actionHandlers/*"],
+      "@commands/*": ["./src/actionHandlers/commands/*"],
+      "@actions/*": ["./src/actions/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@i18n/*": ["./src/i18n/*"],
+      "@localdb/*": ["./src/localdb/*"],
+      "@db/*": ["./src/db/*"],
+      "@actionHandlers": ["./src/actionHandlers/index.ts"],
+      "@commands": ["./src/actionHandlers/commands/index.ts"],
+      "@actions": ["./src/actions/index.ts"],
+      "@assets": ["./src/assets/*"],
+      "@utils": ["./src/utils/index.ts"],
+      "@i18n": ["./src/i18n/index.ts"],
+      "@localdb": ["./src/localdb/index.ts"],
+      "@db": ["./src/db/index.ts"],
+      "@types": ["./src/types.ts"],
+      "@configs": ["./src/configs.ts"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/"]

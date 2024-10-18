@@ -1,7 +1,7 @@
 import { ChannelType, EmbedBuilder, Guild } from 'discord.js';
 
-import { getServerSchema, getUserSchemaItem, setUserSchemaItem } from '../db';
-import { isFeatureAllowed } from '../utils/helpers';
+import { getServerSchema, getUserSchemaItem, setUserSchemaItem } from '@db';
+import { isFeatureAllowed } from '@utils';
 
 export const onAutoBan = async (guild: Guild, memberId: string) => {
   if (!(await isFeatureAllowed('autoBan', guild.id))) return;

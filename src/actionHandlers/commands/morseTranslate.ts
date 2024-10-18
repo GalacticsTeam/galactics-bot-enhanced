@@ -1,7 +1,6 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
-import { onMorseTranslate } from '../';
-import { formatMorseCode } from '../onMorseTranslate/helpers';
+import { onMorseTranslate, formatMorseCode } from '@actionHandlers';
 
 import type { Command } from './types';
 

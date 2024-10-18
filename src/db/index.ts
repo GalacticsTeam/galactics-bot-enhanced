@@ -2,7 +2,7 @@ import { ServerApiVersion } from 'mongodb';
 import { connect } from 'mongoose';
 import { configDotenv } from 'dotenv';
 
-import { isDevMode } from '../utils';
+import { isDevMode } from '@utils';
 
 export * from './ServerSchema';
 export * from './UserSchema';

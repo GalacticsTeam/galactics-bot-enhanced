@@ -1,7 +1,7 @@
 import type { Guild } from 'discord.js';
 
-import { getServerSchema } from '../db';
-import { createAllCommands } from '../actionHandlers';
+import { getServerSchema } from '@db';
+import { createAllCommands } from '@actionHandlers';
 
 export const onGuildCreate = (guild: Guild) => {
   const commands = guild.commands;

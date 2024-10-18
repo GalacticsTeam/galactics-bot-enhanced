@@ -1,11 +1,11 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
-import { defaultServerConfig } from '../../utils';
-import { channels, embeds, features, list, properties, roles, getUpdatedItem } from '../onServerConfig';
+import { defaultServerConfig } from '@utils';
+import type { DefaultServerConfig, Embed } from '@types';
+import type { ServerConfigOption } from '@actionHandlers/onServerConfig/types';
+import { channels, embeds, features, list, properties, roles, getUpdatedItem } from '@actionHandlers';
 
 import type { Command } from './types';
-import type { ServerConfigOption } from '../onServerConfig/types';
-import type { DefaultServerConfig, Embed } from '../../types';
 
 export const serverConfig: Command = (interaction) => {
   const serverConfigItem = interaction.options.getSubcommand() as ServerConfigOption;

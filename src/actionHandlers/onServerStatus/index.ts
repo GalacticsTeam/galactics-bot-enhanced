@@ -1,11 +1,11 @@
 import { ChannelType } from 'discord.js';
 
-import { getStatusCount } from './helpers';
-import { getChannel, getProperty, isFeatureAllowed } from '../../utils/helpers';
-import { getLocalDBItem, setLocalDBItem } from '../../localdb';
+import type { IntervalFn } from '@actions/types';
+import { getLocalDBItem, setLocalDBItem } from '@localdb';
+import { getChannel, getProperty, isFeatureAllowed } from '@utils';
 
+import { getStatusCount } from './helpers';
 import type { Status, StatusChannel } from './types';
-import type { IntervalFn } from '../../actions/types';
 
 export const onServerStatus: IntervalFn = (client) => {
   client.guilds.cache.forEach(async (server) => {

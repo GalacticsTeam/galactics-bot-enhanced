@@ -1,10 +1,10 @@
 import { ChannelType } from 'discord.js';
 
-import { getServerSchemaItem } from '../../db';
-import { createChannel } from './helpers';
-import { isFeatureAllowed } from '../../utils/helpers';
+import { isFeatureAllowed } from '@utils';
+import { getServerSchemaItem } from '@db';
+import type { IntervalFn } from '@actions/types';
 
-import type { IntervalFn } from '../../actions/types';
+import { createChannel } from './helpers';
 
 export const onEveryTempChannel: IntervalFn = (client) => {
   client.guilds.cache.forEach(async (server) => {

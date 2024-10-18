@@ -6,12 +6,12 @@ import {
   ComponentType,
 } from 'discord.js';
 
-import { setServerSchemaItem } from '../../db';
-import { getLocalDBItem, setLocalDBItem } from '../../localdb';
-import { getProperty } from '../../utils/helpers';
+import { getProperty } from '@utils';
+import { setServerSchemaItem } from '@db';
+import { getLocalDBItem, setLocalDBItem } from '@localdb';
+import type { CommandInteraction } from '@commands/types';
 
 import type { Status } from './types';
-import type { CommandInteraction } from '../commands/types';
 
 export const removeStatusMenu = (statuses: Status[]) => {
   const statusesSelectMenu = new StringSelectMenuBuilder()
