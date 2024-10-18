@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "module": "CommonJS",
     "moduleResolution": "node",
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules/@types", "src/**/*.d.ts"],
     "outDir": "dist/",
     "resolveJsonModule": true,
     "isolatedModules": true,

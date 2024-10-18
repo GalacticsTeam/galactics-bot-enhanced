@@ -2,7 +2,7 @@ import { checkItemType } from '@utils/helpers';
 import type { CommandInteraction } from '@commands/types';
 import { setServerSchemaItem, getServerSchemaItem } from '@db';
 import { commands, createCommand, deleteCommand } from '@commands';
-import type { Feature, Property, DefaultServerConfig, Embed, Channel, Role } from '@types';
+import type { Feature, Property, DefaultServerConfig, Embed } from '@types';
 
 export const features = async (updatedFeature: Feature, interaction: CommandInteraction) => {
   await setServerSchemaItem(interaction.guild.id, 'features', (prevFeatures) => ({

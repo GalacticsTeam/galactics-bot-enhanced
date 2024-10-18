@@ -14,16 +14,7 @@ export type Feature =
   | 'tempChannels'
   | 'roleOrganize'
   | InteractionIdentifier;
-export type Channel =
-  | 'logs'
-  | 'modLogs'
-  | 'welcome'
-  | 'rules'
-  | 'statusCategory'
-  | 'tempChannelCategory'
-  | 'tempChannelGenerator'
-  | 'tempChannelCommands';
-export type Role = 'bot' | 'member' | 'maintenance' | 'lowestAuthorizedRole';
+
 export type Embed = keyof Embeds;
 export type Property = keyof Properties;
 

@@ -1,15 +1,6 @@
 import { ActivityType, type ActivityOptions } from 'discord.js';
 
-import type {
-  Channel,
-  CheckDuplicates,
-  DefaultUserConfig,
-  Embeds,
-  Feature,
-  LocalDBServerConfig,
-  Properties,
-  Role,
-} from '@types';
+import type { CheckDuplicates, DefaultUserConfig, Embeds, Feature, LocalDBServerConfig, Properties } from '@types';
 
 const allowedFeatures = ['serverConfig'] as const satisfies Feature[];
 
