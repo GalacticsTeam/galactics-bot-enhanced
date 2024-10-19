@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Galactics Official bot",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "dev": "tsx watch src/",
     "test": "tsc && eslint && prettier --check .",
