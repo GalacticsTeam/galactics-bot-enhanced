@@ -9,7 +9,7 @@ export const setDefaultSchemaItem = <Schema extends DefaultServerConfig | Defaul
 ) => {
   const defaultConfig =
     (schema?.$model().modelName as SchemaName) === 'server' ? defaultServerConfig : defaultUserConfig;
-  const { isArray, isObj, isString } = checkItemType(itemName);
+  const { isArray, isObj, isString } = checkItemType(defaultConfig[itemName as never]);
 
   const itemsArr = isArray && [...new Set([...(defaultConfig as never)[itemName], ...(schema as never)[itemName]])];
   const itemObj =
