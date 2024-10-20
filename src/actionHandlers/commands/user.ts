@@ -14,6 +14,7 @@ export const user: Command = async (interaction) => {
 
   const color = await getEmbed(guild.id, 'color');
   const warns = await getUserSchemaItem(guild.id, guildUser.id, 'warns');
+  const preferredLanguage = await getUserSchemaItem(guild.id, guildUser.id, 'language');
 
   const userAvatarUrl = guildUser.user.avatarURL({ size: 2048 });
 
@@ -21,15 +22,20 @@ export const user: Command = async (interaction) => {
     embeds: [
       new EmbedBuilder()
         .addFields(
-          { name: 'Warns count:', value: `${warns.number}`, inline: false },
+          { name: 'Warns count:', value: `${warns.number}`, inline: true },
           {
-            name: 'Joined Discord:',
-            value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
+            name: 'Preferred Language:',
+            value: preferredLanguage,
             inline: true,
           },
           {
+            name: 'Joined Discord:',
+            value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
+            inline: false,
+          },
+          {
             name: 'Joined Server:',
-            value: `**<t:${parseInt(`${guildUser.joinedTimestamp ?? 0 / 1000}`, 10)}:R>**`,
+            value: `**<t:${parseInt(`${(guildUser.joinedTimestamp ?? 0) / 1000}`, 10)}:R>**`,
             inline: true,
           }
         )

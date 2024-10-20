@@ -20,7 +20,7 @@ export const ServerSchema = model<DefaultServerSchema>(
     embeds: { color: String },
     channels: channelsType,
     roles: rolesType,
-    properties: { autoBanTrigger: Number, modHelpMessage: String, statuses: [] },
+    properties: { autoBanTrigger: Number, modHelpMessage: String, statuses: [], language: String },
   })
 );
 

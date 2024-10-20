@@ -14,6 +14,8 @@ import { warn } from './warn';
 import { serverStatus } from './serverStatus';
 import { maintenance } from './maintenance';
 import { morseTranslate } from './morseTranslate';
+import { preferredLanguage } from './preferredLanguage';
+import { serverLanguage } from './serverLanguage';
 
 export const commands = [
   { name: 'roll-dice', type: 'diceRoll', interaction: diceRoll },
@@ -30,6 +32,8 @@ export const commands = [
   { name: 'server-status', type: 'serverStatus', interaction: serverStatus },
   { name: 'maintenance', type: 'maintenance', interaction: maintenance },
   { name: 'morse-translate', type: 'morseTranslate', interaction: morseTranslate },
+  { name: 'preferred-language', type: 'preferredLanguage', interaction: preferredLanguage },
+  { name: 'server-language', type: 'serverLanguage', interaction: serverLanguage },
 ] as const satisfies CommandLayout[];
 
 interface CommandLayout {

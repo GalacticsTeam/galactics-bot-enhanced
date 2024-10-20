@@ -16,6 +16,7 @@ export const UserSchema = model<DefaultUserSchema>(
   new Schema<DefaultUserSchema>({
     serverId: String,
     userId: String,
+    language: String,
     warns: { number: Number, reasons: [String] },
   })
 );
