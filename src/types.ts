@@ -28,6 +28,7 @@ export interface Properties {
   autoBanTrigger: number;
   modHelpMessage: string;
   statuses: Status[];
+  language: Language;
 }
 
 export interface LocalDBServerConfig {
@@ -47,6 +48,7 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
 }
 
 export interface DefaultUserConfig {
+  language: Language;
   warns: {
     number: number;
     reasons: string[];

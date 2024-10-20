@@ -48,6 +48,7 @@ const properties = {
   autoBanTrigger: 5,
   modHelpMessage: 'One of our moderators will help you shortly',
   statuses: [],
+  language: 'en',
 } as const satisfies Properties;
 
 const localDB = {
@@ -57,6 +58,7 @@ const localDB = {
 } as const satisfies LocalDBServerConfig;
 
 const user = {
+  language: 'en',
   warns: {
     number: 0,
     reasons: [],
