@@ -1,6 +1,6 @@
 import { ChannelType, EmbedBuilder } from 'discord.js';
 
-import { getEmbed } from '@utils';
+import { getEmbed, getProperty } from '@utils';
 
 import type { Command } from './types';
 
@@ -11,6 +11,7 @@ export const serverInfo: Command = async (interaction) => {
 
   const serverMembers = (await guild.members.fetch()).toJSON();
   const serverChannels = (await guild.channels.fetch()).toJSON();
+  const language = await getProperty(guild.id, 'language');
 
   const usersCount = serverMembers.filter((member) => !member.user.bot).length;
   const botsCount = guild.memberCount - usersCount;
@@ -45,7 +46,8 @@ export const serverInfo: Command = async (interaction) => {
             value: `${textChannelsCount} Text | ${voiceChannelsCount} Voice`,
             inline: true,
           },
-          { name: '✨ Boosts:', value: `${guild.premiumSubscriptionCount}`, inline: true }
+          { name: '✨ Boosts:', value: `${guild.premiumSubscriptionCount}`, inline: true },
+          { name: '🌍 Language:', value: language, inline: true }
         )
         .setColor(color)
         .setThumbnail(guild.iconURL({ size: 2048 })),

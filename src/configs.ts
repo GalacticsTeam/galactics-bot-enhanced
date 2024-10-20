@@ -25,6 +25,8 @@ const notAllowedFeatures = [
   'roleOrganize',
   'maintenance',
   'morseTranslate',
+  'preferredLanguage',
+  'serverLanguage',
 ] as const satisfies Exclude<Feature, (typeof allowedFeatures)[number]>[];
 
 const channels = [
