@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strictNullChecks": true,
-    "target": "ES5",
+    "target": "ES6",
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -35,8 +35,7 @@
       "@db": ["./src/db/index.ts"],
       "@types": ["./src/types.ts"],
       "@configs": ["./src/configs.ts"]
-    },
-    "plugins": [{ "resolvePathAliases": true }]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/"]
