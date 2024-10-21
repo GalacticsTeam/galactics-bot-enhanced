@@ -1,17 +1,21 @@
 import { getProperty } from '@utils/helpers';
 import { getUserSchemaItem } from '@db/UserSchema';
+import { onFormatNumber } from '@handlers/onFormat';
 
 import en from './en';
 import ar from './ar';
 import type { I18nKey, TranslateOptions } from './types';
 
 export const onTranslate =
-  (locale: Language) =>
+  (language: Language) =>
   <Key extends I18nKey>(id: Key, options: TranslateOptions = {}) => {
-    const translation = locale === 'en' ? (en[id] as (typeof en)[Key]) : (ar[id] as (typeof ar)[Key]);
+    const formatNumber = onFormatNumber(language);
 
-    return Object.keys(options).reduce(
-      (acc, [key, value]) => acc.replace(`{${key}}`, String(value)) as typeof translation,
+    const translation = language === 'en' ? (en[id] as (typeof en)[Key]) : (ar[id] as (typeof ar)[Key]);
+
+    return Object.entries(options).reduce(
+      (acc, [key, value]) =>
+        acc.replace(`{${key}}`, String(typeof value === 'number' ? formatNumber(value) : value)) as typeof translation,
       translation
     );
   };

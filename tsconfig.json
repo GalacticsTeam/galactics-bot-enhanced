@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@actionHandlers/*": ["./src/actionHandlers/*"],
+      "@handlers/*": ["./src/handlers/*"],
       "@commands/*": ["./src/actionHandlers/commands/*"],
       "@actions/*": ["./src/actions/*"],
       "@assets/*": ["./src/assets/*"],
@@ -26,6 +27,7 @@
       "@localdb/*": ["./src/localdb/*"],
       "@db/*": ["./src/db/*"],
       "@actionHandlers": ["./src/actionHandlers/index.ts"],
+      "@handlers": ["./src/handlers/index.ts"],
       "@commands": ["./src/actionHandlers/commands/index.ts"],
       "@actions": ["./src/actions/index.ts"],
       "@assets": ["./src/assets/*"],
