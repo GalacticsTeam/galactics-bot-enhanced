@@ -1,4 +1,4 @@
-import { ALPHABETICAL_CHARS, DECIMAL_NUMBERS, PUNCTUATION_MARKS } from '@utils/const';
+import { ALPHABETICAL_CHARS, DECIMAL_NUMBERS, PUNCTUATION_MARKS } from '../../utils';
 
 export const morseChars =
   '.- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --.. .---- ..--- ...-- ....- ..... -.... --... ---.. ----. -----' as const;
