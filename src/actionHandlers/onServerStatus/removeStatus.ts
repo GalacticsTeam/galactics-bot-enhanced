@@ -10,13 +10,16 @@ import { getProperty } from '@utils';
 import { setServerSchemaItem } from '@db';
 import { getLocalDBItem, setLocalDBItem } from '@localdb';
 import type { CommandInteraction } from '@commands/types';
+import { onUserTranslate } from '@i18n/onTranslate';
 
 import type { Status } from './types';
 
-export const removeStatusMenu = (statuses: Status[]) => {
+export const removeStatusMenu = async (statuses: Status[], serverId: string, userId: string) => {
+  const t = await onUserTranslate(serverId, userId);
+
   const statusesSelectMenu = new StringSelectMenuBuilder()
     .setCustomId('starter')
-    .setPlaceholder('Make a selection!')
+    .setPlaceholder(t('action.makeASelection'))
     .addOptions(
       statuses.map((status) => new StringSelectMenuOptionBuilder().setLabel(status.title).setValue(status.id))
     );
@@ -25,6 +28,8 @@ export const removeStatusMenu = (statuses: Status[]) => {
 };
 
 export const removeStatusMenuHandler = async (interaction: InteractionResponse<true>) => {
+  const t = await onUserTranslate(interaction.interaction.guild.id, interaction.interaction.user.id);
+
   const statusToRemove = await interaction.awaitMessageComponent({
     componentType: ComponentType.StringSelect,
   });
@@ -47,19 +52,21 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<t
         prevStatuses.filter((status) => status.id !== statusId)
       );
 
-      statusToRemove.reply({ content: `Status has been removed.`, ephemeral: true });
+      statusToRemove.reply({ content: t('serverStatus.remove.statusRemoved'), ephemeral: true });
     });
 };
 
 export const removeStatus = async (interaction: CommandInteraction) => {
+  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+
   const statuses = await getProperty(interaction.guild.id, 'statuses');
-  if (!statuses.length) return interaction.reply({ content: 'No statuses to remove.', ephemeral: true });
+  if (!statuses.length) return interaction.reply({ content: t('serverStatus.remove.noStatuses'), ephemeral: true });
 
   interaction
     .reply({
-      content: "Please Choose the status you'd like to remove.",
-      components: [removeStatusMenu(statuses)],
+      content: t('serverStatus.remove.pleaseChoose'),
+      components: [await removeStatusMenu(statuses, interaction.guild.id, interaction.user.id)],
       ephemeral: true,
     })
-    .then((res) => removeStatusMenuHandler(res));
+    .then(removeStatusMenuHandler);
 };

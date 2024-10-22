@@ -3,6 +3,7 @@ import { ChannelType } from 'discord.js';
 import type { IntervalFn } from '@actions/types';
 import { getLocalDBItem, setLocalDBItem } from '@localdb';
 import { getChannel, getProperty, isFeatureAllowed } from '@utils';
+import { onFormatNumber } from '@handlers';
 
 import { getStatusCount } from './helpers';
 import type { Status, StatusChannel } from './types';
@@ -10,6 +11,9 @@ import type { Status, StatusChannel } from './types';
 export const onServerStatus: IntervalFn = (client) => {
   client.guilds.cache.forEach(async (server) => {
     if (!(await isFeatureAllowed('serverStatus', server.id))) return;
+
+    const serverLanguage = await getProperty(server.id, 'language');
+    const formatNumber = onFormatNumber(serverLanguage);
 
     const statusCategory = await getChannel(server, 'statusCategory');
     if (!statusCategory) return;
@@ -33,7 +37,7 @@ export const onServerStatus: IntervalFn = (client) => {
       const statusCount = await getStatusCount(server, status);
       if (!statusChannel || (!statusCount && statusCount !== 0)) return statusesWithoutChannels.push(status);
 
-      await statusChannel.setName(`｜${status.title}: ${statusCount}`);
+      await statusChannel.setName(`｜${status.title}: ${formatNumber(statusCount)}`);
     });
 
     setTimeout(
@@ -55,7 +59,7 @@ export const onServerStatus: IntervalFn = (client) => {
 
           server.channels
             .create({
-              name: `｜${status.title}: ${statusCount}`,
+              name: `｜${status.title}: ${formatNumber(statusCount ?? 0)}`,
               type: ChannelType.GuildVoice,
               parent: statusCategory.id,
             })

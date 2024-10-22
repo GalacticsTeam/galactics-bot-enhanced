@@ -6,19 +6,22 @@ import en from './en';
 import ar from './ar';
 import type { I18nKey, TranslateOptions } from './types';
 
-export const onTranslate =
-  (language: Language) =>
-  <Key extends I18nKey>(id: Key, options: TranslateOptions = {}) => {
-    const formatNumber = onFormatNumber(language);
+export const onTranslate = (language: Language) => {
+  const formatNumber = onFormatNumber(language);
 
-    const translation = language === 'en' ? (en[id] as (typeof en)[Key]) : (ar[id] as (typeof ar)[Key]);
+  return <Key extends I18nKey>(key: Key, options: TranslateOptions = {}) => {
+    const translation = language === 'en' ? (en[key] as (typeof en)[Key]) : (ar[key] as (typeof ar)[Key]);
 
     return Object.entries(options).reduce(
       (acc, [key, value]) =>
-        acc.replace(`{${key}}`, String(typeof value === 'number' ? formatNumber(value) : value)) as typeof translation,
+        acc.replace(
+          `{${key}}`,
+          String(typeof value === 'number' ? formatNumber(value, { useGrouping: false }) : value)
+        ) as typeof translation,
       translation
     );
   };
+};
 
 export const onServerTranslate = async (guildId: string) => {
   const language = await getProperty(guildId, 'language');

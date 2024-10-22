@@ -7,7 +7,7 @@ configDotenv();
 
 const { allowedFeatures, channels, notAllowedFeatures, roles, user, localDB } = configs;
 
-export const isDevMode = !!+process.env.DEVMODE! ?? false;
+export const isDevMode = !!+(process.env.DEVMODE ?? 0);
 export const localDBPort = isDevMode ? 4000 : 4001;
 
 const getFeatures = (features: (keyof Features)[], isAllowed: boolean = false) =>

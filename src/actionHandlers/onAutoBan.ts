@@ -2,9 +2,11 @@ import { ChannelType, EmbedBuilder, Guild } from 'discord.js';
 
 import { getServerSchema, getUserSchemaItem, setUserSchemaItem } from '@db';
 import { isFeatureAllowed } from '@utils';
+import { onServerTranslate } from '@i18n/onTranslate';
 
 export const onAutoBan = async (guild: Guild, memberId: string) => {
   if (!(await isFeatureAllowed('autoBan', guild.id))) return;
+  const t = await onServerTranslate(guild.id);
 
   const {
     properties: { autoBanTrigger },
@@ -16,7 +18,7 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
 
   if (userWarns.number < autoBanTrigger) return;
 
-  guild.members.ban(memberId, { reason: `Auto-banned after ${userWarns.number} warns` }).then(async () => {
+  guild.members.ban(memberId, { reason: t('autoBan.autoBannedAfter', { count: userWarns.number }) }).then(async () => {
     if (!logsChannelId) return;
 
     const logsChannel = guild.channels.cache.get(logsChannelId);
@@ -25,7 +27,7 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
 
     await setUserSchemaItem(guild.id, memberId, 'warns', (prevWarns) => ({
       number: 0,
-      reasons: [...prevWarns.reasons, `--auto-ban-reset--`],
+      reasons: [...prevWarns.reasons, t('autoBan.autoBanReset')],
     }));
 
     if (!logsChannel) return;
@@ -35,8 +37,8 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
         new EmbedBuilder()
           .setColor(color)
           .addFields(
-            { name: 'Auto-banned', value: `<@${memberId}>` },
-            { name: 'Reason', value: `Auto-banned after ${userWarns.number} warns` }
+            { name: t('autoBan.auto-banned'), value: `<@${memberId}>` },
+            { name: t('name.reason'), value: t('autoBan.autoBannedAfter', { count: userWarns.number }) }
           )
           .setAuthor({
             name: guild.name,

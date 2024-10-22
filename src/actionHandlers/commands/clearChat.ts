@@ -1,9 +1,12 @@
 import { ApplicationCommandOptionType, ChannelType, type PermissionsBitField } from 'discord.js';
 
+import { onUserTranslate } from '@i18n/onTranslate';
+
 import type { Command } from './types';
 
-export const clearChat: Command = (interaction) => {
+export const clearChat: Command = async (interaction) => {
   const { member, channel, options } = interaction;
+  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
 
   if (!channel) return;
 
@@ -12,15 +15,19 @@ export const clearChat: Command = (interaction) => {
   const amount = options.getInteger('amount', true);
 
   if (amount > 100)
-    return interaction.reply({ content: "Can't clear more than 100 messages at a time", ephemeral: true });
-  if (amount < 1) return interaction.reply({ content: "Can't clear less than 1 message", ephemeral: true });
+    return interaction.reply({ content: t('error.clearChat.maximumCount', { count: 100 }), ephemeral: true });
+  if (amount < 1)
+    return interaction.reply({ content: t('error.clearChat.minimumCount', { count: 1 }), ephemeral: true });
 
   if (channel.type !== ChannelType.GuildText)
-    return interaction.reply({ content: 'This command only works in text channels', ephemeral: true });
+    return interaction.reply({
+      content: t('error.commandOnlyWorksIn', { channel: t('channel.text') }),
+      ephemeral: true,
+    });
 
   channel
     .bulkDelete(amount)
-    .then(() => interaction.reply({ content: `Deleted ${amount} messages`, ephemeral: true }))
+    .then(() => interaction.reply({ content: t('clearChat.deleted', { amount }), ephemeral: true }))
     .catch(console.log);
 };
 

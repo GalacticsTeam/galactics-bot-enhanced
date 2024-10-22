@@ -1,5 +1,6 @@
 import type { GuildMember, Message } from 'discord.js';
 
+import { onUserTranslate } from '@i18n/onTranslate';
 import { getRole, getRolesWithoutSeparators, isFeatureAllowed } from '@utils';
 
 const urlRegex =
@@ -17,12 +18,14 @@ const isAuthorized = async (member: GuildMember) => {
 };
 
 export const onLinkSend = async (msg: Message<true>) => {
+  const t = await onUserTranslate(msg.guild.id, msg.author.id);
+
   if (!(await isFeatureAllowed('blockLinks', msg.guild.id)) || (await isAuthorized(msg.member!))) return;
 
   const isUrl = msg.content.split(' ').some((part) => urlRegex.test(part) && !isGifOrSticker(part));
   if (!isUrl) return;
 
-  msg.reply('it is forbidden to send links here!').then((repliedMsg) => {
+  msg.reply(t('linkBlocker.blocked')).then((repliedMsg) => {
     msg.delete();
     setTimeout(() => repliedMsg.delete(), 5000);
   });
