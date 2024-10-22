@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "strictNullChecks": true,
-    "target": "ES5",
+    "target": "ES6",
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "CommonJS",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "typeRoots": ["node_modules/@types", "src/**/*.d.ts"],
     "outDir": "dist/",
     "resolveJsonModule": true,

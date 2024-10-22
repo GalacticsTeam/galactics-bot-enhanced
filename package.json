@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Galactics Official bot",
   "main": "index.ts",
-  "type": "module",
   "scripts": {
     "dev": "tsx watch src/",
     "test": "tsc && eslint && prettier --check .",
-    "build": "tsc --noEmit false --outDir dist/",
+    "build": "tsc --noEmit false --outDir dist/ && tsc-alias",
     "start": "npm run build && node ./dist/index.js",
     "server": "cd ./localdb && npm run server",
     "lint": "eslint .",
@@ -40,6 +39,7 @@
     "globals": "^15.9.0",
     "husky": "^9.0.11",
     "prettier": "^3.3.3",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.11.0",
     "typescript-eslint": "^8.5.0"
   },
