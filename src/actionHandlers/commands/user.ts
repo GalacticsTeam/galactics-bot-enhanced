@@ -2,15 +2,20 @@ import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 
 import { getEmbed } from '@utils';
 import { getUserSchemaItem } from '@db';
+import { onUserTranslate } from '@i18n/onTranslate';
+import { onFormatNumber } from '@handlers/onFormat';
 
 import type { Command } from './types';
 
 export const user: Command = async (interaction) => {
   const { user, guild, options } = interaction;
+  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
 
   const guildUser = guild.members.cache.get(options.getUser('user')?.id ?? user.id);
+  if (!guildUser) return interaction.reply({ content: t('error.userNotSet'), ephemeral: true });
 
-  if (!guildUser) return interaction.reply({ content: 'Invalid User', ephemeral: true });
+  const preferredLanguage = await getUserSchemaItem(guild.id, guildUser.id, 'language');
+  const formatNumber = onFormatNumber(preferredLanguage);
 
   const color = await getEmbed(guild.id, 'color');
   const warns = await getUserSchemaItem(guild.id, guildUser.id, 'warns');
@@ -21,15 +26,20 @@ export const user: Command = async (interaction) => {
     embeds: [
       new EmbedBuilder()
         .addFields(
-          { name: 'Warns count:', value: `${warns.number}`, inline: false },
+          { name: `${t('userInfo.warnsCount')}:`, value: `${formatNumber(warns.number)}`, inline: true },
           {
-            name: 'Joined Discord:',
-            value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
+            name: `${t('name.preferredLanguage')}:`,
+            value: t(`name.${preferredLanguage}`),
             inline: true,
           },
           {
-            name: 'Joined Server:',
-            value: `**<t:${parseInt(`${guildUser.joinedTimestamp ?? 0 / 1000}`, 10)}:R>**`,
+            name: `${t('userInfo.lastTimeTouchedGrass')}:`,
+            value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
+            inline: false,
+          },
+          {
+            name: `${t('userInfo.joinedServer')}:`,
+            value: `**<t:${parseInt(`${(guildUser.joinedTimestamp ?? 0) / 1000}`, 10)}:R>**`,
             inline: true,
           }
         )

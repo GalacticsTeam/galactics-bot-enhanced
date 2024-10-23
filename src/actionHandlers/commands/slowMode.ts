@@ -1,20 +1,21 @@
 import { ApplicationCommandOptionType, ChannelType } from 'discord.js';
 
+import { onUserTranslate } from '@i18n/onTranslate';
+
 import type { Command } from './types';
 
-export const slowMode: Command = (interaction) => {
+export const slowMode: Command = async (interaction) => {
   const { options, channel } = interaction;
+  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
 
   if (channel?.type !== ChannelType.GuildText) return;
 
   const duration = options.getInteger('duration', true);
 
-  channel.setRateLimitPerUser(duration, 'Change slow mode').then(() =>
-    interaction.reply({
-      content: duration ? `Channel slow mode is set to ${duration}s` : `Slow mode has been removed`,
-      ephemeral: true,
-    })
-  );
+  const content = duration ? t('slowMode.set', { time: duration }) : t('slowMode.disabled');
+
+  // TODO: Add optional reason for slow mode
+  channel.setRateLimitPerUser(duration, 'Change slow mode').then(() => interaction.reply({ content, ephemeral: true }));
 };
 
 slowMode.create = {

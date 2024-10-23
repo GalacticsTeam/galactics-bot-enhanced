@@ -1,6 +1,7 @@
 import type { GuildApplicationCommandManager } from 'discord.js';
 
 import { getCommandIdentifierIndex, isFeatureAllowed } from '@utils';
+import { onUserTranslate } from '@i18n/onTranslate';
 
 import { commands } from './commands';
 import type { CommandInteraction, Interaction, InteractionCreate, InteractionName } from './types';
@@ -15,8 +16,10 @@ export const commandsHandler = (interaction: CommandInteraction) => {
 };
 
 const createCommandFn = async (interaction: CommandInteraction, command: Interaction[number]) => {
+  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+
   if (!(await isFeatureAllowed(command.type, interaction.guild.id)))
-    return interaction.reply({ content: command.name + ' is disabled in this server.', ephemeral: true });
+    return interaction.reply({ content: t('error.commandIsDisabled', { command: command.name }), ephemeral: true });
 
   command.interaction(interaction);
 };

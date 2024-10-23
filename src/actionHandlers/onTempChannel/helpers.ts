@@ -1,9 +1,10 @@
 import { ActivityType, ChannelType, Guild, GuildMember } from 'discord.js';
 
 import { setLocalDBItem } from '@localdb';
+import { onUserTranslate } from '@i18n/onTranslate';
 
 export const createChannel = async (guild: Guild, categoryId: string, member: GuildMember) => {
-  const activityName = getUserActivity(member);
+  const activityName = await getUserActivity(member);
 
   const channel = await guild.channels.create({
     name: activityName,
@@ -21,7 +22,9 @@ export const createChannel = async (guild: Guild, categoryId: string, member: Gu
   member.voice.setChannel(channel).catch();
 };
 
-export const getUserActivity = (member: GuildMember) => {
+export const getUserActivity = async (member: GuildMember) => {
+  const t = await onUserTranslate(member.guild.id, member.id);
+
   const activities = member.presence?.activities?.filter(
     (activity) =>
       activity.type !== ActivityType.Custom &&
@@ -29,7 +32,7 @@ export const getUserActivity = (member: GuildMember) => {
       activity.name !== 'Hang Status'
   );
 
-  if (!activities?.length) return `｜ Chatting`;
+  if (!activities?.length) return `｜ ${t('name.chatting')}`;
 
   return `｜ ${activities[0].name}`;
 };

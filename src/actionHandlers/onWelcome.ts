@@ -4,6 +4,9 @@ import Jimp from 'jimp';
 import { getServerSchemaItem } from '@db';
 import { isFeatureAllowed } from '@utils';
 import { getLocalDBItem, setLocalDBItem } from '@localdb';
+import { onUserTranslate } from '@i18n/onTranslate';
+
+const welcomeImageSRC = 'src/assets/welcomeImage.png';
 
 export const onWelcome = async (member: GuildMember) => {
   if (!(await isFeatureAllowed('welcome', member.guild.id))) return;
@@ -20,20 +23,23 @@ export const onWelcome = async (member: GuildMember) => {
   const channels = await getServerSchemaItem(member.guild.id, 'channels');
   if (!channels.welcome) return;
 
+  const t = await onUserTranslate(member.guild.id, member.id);
+
   const welcomeChannel = member.guild.channels.cache.get(channels.welcome);
   if (welcomeChannel?.type !== ChannelType.GuildText) return;
 
-  const welcomeImage = (await Jimp.read('src/assets/welcomeImage.png')).scale(0.2);
+  const welcomeImage = (await Jimp.read(welcomeImageSRC)).scale(0.2);
   await addUserAvatar(welcomeImage, member);
   const welcomeImageBuffer = await welcomeImage.getBufferAsync('image/png');
 
   await welcomeChannel.send({ files: [welcomeImageBuffer] }).then(() => {
-    welcomeChannel.send(`
-      >>>       \`#\` **Welcome** ${userMention(member.id)} to out server !
-      \`#\` We inform u to read our **rules** \`:\` ${channelMention(channels.rules ?? 'Not Set')}
-      \`#\` Total members \`:\` **${member.guild.memberCount}**
-      \`#\` Enjoy with us :heart_on_fire:
-        `);
+    welcomeChannel.send(
+      t('welcome.message', {
+        user: userMention(member.id),
+        rolesChannel: channelMention(channels.rules ?? 'Not Set'),
+        membersCount: member.guild.memberCount,
+      })
+    );
   });
 };
 

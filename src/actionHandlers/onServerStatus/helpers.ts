@@ -16,6 +16,6 @@ export const getStatusCount = async (guild: Guild, status: Status) => {
       // TODO: Implement YouTube status count
       if (!status.value) return null;
 
-      return status.value;
+      return 0;
   }
 };

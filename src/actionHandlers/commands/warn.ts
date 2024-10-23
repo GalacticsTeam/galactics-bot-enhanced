@@ -2,11 +2,14 @@ import { ApplicationCommandOptionType, userMention } from 'discord.js';
 
 import { onAutoBan } from '@actionHandlers';
 import { getUserSchemaItem, setUserSchemaItem } from '@db';
+import { onServerTranslate, onUserTranslate } from '@i18n/onTranslate';
 
 import type { Command } from './types';
 
 export const warn: Command = async (interaction) => {
   const action = interaction.options.getSubcommand();
+  const tGuild = await onServerTranslate(interaction.guildId);
+  const tUser = await onUserTranslate(interaction.guildId, interaction.user.id);
 
   const user = interaction.options.getUser('user', true).id;
   const reason = interaction.options.getString('reason');
@@ -16,25 +19,25 @@ export const warn: Command = async (interaction) => {
   switch (action) {
     case 'add':
       await setUserSchemaItem(interaction.guildId, user, 'warns', ({ number, reasons }) => {
-        return { number: number + 1, reasons: [...reasons, `Add: ${reason}`] };
+        return { number: number + 1, reasons: [...reasons, tGuild('warn.reason.add', { reason: reason!! })] };
       }).then(() => onAutoBan(interaction.guild, user));
 
-      return interaction.reply({ content: `Added a warn for ${userMention(user)}`, ephemeral: true });
+      return interaction.reply({ content: tUser('warn.added', { user: userMention(user) }), ephemeral: true });
 
     case 'remove':
-      if (!count) return interaction.reply({ content: `This user has no warns`, ephemeral: true });
+      if (!count) return interaction.reply({ content: tUser('warn.remove.noWarns'), ephemeral: true });
 
       await setUserSchemaItem(interaction.guildId, user, 'warns', ({ number, reasons }) => {
-        return { number: number - 1, reasons: [...reasons, `Remove: ${reason}`] };
+        return { number: number - 1, reasons: [...reasons, tGuild('warn.reason.remove', { reason: reason!! })] };
       });
 
-      return interaction.reply({ content: `Removed a warn for ${userMention(user)}`, ephemeral: true });
+      return interaction.reply({ content: tUser('warn.removed', { user: userMention(user) }), ephemeral: true });
 
     case 'list':
-      if (!reasons.length) return interaction.reply({ content: `Warns count: ${count}`, ephemeral: true });
+      if (!reasons.length) return interaction.reply({ content: tUser('warn.list.count', { count }), ephemeral: true });
 
       return interaction.reply({
-        content: `Warns count: ${count} \nReasons:\n${reasons.map((reason) => `> ${reason}`).join('\n')}`,
+        content: `${tUser('warn.list.count', { count })} \n${tUser('name.reasons')}:\n${reasons.map((reason) => `> ${reason}`).join('\n')}`,
       });
   }
 };

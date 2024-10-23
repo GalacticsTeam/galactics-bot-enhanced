@@ -1,3 +1,5 @@
+type Language = 'en' | 'ar';
+
 type Channel =
   | 'logs'
   | 'modLogs'
