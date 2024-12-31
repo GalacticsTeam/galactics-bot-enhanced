@@ -5,12 +5,10 @@ import type { UserConfig } from '@types';
 import consts from './consts';
 
 interface UserSchema extends UserConfig {
-  serverId: string;
   userId: string;
 }
 
 const schema = createSchema<UserSchema>({
-  serverId: String,
   userId: String,
   language: String,
 });
