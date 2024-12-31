@@ -29,7 +29,10 @@ export const birthday: Command = async (interaction) => {
 
       return interaction.reply({
         content: userBirthday
-          ? tUser('birthday.show', { user: user.toString(), date: new Date(userBirthday).toLocaleDateString() })
+          ? tUser('birthday.show', {
+              user: user.toString(),
+              date: `**<t:${parseInt(`${new Date(userBirthday).getTime() / 1000}`, 10)}:R>**`,
+            })
           : tUser('birthday.notSetForUser', { user: user.toString() }),
         ephemeral: true,
       });
