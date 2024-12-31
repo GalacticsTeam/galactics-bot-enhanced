@@ -18,7 +18,7 @@ const isAuthorized = async (member: GuildMember) => {
 };
 
 export const onLinkSend = async (msg: Message<true>) => {
-  const t = await onUserTranslate(msg.guild.id, msg.author.id);
+  const t = await onUserTranslate(msg.author.id);
 
   if (!(await isFeatureAllowed('blockLinks', msg.guild.id)) || (await isAuthorized(msg.member!))) return;
 

@@ -6,7 +6,7 @@ import type { Feature, Property, ServerConfig, Embed } from '@types';
 import { onUserTranslate } from '@i18n/onTranslate';
 
 export const features = async (updatedFeature: Feature, interaction: CommandInteraction) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   await setServerProperty(interaction.guild.id, 'features', (prevFeatures) => ({
     ...prevFeatures,
@@ -38,7 +38,7 @@ export const embeds = async <T extends Embed>(
   newValue: ServerConfig['embeds'][T],
   interaction: CommandInteraction
 ) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   switch (updatedEmbedProp) {
     case 'color':
@@ -68,7 +68,7 @@ export const properties = async <T extends Property>(
   newValue: ServerConfig['properties'][T],
   interaction: CommandInteraction
 ) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   switch (updatedProperty) {
     case 'autoBanTrigger':
@@ -98,7 +98,7 @@ export const properties = async <T extends Property>(
 };
 
 export const channels = async (updatedChannel: Channel, newValue: string, interaction: CommandInteraction) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   return setServerProperty(interaction.guild.id, 'channels', (prevChannels) => ({
     ...prevChannels,
@@ -116,7 +116,7 @@ export const channels = async (updatedChannel: Channel, newValue: string, intera
 };
 
 export const roles = async (updatedRole: Role, newValue: string, interaction: CommandInteraction) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   return setServerProperty(interaction.guild.id, 'roles', (prevRoles) => ({
     ...prevRoles,

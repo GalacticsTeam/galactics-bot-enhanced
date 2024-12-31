@@ -16,7 +16,7 @@ export const commandsHandler = (interaction: CommandInteraction) => {
 };
 
 const createCommandFn = async (interaction: CommandInteraction, command: Interaction[number]) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   if (!(await isFeatureAllowed(command.type, interaction.guild.id)))
     return interaction.reply({ content: t('error.commandIsDisabled', { command: command.name }), ephemeral: true });

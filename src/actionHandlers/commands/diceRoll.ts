@@ -8,9 +8,9 @@ import type { Command } from './types';
 
 export const diceRoll: Command = async (interaction) => {
   const { options } = interaction;
-  const userLanguage = await getUserProperty(interaction.guildId, interaction.user.id, 'language');
+  const userLanguage = await getUserProperty(interaction.user.id, 'language');
 
-  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
   const formatNumber = onFormatNumber(userLanguage);
 
   const maxNumber = options.getInteger('limit') ?? 6;

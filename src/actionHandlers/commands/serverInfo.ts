@@ -9,8 +9,8 @@ import type { Command } from './types';
 
 export const serverInfo: Command = async (interaction) => {
   const { guild } = interaction;
-  const t = await onUserTranslate(guild.id, interaction.user.id);
-  const userLanguage = await getUserProperty(interaction.guildId, interaction.user.id, 'language');
+  const t = await onUserTranslate(interaction.user.id);
+  const userLanguage = await getUserProperty(interaction.user.id, 'language');
 
   const formatNumber = onFormatNumber(userLanguage);
 

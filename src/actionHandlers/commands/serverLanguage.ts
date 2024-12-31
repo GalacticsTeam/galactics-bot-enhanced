@@ -8,7 +8,7 @@ import type { Command } from './types';
 
 export const serverLanguage: Command = async (interaction) => {
   const { guild, options } = interaction;
-  const t = await onUserTranslate(guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   const language = options.getString('language') as Language;
 

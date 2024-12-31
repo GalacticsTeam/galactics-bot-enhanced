@@ -6,7 +6,7 @@ import type { Command } from './types';
 
 export const clearChat: Command = async (interaction) => {
   const { member, channel, options } = interaction;
-  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   if (!channel) return;
 

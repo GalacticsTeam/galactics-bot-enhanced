@@ -9,7 +9,7 @@ import type { Command } from './types';
 export const warn: Command = async (interaction) => {
   const action = interaction.options.getSubcommand();
   const tGuild = await onServerTranslate(interaction.guildId);
-  const tUser = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const tUser = await onUserTranslate(interaction.user.id);
 
   const user = interaction.options.getUser('user', true).id;
   const reason = interaction.options.getString('reason');

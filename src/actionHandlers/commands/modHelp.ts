@@ -9,7 +9,7 @@ export const modHelp: Command = async (interaction) => {
   const { guild, user, channel, options } = interaction;
 
   const tGuild = await onServerTranslate(guild.id);
-  const tUser = await onUserTranslate(guild.id, user.id);
+  const tUser = await onUserTranslate(user.id);
 
   const modLogsChannel = await getChannel(guild, 'modLogs');
   if (!modLogsChannel) return interaction.reply({ content: tUser('error.channelIsNotSet'), ephemeral: true });

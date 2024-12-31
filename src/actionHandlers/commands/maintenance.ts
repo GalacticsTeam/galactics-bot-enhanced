@@ -5,7 +5,7 @@ import type { Command } from './types';
 
 export const maintenance: Command = async (interaction) => {
   const { guild } = interaction;
-  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   interaction.deferReply({ ephemeral: true });
 

@@ -7,7 +7,7 @@ import type { Command } from './types';
 
 export const lockChannel: Command = async (interaction) => {
   const { guild, channel } = interaction;
-  const t = await onUserTranslate(guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   if (!channel) return;
 

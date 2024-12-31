@@ -13,16 +13,14 @@ const schema = createSchema<UserSchema>({
   language: String,
 });
 
-export const getUser = async (serverId: string, userId: string) =>
-  (await UserSchema.findOne({ serverId, userId })) ??
-  (await new UserSchema({ serverId, userId, ...consts.user }).save());
+export const getUser = async (userId: string) =>
+  (await UserSchema.findOne({ userId })) ?? (await new UserSchema({ userId, ...consts.user }).save());
 
 export const getUserProperty = async <T extends keyof UserConfig>(
-  serverId: string,
   userId: string,
   property: T
 ): Promise<UserConfig[T]> => {
-  const user = await getUser(serverId, userId);
+  const user = await getUser(userId);
 
   const filledUserProperty = fillSchemaProperty('user', user.toJSON(), property);
 
@@ -30,12 +28,11 @@ export const getUserProperty = async <T extends keyof UserConfig>(
 };
 
 export const setUserProperty = async <T extends keyof UserConfig>(
-  serverId: string,
   userId: string,
   property: T,
   setCallBack: (previousState: UserConfig[T]) => UserConfig[T]
 ) => {
-  const user = await getUser(serverId, userId);
+  const user = await getUser(userId);
 
   const filledUserProperty = fillSchemaProperty('user', user.toJSON(), property);
   user.$set(property, setCallBack(filledUserProperty));

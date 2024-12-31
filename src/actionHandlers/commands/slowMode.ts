@@ -6,7 +6,7 @@ import type { Command } from './types';
 
 export const slowMode: Command = async (interaction) => {
   const { options, channel } = interaction;
-  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   if (channel?.type !== ChannelType.GuildText) return;
 

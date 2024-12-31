@@ -9,12 +9,12 @@ import type { Command } from './types';
 
 export const user: Command = async (interaction) => {
   const { user, guild, options } = interaction;
-  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   const guildUser = guild.members.cache.get(options.getUser('user')?.id ?? user.id);
   if (!guildUser) return interaction.reply({ content: t('error.userNotSet'), ephemeral: true });
 
-  const preferredLanguage = await getUserProperty(guild.id, guildUser.id, 'language');
+  const preferredLanguage = await getUserProperty(guildUser.id, 'language');
   const formatNumber = onFormatNumber(preferredLanguage);
 
   const color = await getEmbed(guild.id, 'color');

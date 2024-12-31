@@ -23,7 +23,7 @@ export const createChannel = async (guild: Guild, categoryId: string, member: Gu
 };
 
 export const getUserActivity = async (member: GuildMember) => {
-  const t = await onUserTranslate(member.guild.id, member.id);
+  const t = await onUserTranslate(member.id);
 
   const activities = member.presence?.activities?.filter(
     (activity) =>

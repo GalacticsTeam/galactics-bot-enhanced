@@ -31,8 +31,8 @@ export const onServerTranslate = async (guildId: string) => {
   return onTranslate(language);
 };
 
-export const onUserTranslate = async (guildId: string, userId: string) => {
-  const language = await getUserProperty(guildId, userId, 'language');
+export const onUserTranslate = async (userId: string) => {
+  const language = await getUserProperty(userId, 'language');
 
   return onTranslate(language);
 };

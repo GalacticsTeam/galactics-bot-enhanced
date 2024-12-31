@@ -7,7 +7,7 @@ import type { Command } from './types';
 
 export const morseTranslate: Command = async (interaction) => {
   const { options } = interaction;
-  const t = await onUserTranslate(interaction.guildId, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   const text = options.getString('text', true);
 

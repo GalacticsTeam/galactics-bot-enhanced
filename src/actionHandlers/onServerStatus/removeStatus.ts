@@ -14,8 +14,8 @@ import { onUserTranslate } from '@i18n/onTranslate';
 
 import type { Status } from './types';
 
-export const removeStatusMenu = async (statuses: Status[], serverId: string, userId: string) => {
-  const t = await onUserTranslate(serverId, userId);
+export const removeStatusMenu = async (statuses: Status[], userId: string) => {
+  const t = await onUserTranslate(userId);
 
   const statusesSelectMenu = new StringSelectMenuBuilder()
     .setCustomId('starter')
@@ -28,7 +28,7 @@ export const removeStatusMenu = async (statuses: Status[], serverId: string, use
 };
 
 export const removeStatusMenuHandler = async (interaction: InteractionResponse<true>) => {
-  const t = await onUserTranslate(interaction.interaction.guild.id, interaction.interaction.user.id);
+  const t = await onUserTranslate(interaction.interaction.user.id);
 
   const statusToRemove = await interaction.awaitMessageComponent({
     componentType: ComponentType.StringSelect,
@@ -57,7 +57,7 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<t
 };
 
 export const removeStatus = async (interaction: CommandInteraction) => {
-  const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
+  const t = await onUserTranslate(interaction.user.id);
 
   const statuses = await getProperty(interaction.guild.id, 'statuses');
   if (!statuses.length) return interaction.reply({ content: t('serverStatus.remove.noStatuses'), ephemeral: true });
@@ -65,7 +65,7 @@ export const removeStatus = async (interaction: CommandInteraction) => {
   interaction
     .reply({
       content: t('serverStatus.remove.pleaseChoose'),
-      components: [await removeStatusMenu(statuses, interaction.guild.id, interaction.user.id)],
+      components: [await removeStatusMenu(statuses, interaction.user.id)],
       ephemeral: true,
     })
     .then(removeStatusMenuHandler);

@@ -12,7 +12,7 @@ export const preferredLanguage: Command = async (interaction) => {
   const language = options.getString('language') as Language;
   const t = onTranslate(language);
 
-  await setUserProperty(guild.id, user.id, 'language', () => language).then((language) => {
+  await setUserProperty(user.id, 'language', () => language).then((language) => {
     interaction.reply({ content: t('preferredLanguage.set', { language: t(`name.${language}`) }), ephemeral: true });
   });
 };

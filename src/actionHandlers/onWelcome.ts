@@ -23,7 +23,7 @@ export const onWelcome = async (member: GuildMember) => {
   const channels = await getServerProperty(member.guild.id, 'channels');
   if (!channels.welcome) return;
 
-  const t = await onUserTranslate(member.guild.id, member.id);
+  const t = await onUserTranslate(member.id);
 
   const welcomeChannel = member.guild.channels.cache.get(channels.welcome);
   if (welcomeChannel?.type !== ChannelType.GuildText) return;
