@@ -15,6 +15,7 @@ export const user: Command = async (interaction) => {
   if (!guildUser) return interaction.reply({ content: t('error.userNotSet'), ephemeral: true });
 
   const preferredLanguage = await getUserProperty(guildUser.id, 'language');
+  const birthday = await getUserProperty(guildUser.id, 'birthday');
   const formatNumber = onFormatNumber(preferredLanguage);
 
   const color = await getEmbed(guild.id, 'color');
@@ -26,12 +27,17 @@ export const user: Command = async (interaction) => {
     embeds: [
       new EmbedBuilder()
         .addFields(
-          { name: `${t('userInfo.warnsCount')}:`, value: `${formatNumber(warns.number)}`, inline: true },
           {
             name: `${t('name.preferredLanguage')}:`,
             value: t(`name.${preferredLanguage}`),
             inline: true,
           },
+          {
+            name: `${t('name.birthday')}:`,
+            value: `${birthday ? `**<t:${parseInt(`${new Date(birthday).getTime() / 1000}`, 10)}:R>**` : t('birthday.notSet')}`,
+            inline: true,
+          },
+          { name: `${t('userInfo.warnsCount')}:`, value: `${formatNumber(warns.number)}` },
           {
             name: `${t('userInfo.lastTimeTouchedGrass')}:`,
             value: `**<t:${parseInt(`${guildUser.user.createdTimestamp / 1000}`, 10)}:R>**`,
