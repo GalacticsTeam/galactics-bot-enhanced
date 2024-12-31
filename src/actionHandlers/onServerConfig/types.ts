@@ -1,8 +1,8 @@
-import type { DefaultServerConfig, Embed, Feature, Property } from '@types';
+import type { ServerConfig, Embed, Feature, Property } from '@types';
 
-export type ServerConfigOption = keyof Omit<DefaultServerConfig, 'isMaintenance' | 'isDevServer'> | 'list';
+export type ServerConfigOption = keyof Omit<ServerConfig, 'isMaintenance' | 'isDevServer'> | 'list';
 
-export type ServerConfig<T extends ServerConfigOption> = T extends 'features'
+export type ServerConfigProperty<T extends ServerConfigOption> = T extends 'features'
   ? Feature
   : T extends 'channels'
     ? Channel
@@ -13,5 +13,5 @@ export type ServerConfig<T extends ServerConfigOption> = T extends 'features'
         : T extends 'embeds'
           ? Embed
           : T extends 'list'
-            ? keyof DefaultServerConfig
+            ? keyof ServerConfig
             : never;

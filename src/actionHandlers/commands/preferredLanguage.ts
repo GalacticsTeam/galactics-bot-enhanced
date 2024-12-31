@@ -1,18 +1,18 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
 import { LANGUAGES } from '@utils/const';
-import { setUserSchemaItem } from '@db/UserSchema';
-import { onUserTranslate } from '@i18n/onTranslate';
+import { setUserProperty } from '@db/UserSchema';
+import { onTranslate } from '@i18n/onTranslate';
 
 import type { Command } from './types';
 
 export const preferredLanguage: Command = async (interaction) => {
   const { user, guild, options } = interaction;
-  const t = await onUserTranslate(guild.id, user.id);
 
   const language = options.getString('language') as Language;
+  const t = onTranslate(language);
 
-  await setUserSchemaItem(guild.id, user.id, 'language', () => language).then((language) => {
+  await setUserProperty(guild.id, user.id, 'language', () => language).then((language) => {
     interaction.reply({ content: t('preferredLanguage.set', { language: t(`name.${language}`) }), ephemeral: true });
   });
 };

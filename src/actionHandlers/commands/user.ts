@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 
 import { getEmbed } from '@utils';
-import { getUserSchemaItem } from '@db';
+import { getServerUserProperty, getUserProperty } from '@db';
 import { onUserTranslate } from '@i18n/onTranslate';
 import { onFormatNumber } from '@handlers/onFormat';
 
@@ -14,11 +14,11 @@ export const user: Command = async (interaction) => {
   const guildUser = guild.members.cache.get(options.getUser('user')?.id ?? user.id);
   if (!guildUser) return interaction.reply({ content: t('error.userNotSet'), ephemeral: true });
 
-  const preferredLanguage = await getUserSchemaItem(guild.id, guildUser.id, 'language');
+  const preferredLanguage = await getUserProperty(guild.id, guildUser.id, 'language');
   const formatNumber = onFormatNumber(preferredLanguage);
 
   const color = await getEmbed(guild.id, 'color');
-  const warns = await getUserSchemaItem(guild.id, guildUser.id, 'warns');
+  const warns = await getServerUserProperty(guild.id, guildUser.id, 'warns');
 
   const userAvatarUrl = guildUser.user.avatarURL({ size: 2048 });
 

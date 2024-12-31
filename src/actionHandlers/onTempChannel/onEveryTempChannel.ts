@@ -1,7 +1,7 @@
 import { ChannelType } from 'discord.js';
 
 import { isFeatureAllowed } from '@utils';
-import { getServerSchemaItem } from '@db';
+import { getServerProperty } from '@db';
 import type { IntervalFn } from '@actions/types';
 
 import { createChannel } from './helpers';
@@ -14,7 +14,7 @@ export const onEveryTempChannel: IntervalFn = (client) => {
       tempChannelCategory: categoryId,
       tempChannelGenerator: generatorId,
       tempChannelCommands: commandsId,
-    } = await getServerSchemaItem(server.id, 'channels');
+    } = await getServerProperty(server.id, 'channels');
 
     if (!categoryId || !generatorId || !commandsId) return;
 

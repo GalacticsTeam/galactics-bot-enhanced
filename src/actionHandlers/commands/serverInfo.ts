@@ -2,7 +2,7 @@ import { ChannelType, EmbedBuilder } from 'discord.js';
 
 import { getEmbed, getProperty } from '@utils';
 import { onUserTranslate } from '@i18n/onTranslate';
-import { getUserSchemaItem } from '@db/index';
+import { getUserProperty } from '@db/index';
 import { onFormatNumber } from '@handlers/onFormat';
 
 import type { Command } from './types';
@@ -10,7 +10,7 @@ import type { Command } from './types';
 export const serverInfo: Command = async (interaction) => {
   const { guild } = interaction;
   const t = await onUserTranslate(guild.id, interaction.user.id);
-  const userLanguage = await getUserSchemaItem(interaction.guildId, interaction.user.id, 'language');
+  const userLanguage = await getUserProperty(interaction.guildId, interaction.user.id, 'language');
 
   const formatNumber = onFormatNumber(userLanguage);
 

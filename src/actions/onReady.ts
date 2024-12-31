@@ -2,7 +2,7 @@ import type { Client } from 'discord.js';
 
 import { isDevMode } from '@utils';
 import { getLocalDBStatus } from '@localdb';
-import { getServerSchema, runDB } from '@db';
+import { getServer, runDB } from '@db';
 import { createAllCommands, onCustomStatus } from '@actionHandlers';
 
 export const onReady = async (client: Client<true>) => {
@@ -19,7 +19,7 @@ export const onReady = async (client: Client<true>) => {
     const commands = server.commands;
 
     // Server Schema
-    await getServerSchema(server.id);
+    await getServer(server.id);
 
     // Command Creation
     createAllCommands(commands);

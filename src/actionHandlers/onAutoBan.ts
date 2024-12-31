@@ -1,6 +1,6 @@
 import { ChannelType, EmbedBuilder, Guild } from 'discord.js';
 
-import { getServerSchema, getUserSchemaItem, setUserSchemaItem } from '@db';
+import { getServer, getServerUserProperty, setServerUserProperty } from '@db';
 import { isFeatureAllowed } from '@utils';
 import { onServerTranslate } from '@i18n/onTranslate';
 
@@ -12,9 +12,9 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
     properties: { autoBanTrigger },
     channels: { logs: logsChannelId },
     embeds: { color },
-  } = await getServerSchema(guild.id);
+  } = await getServer(guild.id);
 
-  const userWarns = await getUserSchemaItem(guild.id, memberId, 'warns');
+  const userWarns = await getServerUserProperty(guild.id, memberId, 'warns');
 
   if (userWarns.number < autoBanTrigger) return;
 
@@ -25,7 +25,7 @@ export const onAutoBan = async (guild: Guild, memberId: string) => {
 
     if (logsChannel?.type !== ChannelType.GuildText) return;
 
-    await setUserSchemaItem(guild.id, memberId, 'warns', (prevWarns) => ({
+    await setServerUserProperty(guild.id, memberId, 'warns', (prevWarns) => ({
       number: 0,
       reasons: [...prevWarns.reasons, t('autoBan.autoBanReset')],
     }));

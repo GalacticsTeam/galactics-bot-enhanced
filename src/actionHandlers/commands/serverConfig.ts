@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
-import { defaultServerConfig } from '@utils';
-import type { DefaultServerConfig, Embed } from '@types';
+import consts from '@db/consts';
+import type { ServerConfig, Embed } from '@types';
 import type { ServerConfigOption } from '@actionHandlers/onServerConfig/types';
 import { channels, embeds, features, list, properties, roles, getUpdatedItem } from '@actionHandlers';
 
@@ -20,7 +20,7 @@ export const serverConfig: Command = (interaction) => {
       return features(updatedFeature, interaction);
 
     case 'embeds':
-      const updatedEmbedValue = interaction.options.getString('value') as DefaultServerConfig['embeds'][Embed];
+      const updatedEmbedValue = interaction.options.getString('value') as ServerConfig['embeds'][Embed];
       const updatedEmbedProp = getUpdatedItem(
         serverConfigItem,
         (embedProp) => embedProp.toLowerCase() === interaction.options.getString('name')
@@ -79,7 +79,7 @@ serverConfig.create = {
           description: 'Feature name to toggle',
           type: ApplicationCommandOptionType.String,
           required: true,
-          choices: Object.keys(defaultServerConfig.features)
+          choices: Object.keys(consts.server.features)
             .filter((feature) => feature !== 'serverConfig')
             .map((feature) => ({ name: feature.toLowerCase(), value: feature.toLowerCase() })),
         },
@@ -95,7 +95,7 @@ serverConfig.create = {
           description: 'Embed prop name',
           type: ApplicationCommandOptionType.String,
           required: true,
-          choices: Object.keys(defaultServerConfig.embeds).map((embedProp) => ({
+          choices: Object.keys(consts.server.embeds).map((embedProp) => ({
             name: embedProp.toLowerCase(),
             value: embedProp.toLowerCase(),
           })),
@@ -118,7 +118,7 @@ serverConfig.create = {
           description: 'Property name',
           type: ApplicationCommandOptionType.String,
           required: true,
-          choices: Object.keys(defaultServerConfig.properties).map((propName) => ({
+          choices: Object.keys(consts.server.properties).map((propName) => ({
             name: propName.toLowerCase(),
             value: propName.toLowerCase(),
           })),
@@ -141,7 +141,7 @@ serverConfig.create = {
           description: 'Channel to update its id',
           type: ApplicationCommandOptionType.String,
           required: true,
-          choices: Object.keys(defaultServerConfig.channels).map((channelId) => ({
+          choices: Object.keys(consts.server.channels).map((channelId) => ({
             name: channelId.toLowerCase(),
             value: channelId.toLowerCase(),
           })),
@@ -164,7 +164,7 @@ serverConfig.create = {
           description: 'Role to update its id',
           type: ApplicationCommandOptionType.String,
           required: true,
-          choices: Object.keys(defaultServerConfig.roles).map((roleId) => ({
+          choices: Object.keys(consts.server.roles).map((roleId) => ({
             name: roleId.toLowerCase(),
             value: roleId.toLowerCase(),
           })),
@@ -188,7 +188,7 @@ serverConfig.create = {
           description: 'Server configuration item',
           type: ApplicationCommandOptionType.String,
           required: true,
-          choices: Object.keys(defaultServerConfig).map((item) => ({
+          choices: Object.keys(consts.server).map((item) => ({
             name: item.toLowerCase(),
             value: item.toLowerCase(),
           })),

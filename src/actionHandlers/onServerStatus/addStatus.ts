@@ -1,6 +1,6 @@
 import { v4 as id } from 'uuid';
 
-import { setServerSchemaItem } from '@db';
+import { setServerProperty } from '@db';
 import type { CommandInteraction } from '@commands/types';
 import { onUserTranslate } from '@i18n/onTranslate';
 
@@ -20,7 +20,7 @@ export const addStatus = async (title: string, type: StatusType, interaction: Co
 };
 
 export const addSchemaStatus = (serverId: string, status: Status) =>
-  setServerSchemaItem(serverId, 'properties', (prevProperties) => ({
+  setServerProperty(serverId, 'properties', (prevProperties) => ({
     ...prevProperties,
     statuses: [...prevProperties.statuses, status],
   }));

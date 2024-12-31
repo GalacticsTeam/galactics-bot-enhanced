@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, userMention } from 'discord.js';
 
 import { onAutoBan } from '@actionHandlers';
-import { getUserSchemaItem, setUserSchemaItem } from '@db';
+import { getServerUserProperty, setServerUserProperty } from '@db';
 import { onServerTranslate, onUserTranslate } from '@i18n/onTranslate';
 
 import type { Command } from './types';
@@ -14,22 +14,24 @@ export const warn: Command = async (interaction) => {
   const user = interaction.options.getUser('user', true).id;
   const reason = interaction.options.getString('reason');
 
-  const { number: count, reasons: reasons } = await getUserSchemaItem(interaction.guildId, user, 'warns');
+  const { number: count, reasons: reasons } = await getServerUserProperty(interaction.guildId, user, 'warns');
 
   switch (action) {
     case 'add':
-      await setUserSchemaItem(interaction.guildId, user, 'warns', ({ number, reasons }) => {
-        return { number: number + 1, reasons: [...reasons, tGuild('warn.reason.add', { reason: reason!! })] };
-      }).then(() => onAutoBan(interaction.guild, user));
+      await setServerUserProperty(interaction.guildId, user, 'warns', ({ number, reasons }) => ({
+        number: number + 1,
+        reasons: [...reasons, tGuild('warn.reason.add', { reason: reason! })],
+      })).then(() => onAutoBan(interaction.guild, user));
 
       return interaction.reply({ content: tUser('warn.added', { user: userMention(user) }), ephemeral: true });
 
     case 'remove':
       if (!count) return interaction.reply({ content: tUser('warn.remove.noWarns'), ephemeral: true });
 
-      await setUserSchemaItem(interaction.guildId, user, 'warns', ({ number, reasons }) => {
-        return { number: number - 1, reasons: [...reasons, tGuild('warn.reason.remove', { reason: reason!! })] };
-      });
+      await setServerUserProperty(interaction.guildId, user, 'warns', ({ number, reasons }) => ({
+        number: number - 1,
+        reasons: [...reasons, tGuild('warn.reason.remove', { reason: reason!! })],
+      }));
 
       return interaction.reply({ content: tUser('warn.removed', { user: userMention(user) }), ephemeral: true });
 

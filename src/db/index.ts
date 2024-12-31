@@ -6,6 +6,7 @@ import { isDevMode } from '@utils';
 
 export * from './ServerSchema';
 export * from './UserSchema';
+export * from './ServerUserSchema';
 export * from './helpers';
 
 configDotenv();

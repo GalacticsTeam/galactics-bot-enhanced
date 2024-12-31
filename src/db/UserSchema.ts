@@ -1,55 +1,49 @@
-import { Schema, model } from 'mongoose';
+import { model } from 'mongoose';
 
-import { setDefaultSchemaItem } from '@db';
-import { defaultUserConfig } from '@utils';
-import type { DefaultUserConfig } from '@types';
+import { createSchema, fillSchemaProperty } from '@db';
+import type { UserConfig } from '@types';
+import consts from './consts';
 
-import type { ReturnedSchema } from './types';
-
-interface DefaultUserSchema extends DefaultUserConfig {
+interface UserSchema extends UserConfig {
   serverId: string;
   userId: string;
 }
 
-export const UserSchema = model<DefaultUserSchema>(
-  'user',
-  new Schema<DefaultUserSchema>({
-    serverId: String,
-    userId: String,
-    language: String,
-    warns: { number: Number, reasons: [String] },
-  })
-);
+const schema = createSchema<UserSchema>({
+  serverId: String,
+  userId: String,
+  language: String,
+});
 
-export const getUserSchema = async (serverId: string, userId: string): Promise<ReturnedSchema<DefaultUserSchema>> =>
+export const getUser = async (serverId: string, userId: string) =>
   (await UserSchema.findOne({ serverId, userId })) ??
-  (await new UserSchema({ serverId, userId, ...defaultUserConfig }).save());
+  (await new UserSchema({ serverId, userId, ...consts.user }).save());
 
-export const getUserSchemaItem = async <T extends keyof DefaultUserConfig>(
+export const getUserProperty = async <T extends keyof UserConfig>(
   serverId: string,
   userId: string,
-  itemName: T
-): Promise<DefaultUserConfig[T]> => {
-  const user = await getUserSchema(serverId, userId);
+  property: T
+): Promise<UserConfig[T]> => {
+  const user = await getUser(serverId, userId);
 
-  setDefaultSchemaItem(user, itemName);
+  const filledUserProperty = fillSchemaProperty('user', user.toJSON(), property);
 
-  return user[itemName];
+  return filledUserProperty;
 };
 
-export const setUserSchemaItem = async <T extends keyof DefaultUserConfig>(
+export const setUserProperty = async <T extends keyof UserConfig>(
   serverId: string,
   userId: string,
-  itemName: T,
-  setCallBack: (previousState: DefaultUserConfig[T]) => DefaultUserConfig[T]
+  property: T,
+  setCallBack: (previousState: UserConfig[T]) => UserConfig[T]
 ) => {
-  const user = await getUserSchema(serverId, userId);
+  const user = await getUser(serverId, userId);
 
-  setDefaultSchemaItem(user, itemName);
-
-  user.$set(itemName, setCallBack(user[itemName]));
+  const filledUserProperty = fillSchemaProperty('user', user.toJSON(), property);
+  user.$set(property, setCallBack(filledUserProperty));
 
   user.save();
-
-  return user[itemName];
+  return user[property];
 };
+
+const UserSchema = model('user', schema);

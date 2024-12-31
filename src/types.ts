@@ -3,6 +3,7 @@ import type { ColorResolvable } from 'discord.js';
 import type { TempChannel } from '@actionHandlers';
 import type { InteractionIdentifier } from '@commands/types';
 import type { Status, StatusChannel } from '@actionHandlers/onServerStatus/types';
+import type { Warns } from '@db/schemas';
 
 export type Feature =
   | 'ping'
@@ -14,7 +15,6 @@ export type Feature =
   | 'tempChannels'
   | 'roleOrganize'
   | InteractionIdentifier;
-
 export type Embed = keyof Embeds;
 export type Property = keyof Properties;
 
@@ -37,7 +37,7 @@ export interface LocalDBServerConfig {
   tempChannels: TempChannel[];
 }
 
-export interface DefaultServerConfig extends LocalDBServerConfig {
+export interface ServerConfig {
   features: Features;
   isMaintenance: boolean;
   isDevServer: boolean;
@@ -47,12 +47,12 @@ export interface DefaultServerConfig extends LocalDBServerConfig {
   properties: Properties;
 }
 
-export interface DefaultUserConfig {
+export interface UserConfig {
   language: Language;
-  warns: {
-    number: number;
-    reasons: string[];
-  };
+}
+
+export interface ServerUserConfig {
+  warns: Warns;
 }
 
 export type CheckDuplicates<T extends unknown[], U extends unknown[] = []> = T extends [infer F, ...infer R]

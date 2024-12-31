@@ -1,6 +1,5 @@
+import type { CheckDuplicates, Embeds, Feature, Properties } from '@types';
 import { ActivityType, type ActivityOptions } from 'discord.js';
-
-import type { CheckDuplicates, DefaultUserConfig, Embeds, Feature, LocalDBServerConfig, Properties } from '@types';
 
 const allowedFeatures = ['serverConfig'] as const satisfies Feature[];
 
@@ -42,9 +41,7 @@ const channels = [
 
 const roles = ['bot', 'member', 'maintenance', 'lowestAuthorizedRole'] as const satisfies Role[];
 
-const embeds = {
-  color: '#000000',
-} as const satisfies Embeds;
+const embeds = { color: '#000000' } as const satisfies Embeds;
 
 const properties = {
   autoBanTrigger: 5,
@@ -53,20 +50,6 @@ const properties = {
   language: 'en',
 } as const satisfies Properties;
 
-const localDB = {
-  lastJoinedIds: [],
-  statusChannels: [],
-  tempChannels: [],
-} as const satisfies LocalDBServerConfig;
-
-const user = {
-  language: 'en',
-  warns: {
-    number: 0,
-    reasons: [],
-  },
-} as const satisfies DefaultUserConfig;
-
 const customStatus = [
   { name: 'Galactics bot', type: ActivityType.Playing },
   { name: 'Developed by gt dev team', type: ActivityType.Watching },
@@ -74,28 +57,22 @@ const customStatus = [
   { name: 'need help? /mod-help', type: ActivityType.Watching },
 ] as const satisfies ActivityOptions[];
 
-interface Configs {
+export interface Validate {
   notAllowedFeatures: CheckDuplicates<typeof notAllowedFeatures>;
   allowedFeatures: CheckDuplicates<typeof allowedFeatures>;
   channels: CheckDuplicates<typeof channels>;
   roles: CheckDuplicates<typeof roles>;
-  embeds: Embeds;
-  properties: Properties;
-  localDB: LocalDBServerConfig;
-  user: DefaultUserConfig;
   customStatus: CheckDuplicates<typeof customStatus>;
+  properties: Properties;
+  embeds: Embeds;
 }
 
-const configs: Configs = {
+export default {
   notAllowedFeatures,
   allowedFeatures,
   channels,
   roles,
   embeds,
   properties,
-  localDB,
-  user,
   customStatus,
-};
-
-export default configs;
+} satisfies Validate;

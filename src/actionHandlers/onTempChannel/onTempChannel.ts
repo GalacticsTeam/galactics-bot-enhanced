@@ -1,6 +1,6 @@
 import { ChannelType, VoiceState } from 'discord.js';
 
-import { getServerSchemaItem } from '@db';
+import { getServerProperty } from '@db';
 import { isFeatureAllowed } from '@utils';
 import { getLocalDBItem, setLocalDBItem } from '@localdb';
 
@@ -15,7 +15,7 @@ export const onTempChannel = async (oldState: VoiceState, newState: VoiceState) 
     tempChannelCategory: categoryId,
     tempChannelGenerator: generatorId,
     tempChannelCommands: commandsId,
-  } = await getServerSchemaItem(voiceState.guild.id, 'channels');
+  } = await getServerProperty(voiceState.guild.id, 'channels');
 
   if (!categoryId || !generatorId || !commandsId) return;
 
