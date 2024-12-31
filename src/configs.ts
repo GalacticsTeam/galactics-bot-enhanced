@@ -26,6 +26,7 @@ const notAllowedFeatures = [
   'morseTranslate',
   'preferredLanguage',
   'serverLanguage',
+  'birthday',
 ] as const satisfies Exclude<Feature, (typeof allowedFeatures)[number]>[];
 
 const channels = [

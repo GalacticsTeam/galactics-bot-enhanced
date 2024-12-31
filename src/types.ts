@@ -49,6 +49,7 @@ export interface ServerConfig {
 
 export interface UserConfig {
   language: Language;
+  birthday: string | null;
 }
 
 export interface ServerUserConfig {

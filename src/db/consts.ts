@@ -8,7 +8,7 @@ const getFeaturesObj = (features: Feature[], isAllowed: boolean = false) =>
     return acc;
   }, {} as Features);
 
-const user: UserConfig = { language: 'en' };
+const user: UserConfig = { language: 'en', birthday: null };
 
 const serverUser: ServerUserConfig = { warns: { number: 0, reasons: [] } };
 

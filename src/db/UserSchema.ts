@@ -11,6 +11,7 @@ interface UserSchema extends UserConfig {
 const schema = createSchema<UserSchema>({
   userId: String,
   language: String,
+  birthday: String,
 });
 
 export const getUser = async (userId: string) =>

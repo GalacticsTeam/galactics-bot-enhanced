@@ -83,4 +83,10 @@ export default {
   'name.ping': 'بينج',
   'name.pong': 'بونج!',
   'welcome.message': 'مرحبًا بك في السيرفر، {user}!',
+  'birthday.invalidDate': 'تاريخ غير صالح',
+  'birthday.set': 'تم تعيين عيد ميلادك إلى {date}',
+  'birthday.show': 'عيد ميلاد {user} هو في {date}',
+  'birthday.notSetForUser': 'لم يتم تعيين عيد ميلاد {user} بعد',
+  'birthday.notSet': 'لم يتم تعيينه بعد',
+  'name.birthday': 'عيد ميلاد',
 } as const;
