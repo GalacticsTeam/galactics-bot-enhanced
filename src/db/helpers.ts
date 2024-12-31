@@ -1,26 +1,31 @@
-import { defaultServerConfig, defaultUserConfig, checkItemType } from '@utils';
-import type { DefaultServerConfig, DefaultUserConfig } from '@types';
+import {
+  Schema,
+  type DefaultSchemaOptions,
+  type Model,
+  type SchemaDefinition,
+  type SchemaDefinitionType,
+} from 'mongoose';
 
-import type { ReturnedSchema, SchemaName } from './types';
+import { checkItemType } from '@utils';
 
-export const setDefaultSchemaItem = <Schema extends DefaultServerConfig | DefaultUserConfig>(
-  schema: ReturnedSchema<Schema>,
-  itemName: keyof Schema
+import consts from './consts';
+
+export const fillSchemaProperty = <T extends SchemaName, Property extends keyof (typeof consts)[T]>(
+  schemaName: T,
+  schemaData: (typeof consts)[T],
+  property: Property
 ) => {
-  const defaultConfig =
-    (schema?.$model().modelName as SchemaName) === 'server' ? defaultServerConfig : defaultUserConfig;
-  const { isArray, isObj, isString } = checkItemType(defaultConfig[itemName as never]);
+  const config = consts[schemaName];
+  const { isArray, isObj, isString } = checkItemType(config[property]);
 
-  const itemsArr = isArray && [...new Set([...(defaultConfig as never)[itemName], ...(schema as never)[itemName]])];
-  const itemObj =
-    isObj &&
-    Object.assign(
-      {},
-      ...Object.keys((defaultConfig as never)[itemName]).map((key) => ({
-        [key]: (schema[itemName] as never)[key] ?? (defaultConfig as never)[itemName][key],
-      }))
-    );
-  const item = (isString && schema[itemName]) ?? (defaultConfig as never)[itemName];
+  const itemsArr = isArray
+    ? Array.from(new Set([...(config[property] as []), ...(schemaData[property] as [])]))
+    : undefined;
+  const itemObj = isObj ? { ...config[property], ...schemaData[property] } : undefined;
+  const item = isString ? (schemaData[property] ?? config[property]) : undefined;
 
-  schema.$set(String(itemName), itemsArr || itemObj || item);
+  return (itemsArr || itemObj || item) as (typeof config)[Property];
 };
+
+export const createSchema = <T>(schema: SchemaDefinition<SchemaDefinitionType<T>, T>) =>
+  new Schema<T, Model<T>, object, object, object, DefaultSchemaOptions, T>(schema);

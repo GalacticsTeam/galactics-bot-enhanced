@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from 'discord.js';
 
 import { LANGUAGES } from '@utils/const';
-import { setServerSchemaItem } from '@db/ServerSchema';
+import { setServerProperty } from '@db/ServerSchema';
 import { onUserTranslate } from '@i18n/onTranslate';
 
 import type { Command } from './types';
@@ -12,7 +12,7 @@ export const serverLanguage: Command = async (interaction) => {
 
   const language = options.getString('language') as Language;
 
-  await setServerSchemaItem(guild.id, 'properties', (prev) => ({ ...prev, language })).then((properties) => {
+  await setServerProperty(guild.id, 'properties', (prev) => ({ ...prev, language })).then((properties) => {
     interaction.reply({
       content: t('serverLanguage.set', { language: t(`name.${properties.language}`) }),
       ephemeral: true,

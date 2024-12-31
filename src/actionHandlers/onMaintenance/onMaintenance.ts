@@ -1,12 +1,12 @@
 import type { Guild } from 'discord.js';
 
-import { getServerSchemaItem, setServerSchemaItem } from '@db';
+import { getServerProperty, setServerProperty } from '@db';
 
 export const onMaintenance = async (guild: Guild) => {
   const members = (await guild.members.fetch()).toJSON();
 
-  const isMaintenance = await getServerSchemaItem(guild.id, 'isMaintenance');
-  const { member, bot, maintenance } = await getServerSchemaItem(guild.id, 'roles');
+  const isMaintenance = await getServerProperty(guild.id, 'isMaintenance');
+  const { member, bot, maintenance } = await getServerProperty(guild.id, 'roles');
 
   if (!bot || !member || !maintenance) return;
 
@@ -44,5 +44,5 @@ export const onMaintenance = async (guild: Guild) => {
       break;
   }
 
-  return await setServerSchemaItem(guild.id, 'isMaintenance', (prevIsMaintenance) => !prevIsMaintenance);
+  return await setServerProperty(guild.id, 'isMaintenance', (prevIsMaintenance) => !prevIsMaintenance);
 };

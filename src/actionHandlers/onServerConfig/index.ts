@@ -1,14 +1,14 @@
 import { checkItemType } from '@utils/helpers';
 import type { CommandInteraction } from '@commands/types';
-import { setServerSchemaItem, getServerSchemaItem } from '@db';
+import { setServerProperty, getServerProperty } from '@db';
 import { commands, createCommand, deleteCommand } from '@commands';
-import type { Feature, Property, DefaultServerConfig, Embed } from '@types';
+import type { Feature, Property, ServerConfig, Embed } from '@types';
 import { onUserTranslate } from '@i18n/onTranslate';
 
 export const features = async (updatedFeature: Feature, interaction: CommandInteraction) => {
   const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
 
-  await setServerSchemaItem(interaction.guild.id, 'features', (prevFeatures) => ({
+  await setServerProperty(interaction.guild.id, 'features', (prevFeatures) => ({
     ...prevFeatures,
     [updatedFeature]: !prevFeatures[updatedFeature],
   })).then((newFeatures) => {
@@ -35,7 +35,7 @@ const hexColorRegex = /^#?[a-f0-9]{6}$/;
 
 export const embeds = async <T extends Embed>(
   updatedEmbedProp: T,
-  newValue: DefaultServerConfig['embeds'][T],
+  newValue: ServerConfig['embeds'][T],
   interaction: CommandInteraction
 ) => {
   const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
@@ -47,7 +47,7 @@ export const embeds = async <T extends Embed>(
       return interaction.reply({ content: t('serverConfig.embed.error.color'), ephemeral: true });
   }
 
-  await setServerSchemaItem(interaction.guild.id, 'embeds', (prevEmbed) => ({
+  await setServerProperty(interaction.guild.id, 'embeds', (prevEmbed) => ({
     ...prevEmbed,
     [updatedEmbedProp]: newValue,
   })).then((newEmbedProps) =>
@@ -65,7 +65,7 @@ export const embeds = async <T extends Embed>(
 
 export const properties = async <T extends Property>(
   updatedProperty: T,
-  newValue: DefaultServerConfig['properties'][T],
+  newValue: ServerConfig['properties'][T],
   interaction: CommandInteraction
 ) => {
   const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
@@ -82,7 +82,7 @@ export const properties = async <T extends Property>(
       });
   }
 
-  setServerSchemaItem(interaction.guild.id, 'properties', (prevProperties) => ({
+  setServerProperty(interaction.guild.id, 'properties', (prevProperties) => ({
     ...prevProperties,
     [updatedProperty]: newValue,
   })).then((newProperties) =>
@@ -100,7 +100,7 @@ export const properties = async <T extends Property>(
 export const channels = async (updatedChannel: Channel, newValue: string, interaction: CommandInteraction) => {
   const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
 
-  return setServerSchemaItem(interaction.guild.id, 'channels', (prevChannels) => ({
+  return setServerProperty(interaction.guild.id, 'channels', (prevChannels) => ({
     ...prevChannels,
     [updatedChannel]: newValue,
   })).then((newChannels) =>
@@ -118,7 +118,7 @@ export const channels = async (updatedChannel: Channel, newValue: string, intera
 export const roles = async (updatedRole: Role, newValue: string, interaction: CommandInteraction) => {
   const t = await onUserTranslate(interaction.guild.id, interaction.user.id);
 
-  return setServerSchemaItem(interaction.guild.id, 'roles', (prevRoles) => ({
+  return setServerProperty(interaction.guild.id, 'roles', (prevRoles) => ({
     ...prevRoles,
     [updatedRole]: newValue,
   })).then((newRoles) =>
@@ -133,10 +133,11 @@ export const roles = async (updatedRole: Role, newValue: string, interaction: Co
   );
 };
 
-export const list = (itemName: keyof DefaultServerConfig, interaction: CommandInteraction) => {
-  getServerSchemaItem(interaction.guild.id, itemName).then((item) => {
+export const list = (itemName: keyof ServerConfig, interaction: CommandInteraction) => {
+  getServerProperty(interaction.guild.id, itemName).then((item) => {
     const { isArray, isObj } = checkItemType(item);
-    const ArrItems = isArray && (item as []).map((itemData, index) => index + 1 + '. ' + itemData).join('\n');
+    const ArrItems =
+      isArray && (item as unknown as []).map((itemData, index) => index + 1 + '. ' + itemData).join('\n');
     const ObjItems =
       isObj &&
       Object.keys(item)

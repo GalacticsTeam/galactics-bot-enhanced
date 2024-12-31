@@ -1,57 +1,49 @@
-import { Schema, model } from 'mongoose';
+import { model } from 'mongoose';
 
-import { channelsType, defaultServerConfig, featuresType, rolesType } from '@utils';
-import type { DefaultServerConfig } from '@types';
+import type { ServerConfig } from '@types';
 
-import { setDefaultSchemaItem } from './helpers';
-import { ReturnedSchema } from './types';
+import { createSchema, fillSchemaProperty } from './helpers';
+import { ChannelsSchema, EmbedsSchema, FeaturesSchema, PropertiesSchema, RolesSchema } from './schemas';
+import consts from './consts';
 
-interface DefaultServerSchema extends DefaultServerConfig {
+interface ServerSchema extends ServerConfig {
   serverId: string;
 }
 
-export const ServerSchema = model<DefaultServerSchema>(
-  'server',
-  new Schema<DefaultServerSchema>({
-    serverId: String,
-    features: featuresType,
-    isMaintenance: Boolean,
-    isDevServer: Boolean,
-    embeds: { color: String },
-    channels: channelsType,
-    roles: rolesType,
-    properties: { autoBanTrigger: Number, modHelpMessage: String, statuses: [], language: String },
-  })
-);
+const schema = createSchema<ServerSchema>({
+  serverId: String,
+  isMaintenance: Boolean,
+  isDevServer: Boolean,
+  features: FeaturesSchema,
+  properties: PropertiesSchema,
+  embeds: EmbedsSchema,
+  channels: ChannelsSchema,
+  roles: RolesSchema,
+});
 
-export const getServerSchema = async (serverId: string): Promise<ReturnedSchema<DefaultServerSchema>> =>
-  (await ServerSchema.findOne({ serverId })) ?? (await new ServerSchema({ serverId, ...defaultServerConfig }).save());
+export const getServer = async (serverId: string) =>
+  (await ServerSchema.findOne({ serverId })) ?? (await new ServerSchema({ serverId, ...consts.server }).save());
 
-export const createServerSchema = (serverInfo: DefaultServerSchema) => new ServerSchema(serverInfo).save();
+export const getServerProperty = async <T extends keyof ServerConfig>(serverId: string, property: T) => {
+  const server = await getServer(serverId);
 
-export const getServerSchemaItem = async <T extends keyof DefaultServerConfig>(
-  serverId: string,
-  itemName: T
-): Promise<DefaultServerConfig[T]> => {
-  const server = await getServerSchema(serverId);
+  const filledServerProperty = fillSchemaProperty('server', server.toJSON(), property);
 
-  setDefaultSchemaItem(server, itemName);
-
-  return server[itemName];
+  return filledServerProperty;
 };
 
-export const setServerSchemaItem = async <T extends keyof DefaultServerConfig>(
+export const setServerProperty = async <T extends keyof ServerConfig>(
   serverId: string,
-  itemName: T,
-  setCallBack: (previousState: DefaultServerConfig[T]) => DefaultServerConfig[T]
+  property: T,
+  setCallBack: (previousState: ServerConfig[T]) => ServerConfig[T]
 ) => {
-  const server = await getServerSchema(serverId);
+  const server = await getServer(serverId);
 
-  setDefaultSchemaItem(server, itemName);
-
-  server.$set(itemName, setCallBack(server[itemName]));
+  const filledServerProperty = fillSchemaProperty('server', server.toJSON(), property);
+  server.$set(property, setCallBack(filledServerProperty));
 
   server.save();
-
-  return server[itemName];
+  return server[property];
 };
+
+const ServerSchema = model('server', schema);

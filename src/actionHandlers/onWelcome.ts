@@ -1,7 +1,7 @@
 import { ChannelType, GuildMember, channelMention, userMention } from 'discord.js';
 import Jimp from 'jimp';
 
-import { getServerSchemaItem } from '@db';
+import { getServerProperty } from '@db';
 import { isFeatureAllowed } from '@utils';
 import { getLocalDBItem, setLocalDBItem } from '@localdb';
 import { onUserTranslate } from '@i18n/onTranslate';
@@ -11,7 +11,7 @@ const welcomeImageSRC = 'src/assets/welcomeImage.png';
 export const onWelcome = async (member: GuildMember) => {
   if (!(await isFeatureAllowed('welcome', member.guild.id))) return;
 
-  const roles = await getServerSchemaItem(member.guild.id, 'roles');
+  const roles = await getServerProperty(member.guild.id, 'roles');
   if (!roles.bot) return;
   if (member.user.bot) return member.roles.add(roles.bot);
 
@@ -20,7 +20,7 @@ export const onWelcome = async (member: GuildMember) => {
 
   if (await IsRepeatedJoining(member.guild.id, member.id)) return;
 
-  const channels = await getServerSchemaItem(member.guild.id, 'channels');
+  const channels = await getServerProperty(member.guild.id, 'channels');
   if (!channels.welcome) return;
 
   const t = await onUserTranslate(member.guild.id, member.id);

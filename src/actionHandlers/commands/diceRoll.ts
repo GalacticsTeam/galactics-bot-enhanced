@@ -2,13 +2,13 @@ import { ApplicationCommandOptionType } from 'discord.js';
 
 import { onUserTranslate } from '@i18n/onTranslate';
 import { onFormatNumber } from '@handlers/onFormat';
-import { getUserSchemaItem } from '@db/index';
+import { getUserProperty } from '@db/index';
 
 import type { Command } from './types';
 
 export const diceRoll: Command = async (interaction) => {
   const { options } = interaction;
-  const userLanguage = await getUserSchemaItem(interaction.guildId, interaction.user.id, 'language');
+  const userLanguage = await getUserProperty(interaction.guildId, interaction.user.id, 'language');
 
   const t = await onUserTranslate(interaction.guildId, interaction.user.id);
   const formatNumber = onFormatNumber(userLanguage);

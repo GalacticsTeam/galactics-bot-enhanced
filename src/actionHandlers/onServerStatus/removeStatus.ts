@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 
 import { getProperty } from '@utils';
-import { setServerSchemaItem } from '@db';
+import { setServerProperty } from '@db';
 import { getLocalDBItem, setLocalDBItem } from '@localdb';
 import type { CommandInteraction } from '@commands/types';
 import { onUserTranslate } from '@i18n/onTranslate';
@@ -36,7 +36,7 @@ export const removeStatusMenuHandler = async (interaction: InteractionResponse<t
   const statusId = statusToRemove.values[0];
   const statusWithChannel = await getLocalDBItem(statusToRemove.guild.id, 'statusChannels');
 
-  await setServerSchemaItem(statusToRemove.guild.id, 'properties', (prevProperties) => ({
+  await setServerProperty(statusToRemove.guild.id, 'properties', (prevProperties) => ({
     ...prevProperties,
     statuses: prevProperties.statuses.filter((status) => status.id !== statusId),
   }))

@@ -11,3 +11,5 @@ type Channel =
   | 'tempChannelCommands';
 
 type Role = 'bot' | 'member' | 'maintenance' | 'lowestAuthorizedRole';
+
+type SchemaName = 'server' | 'user' | 'serverUser';
