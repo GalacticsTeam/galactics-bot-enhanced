@@ -4,8 +4,7 @@ import { UserSchema } from '@db/index';
 import { getChannel, isFeatureAllowed } from '@utils/helpers';
 import type { StartOfFn } from '@actions/types';
 
-export const onBirthday: StartOfFn = (client) => {
-  const now = new Date();
+export const onBirthday: StartOfFn = (client, now) => {
   const today = `${now.getDate()}/${now.getMonth() + 1}`;
 
   client.guilds.cache.forEach(async (guild) => {

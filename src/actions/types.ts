@@ -8,4 +8,4 @@ export type Action = <Event extends keyof ClientEvents>(
 
 export type IntervalFn = (client: Client<true>, time: number) => void;
 
-export type StartOfFn = (client: Client<true>, type: Time) => void;
+export type StartOfFn = (client: Client<true>, now: Date, type: Time) => void;
