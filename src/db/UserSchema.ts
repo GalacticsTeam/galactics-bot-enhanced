@@ -11,6 +11,7 @@ interface UserSchema extends UserConfig {
 const schema = createSchema<UserSchema>({
   userId: String,
   language: String,
+  birthday: String,
 });
 
 export const getUser = async (userId: string) =>
@@ -41,4 +42,4 @@ export const setUserProperty = async <T extends keyof UserConfig>(
   return user[property];
 };
 
-const UserSchema = model('user', schema);
+export const UserSchema = model('user', schema);

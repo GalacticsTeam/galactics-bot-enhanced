@@ -7,3 +7,5 @@ export type Action = <Event extends keyof ClientEvents>(
 ) => void;
 
 export type IntervalFn = (client: Client<true>, time: number) => void;
+
+export type StartOfFn = (client: Client<true>, type: Time) => void;

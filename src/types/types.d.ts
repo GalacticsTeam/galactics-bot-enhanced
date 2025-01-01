@@ -8,8 +8,11 @@ type Channel =
   | 'statusCategory'
   | 'tempChannelCategory'
   | 'tempChannelGenerator'
-  | 'tempChannelCommands';
+  | 'tempChannelCommands'
+  | 'chat';
 
 type Role = 'bot' | 'member' | 'maintenance' | 'lowestAuthorizedRole';
 
 type SchemaName = 'server' | 'user' | 'serverUser';
+
+type Time = 'hour' | 'day' | 'week' | 'month' | 'year';

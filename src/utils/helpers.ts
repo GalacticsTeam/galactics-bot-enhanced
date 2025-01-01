@@ -28,9 +28,9 @@ export const getEmbed = async <T extends Embed>(serverId: string, embed: T) =>
 export const getProperty = async <T extends Property>(serverId: string, property: T) =>
   (await getServerProperty(serverId, 'properties'))[property];
 
-export const checkItemType = (item: unknown): { isArray: boolean; isObj: boolean; isString: boolean } => {
+export const checkItemType = (item: unknown) => {
   const isArray = Array.isArray(item);
-  const isObj = typeof item === 'object';
+  const isObj = typeof item === 'object' && item !== null;
 
   return {
     isArray,

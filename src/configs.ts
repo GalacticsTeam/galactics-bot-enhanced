@@ -26,6 +26,7 @@ const notAllowedFeatures = [
   'morseTranslate',
   'preferredLanguage',
   'serverLanguage',
+  'birthday',
 ] as const satisfies Exclude<Feature, (typeof allowedFeatures)[number]>[];
 
 const channels = [
@@ -37,6 +38,7 @@ const channels = [
   'tempChannelCategory',
   'tempChannelGenerator',
   'tempChannelCommands',
+  'chat',
 ] as const satisfies Channel[];
 
 const roles = ['bot', 'member', 'maintenance', 'lowestAuthorizedRole'] as const satisfies Role[];

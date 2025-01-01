@@ -16,7 +16,7 @@ export const fillSchemaProperty = <T extends SchemaName, Property extends keyof 
   property: Property
 ) => {
   const config = consts[schemaName];
-  const { isArray, isObj, isString } = checkItemType(config[property]);
+  const { isArray, isObj, isString } = checkItemType(schemaData[property]);
 
   const itemsArr = isArray
     ? Array.from(new Set([...(config[property] as []), ...(schemaData[property] as [])]))
