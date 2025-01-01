@@ -8,7 +8,8 @@ type Channel =
   | 'statusCategory'
   | 'tempChannelCategory'
   | 'tempChannelGenerator'
-  | 'tempChannelCommands';
+  | 'tempChannelCommands'
+  | 'chat';
 
 type Role = 'bot' | 'member' | 'maintenance' | 'lowestAuthorizedRole';
 

@@ -42,4 +42,4 @@ export const setUserProperty = async <T extends keyof UserConfig>(
   return user[property];
 };
 
-const UserSchema = model('user', schema);
+export const UserSchema = model('user', schema);

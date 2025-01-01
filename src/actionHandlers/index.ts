@@ -10,3 +10,4 @@ export * from './onRoleOrganize';
 export * from './onMorseTranslate';
 export * from './onMaintenance';
 export * from './onServerConfig';
+export * from './onBirthday';

@@ -16,7 +16,7 @@ export const birthday: Command = async (interaction) => {
       if (isNaN(birthday.getTime()))
         return interaction.reply({ content: tUser('birthday.invalidDate'), ephemeral: true });
 
-      await setUserProperty(interaction.user.id, 'birthday', () => birthday.toISOString());
+      await setUserProperty(interaction.user.id, 'birthday', () => birthday.toLocaleDateString());
 
       return interaction.reply({
         content: tUser('birthday.set', { date: birthday.toLocaleDateString() }),

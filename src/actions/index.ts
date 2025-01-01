@@ -1,6 +1,6 @@
 import type { CacheType, Client, Interaction, Message } from 'discord.js';
 
-import { action, interval } from './action';
+import { action, interval, startOf } from './action';
 
 import { onReady } from './onReady';
 import { onMessageCreate } from './onMessageCreate';
@@ -10,7 +10,7 @@ import { onGuildMemberAdd } from './onGuildMemberAdd';
 import { onVoiceStateUpdate } from './onVoiceStateUpdate';
 import { onGuildMemberUpdate } from './onGuildMemberUpdate';
 
-import { onEveryTempChannel, onServerStatus } from '@actionHandlers';
+import { onBirthday, onEveryTempChannel, onServerStatus } from '@actionHandlers';
 
 export const invokeActions = (Client: Client<true>) => {
   action(Client, 'ready', onReady);
@@ -23,4 +23,6 @@ export const invokeActions = (Client: Client<true>) => {
 
   interval(Client, onServerStatus, 15000);
   interval(Client, onEveryTempChannel, 5000);
+
+  startOf(Client, onBirthday, 'day');
 };

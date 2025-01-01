@@ -38,6 +38,7 @@ const channels = [
   'tempChannelCategory',
   'tempChannelGenerator',
   'tempChannelCommands',
+  'chat',
 ] as const satisfies Channel[];
 
 const roles = ['bot', 'member', 'maintenance', 'lowestAuthorizedRole'] as const satisfies Role[];
