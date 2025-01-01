@@ -13,3 +13,5 @@ type Channel =
 type Role = 'bot' | 'member' | 'maintenance' | 'lowestAuthorizedRole';
 
 type SchemaName = 'server' | 'user' | 'serverUser';
+
+type Time = 'hour' | 'day' | 'week' | 'month' | 'year';
