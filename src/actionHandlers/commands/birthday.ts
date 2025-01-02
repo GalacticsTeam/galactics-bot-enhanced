@@ -2,24 +2,29 @@ import { ApplicationCommandOptionType } from 'discord.js';
 
 import { getUserProperty, setUserProperty } from '@db/index';
 import { onUserTranslate } from '@i18n/onTranslate';
+import { onFormatBirthday } from '@actionHandlers/onBirthday/helpers';
+import { birthdayFormatString } from '@actionHandlers/onBirthday/const';
 
 import type { Command } from './types';
 
 export const birthday: Command = async (interaction) => {
   const action = interaction.options.getSubcommand() as 'set' | 'show';
   const tUser = await onUserTranslate(interaction.user.id);
+  const formatBirthday = onFormatBirthday();
 
   switch (action) {
     case 'set':
       const date = interaction.options.getString('date', true);
       const birthday = new Date(date);
-      if (isNaN(birthday.getTime()))
+      if (isNaN(birthday.getTime()) || date.includes('/'))
         return interaction.reply({ content: tUser('birthday.invalidDate'), ephemeral: true });
 
-      await setUserProperty(interaction.user.id, 'birthday', () => birthday.toLocaleDateString());
+      await setUserProperty(interaction.user.id, 'birthday', () =>
+        new Date(birthday.toLocaleString('en-EG', { timeZone: 'Africa/Cairo' })).toISOString()
+      );
 
       return interaction.reply({
-        content: tUser('birthday.set', { date: birthday.toLocaleDateString() }),
+        content: tUser('birthday.set', { date: formatBirthday(birthday) }),
         ephemeral: true,
       });
 
@@ -50,7 +55,7 @@ birthday.create = {
       options: [
         {
           name: 'date',
-          description: 'The date of your birthday: DD/MM/YYYY',
+          description: `The date of your birthday: ${birthdayFormatString}`,
           type: ApplicationCommandOptionType.String,
           required: true,
         },

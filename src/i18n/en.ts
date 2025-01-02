@@ -86,7 +86,7 @@ export default {
     '>>>       `#` **Welcome** {user} to our server !\n `#` We inform you to read our **rules** `:` {rolesChannel} \n `#` Total members `:` **{membersCount}**\n `#` Enjoy with us :heart_on_fire:',
   'birthday.invalidDate': 'Invalid date',
   'birthday.set': 'Your birthday has been set to {date}',
-  'birthday.show': "{user}'s birthday is on {date}",
+  'birthday.show': '{user} was born {date}',
   'birthday.notSetForUser': "{user}'s birthday is not set yet",
   'birthday.notSet': 'Not set yet',
   'name.birthday': 'Birthday',

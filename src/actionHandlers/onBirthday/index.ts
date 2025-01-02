@@ -5,7 +5,7 @@ import { getChannel, isFeatureAllowed } from '@utils/helpers';
 import type { StartOfFn } from '@actions/types';
 
 export const onBirthday: StartOfFn = (client, now) => {
-  const today = `${now.getDate()}/${now.getMonth() + 1}`;
+  const today = `${now.getMonth() + 1}/${now.getDate()}`;
 
   client.guilds.cache.forEach(async (guild) => {
     if (!(await isFeatureAllowed('birthday', guild.id))) return;

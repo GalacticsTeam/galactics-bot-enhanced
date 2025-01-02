@@ -14,7 +14,7 @@ export const startOf = (client: Client<true>, startOfFn: StartOfFn, type: Time) 
   interval(
     client,
     () => {
-      const now = new Date();
+      const now = new Date(new Date().toLocaleString('en-EG', { timeZone: 'Africa/Cairo' }));
       const isStarting = now.getMinutes() < 5;
       const isYearly = type === 'year' && now.getMonth() === 0 && now.getDate() === 1;
       const isMonthly = type === 'month' && now.getDate() === 1;
