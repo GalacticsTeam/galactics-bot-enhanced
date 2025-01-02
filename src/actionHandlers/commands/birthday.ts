@@ -15,8 +15,15 @@ export const birthday: Command = async (interaction) => {
   switch (action) {
     case 'set':
       const date = interaction.options.getString('date', true);
+      const now = new Date(new Date().toLocaleString('en-EG', { timeZone: 'Africa/Cairo' }));
       const birthday = new Date(date);
-      if (isNaN(birthday.getTime()) || date.includes('/'))
+      if (
+        isNaN(birthday.getTime()) ||
+        date.includes('/') ||
+        now.getTime() > birthday.getTime() ||
+        date.split('-')[0].length > 4 ||
+        date.split('-')[0].length < 2
+      )
         return interaction.reply({ content: tUser('birthday.invalidDate'), ephemeral: true });
 
       await setUserProperty(interaction.user.id, 'birthday', () =>
