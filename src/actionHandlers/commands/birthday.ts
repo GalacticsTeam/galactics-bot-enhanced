@@ -55,7 +55,7 @@ birthday.create = {
       options: [
         {
           name: 'date',
-          description: `The date of your birthday: ${birthdayFormatString}`,
+          description: `The date of your birthday: ${birthdayFormatString.toLowerCase()}`,
           type: ApplicationCommandOptionType.String,
           required: true,
         },
