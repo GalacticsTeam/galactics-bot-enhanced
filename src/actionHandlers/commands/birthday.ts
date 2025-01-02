@@ -17,10 +17,11 @@ export const birthday: Command = async (interaction) => {
       const date = interaction.options.getString('date', true);
       const now = new Date(new Date().toLocaleString('en-EG', { timeZone: 'Africa/Cairo' }));
       const birthday = new Date(date);
+
       if (
         isNaN(birthday.getTime()) ||
         date.includes('/') ||
-        now.getTime() > birthday.getTime() ||
+        now.getTime() < birthday.getTime() ||
         date.split('-')[0].length > 4 ||
         date.split('-')[0].length < 2
       )
