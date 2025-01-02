@@ -7,7 +7,7 @@ import { onTranslate } from '@i18n/onTranslate';
 import type { Command } from './types';
 
 export const preferredLanguage: Command = async (interaction) => {
-  const { user, guild, options } = interaction;
+  const { user, options } = interaction;
 
   const language = options.getString('language') as Language;
   const t = onTranslate(language);
