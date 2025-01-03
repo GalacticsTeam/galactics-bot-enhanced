@@ -88,5 +88,5 @@ export default {
   'birthday.show': '{user} ولد {date}>',
   'birthday.notSetForUser': 'لم يتم تعيين عيد ميلاد {user} بعد',
   'birthday.notSet': 'لم يتم تعيينه بعد',
-  'name.birthday': 'عيد ميلاد',
+  'name.birthday': 'يوم  ميلاد',
 } as const;
