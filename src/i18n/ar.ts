@@ -84,9 +84,9 @@ export default {
   'name.pong': 'بونج!',
   'welcome.message': 'مرحبًا بك في السيرفر، {user}!',
   'birthday.invalidDate': 'تاريخ غير صالح',
-  'birthday.set': 'تم تعيين عيد ميلادك إلى {date}',
+  'birthday.set': 'تم تعيين يوم ميلادك إلى {date}',
   'birthday.show': '{user} ولد {date}>',
-  'birthday.notSetForUser': 'لم يتم تعيين عيد ميلاد {user} بعد',
+  'birthday.notSetForUser': 'لم يتم تعيين يوم ميلاد {user} بعد',
   'birthday.notSet': 'لم يتم تعيينه بعد',
-  'name.birthday': 'يوم  ميلاد',
+  'name.birthday': 'يوم ميلاد',
 } as const;
