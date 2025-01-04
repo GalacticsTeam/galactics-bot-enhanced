@@ -57,7 +57,7 @@ export default {
   'name.reasons': 'الأسباب',
   'serverConfig.updated': '{config} {prop} تم تعيينه إلى {value}',
   'name.feature': 'الميزة',
-  'name.embed': 'التضمين',
+  'name.embed': 'البطاقة',
   'name.property': 'الخاصية',
   'name.role': 'الرتبة',
   'state.enabled': 'مفعل',
@@ -87,6 +87,6 @@ export default {
   'birthday.set': 'تم تعيين يوم ميلادك إلى {date}',
   'birthday.show': '{user} ولد {date}>',
   'birthday.notSetForUser': 'لم يتم تعيين يوم ميلاد {user} بعد',
-  'birthday.notSet': 'لم يتم تعيينه بعد',
-  'name.birthday': 'يوم ميلاد',
+  'birthday.notSet': 'لم يتم تعيين يوم الميلاد بعد',
+  'name.birthday': 'يوم الميلاد',
 } as const;
