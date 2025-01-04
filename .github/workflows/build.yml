@@ -1,9 +1,9 @@
 name: Run Build Script
 on:
   push:
-    branches: [dev]
+    branches: [dev, translations]
   pull_request:
-    branches: [dev]
+    branches: [dev, translations]
 
 jobs:
   build:

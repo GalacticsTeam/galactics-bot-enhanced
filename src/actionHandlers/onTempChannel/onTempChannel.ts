@@ -65,10 +65,9 @@ export const onTempChannel = async (oldState: VoiceState, newState: VoiceState) 
 
   oldState.channel
     .delete()
-    .then(
-      async () =>
-        await setLocalDBItem(voiceState.guild.id, 'tempChannels', (prevTempChannels) =>
-          prevTempChannels.filter((tempChannel) => tempChannel.channelId !== oldDbVc?.channelId)
-        )
+    .then(() =>
+      setLocalDBItem(voiceState.guild.id, 'tempChannels', (prevTempChannels) =>
+        prevTempChannels.filter((tempChannel) => tempChannel.channelId !== oldDbVc?.channelId)
+      )
     );
 };
