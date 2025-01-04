@@ -90,4 +90,5 @@ export default {
   'birthday.notSetForUser': "{user}'s birthday is not set yet",
   'birthday.notSet': 'Not set yet',
   'name.birthday': 'Birthday',
+  'birthday.happyBirthday': '🎉 Today is the birthday of {user} 🎉',
 } as const;
