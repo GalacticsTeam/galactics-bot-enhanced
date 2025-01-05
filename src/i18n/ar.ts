@@ -89,5 +89,5 @@ export default {
   'birthday.notSetForUser': 'لم يتم تعيين يوم ميلاد {user} بعد',
   'birthday.notSet': 'لم يتم تعيين يوم الميلاد بعد',
   'name.birthday': 'يوم الميلاد',
-  'birthday.happyBirthday': '🎉 Today is the birthday of {user} 🎉',
+  'birthday.happyBirthday': '🎉اليوم هو يوم ميلاد {user} 🎉',
 } as const;
