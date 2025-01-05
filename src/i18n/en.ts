@@ -83,7 +83,7 @@ export default {
   'name.ping': 'Ping',
   'name.pong': 'Pong!',
   'welcome.message':
-    '>>>       `#` **Welcome** {user} to our server !\n `#` We inform you to read our **rules** `:` {rolesChannel} \n `#` Total members `:` **{membersCount}**\n `#` Enjoy with us :heart_on_fire:',
+    '>>>       `#` **Welcome** {user} to our server !\n      `#` We inform you to read our **rules** `:` {rolesChannel} \n      `#` Total members `:` **{membersCount}**\n      `#` Enjoy with us :heart_on_fire:',
   'birthday.invalidDate': 'Invalid date',
   'birthday.set': 'Your birthday has been set to {date}',
   'birthday.show': '{user} was born {date}',
