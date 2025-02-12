@@ -82,8 +82,8 @@ export default {
   'linkBlocker.blocked': 'الروابط غير مسموح بها في هذه القناة',
   'name.ping': 'بينج',
   'name.pong': 'بونج!',
-'welcome.message':
-    '>>>       `#` **مرحبًا** {user} في هذا السيرفر !\n      `#` نطلب منكم قراءة **القوانين** `:` {rolesChannel} \n      `#` عدد الأعضاء الإجمالي `:` **{membersCount}**\n      `#` استمتع معنا :heart_on_fire:',  
+  'welcome.message':
+    '>>>       `#` **مرحبًا** {user} في هذا السيرفر !\n      `#` نطلب منكم قراءة **القوانين** `:` {rolesChannel} \n      `#` عدد الأعضاء الإجمالي `:` **{membersCount}**\n      `#` استمتع معنا :heart_on_fire:',
   'birthday.invalidDate': 'تاريخ غير صالح',
   'birthday.set': 'تم تعيين يوم ميلادك إلى {date}',
   'birthday.show': '{user} ولد {date}>',
