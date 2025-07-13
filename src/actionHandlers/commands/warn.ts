@@ -40,6 +40,7 @@ export const warn: Command = async (interaction) => {
 
       return interaction.reply({
         content: `${tUser('warn.list.count', { count })} \n${tUser('name.reasons')}:\n${reasons.map((reason) => `> ${reason}`).join('\n')}`,
+        ephemeral: true,
       });
   }
 };
