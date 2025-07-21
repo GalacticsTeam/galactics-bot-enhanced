@@ -14,7 +14,8 @@ export const warn: Command = async (interaction) => {
   const user = interaction.options.getUser('user', true);
   const reason = interaction.options.getString('reason');
 
-  if (user.bot) return interaction.reply({ content: tUser('warn.add.bot', { user: userMention(user.id) }) });
+  if (user.bot)
+    return interaction.reply({ content: tUser('warn.add.bot', { user: userMention(user.id) }), ephemeral: true });
 
   const { number: count, reasons: reasons } = await getServerUserProperty(interaction.guildId, user.id, 'warns');
 
