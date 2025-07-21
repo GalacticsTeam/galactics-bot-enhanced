@@ -54,7 +54,7 @@ export default {
   'warn.reason.remove': 'إزالة: {reason}',
   'warn.removed': 'تم ازالة التحذير من {user}',
   'warn.list.count': 'عدد التحذيرات: {count}',
-  'warn.add.bot': "You can't warn {user}",
+  'warn.add.bot': 'لا تستطيع اضافة تحذير الى {user}',
   'name.reasons': 'الأسباب',
   'serverConfig.updated': '{config} {prop} تم تعيينه إلى {value}',
   'name.feature': 'الميزة',
