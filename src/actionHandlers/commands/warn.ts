@@ -11,29 +11,31 @@ export const warn: Command = async (interaction) => {
   const tGuild = await onServerTranslate(interaction.guildId);
   const tUser = await onUserTranslate(interaction.user.id);
 
-  const user = interaction.options.getUser('user', true).id;
+  const user = interaction.options.getUser('user', true);
   const reason = interaction.options.getString('reason');
 
-  const { number: count, reasons: reasons } = await getServerUserProperty(interaction.guildId, user, 'warns');
+  if (user.bot) return interaction.reply({ content: tUser('warn.add.bot', { user: userMention(user.id) }) });
+
+  const { number: count, reasons: reasons } = await getServerUserProperty(interaction.guildId, user.id, 'warns');
 
   switch (action) {
     case 'add':
-      await setServerUserProperty(interaction.guildId, user, 'warns', ({ number, reasons }) => ({
+      await setServerUserProperty(interaction.guildId, user.id, 'warns', ({ number, reasons }) => ({
         number: number + 1,
         reasons: [...reasons, tGuild('warn.reason.add', { reason: reason! })],
-      })).then(() => onAutoBan(interaction.guild, user));
+      })).then(() => onAutoBan(interaction.guild, user.id));
 
-      return interaction.reply({ content: tUser('warn.added', { user: userMention(user) }), ephemeral: true });
+      return interaction.reply({ content: tUser('warn.added', { user: userMention(user.id) }), ephemeral: true });
 
     case 'remove':
       if (!count) return interaction.reply({ content: tUser('warn.remove.noWarns'), ephemeral: true });
 
-      await setServerUserProperty(interaction.guildId, user, 'warns', ({ number, reasons }) => ({
+      await setServerUserProperty(interaction.guildId, user.id, 'warns', ({ number, reasons }) => ({
         number: number - 1,
         reasons: [...reasons, tGuild('warn.reason.remove', { reason: reason!! })],
       }));
 
-      return interaction.reply({ content: tUser('warn.removed', { user: userMention(user) }), ephemeral: true });
+      return interaction.reply({ content: tUser('warn.removed', { user: userMention(user.id) }), ephemeral: true });
 
     case 'list':
       if (!reasons.length) return interaction.reply({ content: tUser('warn.list.count', { count }), ephemeral: true });

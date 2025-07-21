@@ -54,6 +54,7 @@ export default {
   'warn.reason.remove': 'Remove: {reason}',
   'warn.removed': 'Removed a warn for {user}',
   'warn.list.count': 'Warns count: {count}',
+  'warn.add.bot': "You can't warn {user}",
   'name.reasons': 'Reasons',
   'serverConfig.updated': '{config} {prop} is set to {value}',
   'name.feature': 'Feature',
