@@ -81,7 +81,7 @@ export default {
   'type.any': 'Any',
   'name.chatting': 'Chatting',
   'linkBlocker.blocked': 'Links are not allowed in this channel',
-  'name.ping': 'Ping',
+  'name.ping': 'ping',
   'name.pong': 'Pong!',
   'welcome.message':
     '>>>       `#` **Welcome** {user} to our server !\n      `#` We inform you to read our **rules** `:` {rolesChannel} \n      `#` Total members `:` **{membersCount}**\n      `#` Enjoy with us :heart_on_fire:',
