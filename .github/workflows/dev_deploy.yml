@@ -16,4 +16,4 @@ jobs:
         env:
           ServerIP: ${{ secrets.ServerIP }}
         run: |
-          curl -X GET http://$ServerIP/development
+          curl -X GET http://$ServerIP:6060/development
