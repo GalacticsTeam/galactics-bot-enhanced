@@ -7,7 +7,7 @@
     "dev": "tsx watch src/",
     "test": "tsc && eslint && prettier --check .",
     "build": "tsc --noEmit false --outDir dist/ && tsc-alias",
-    "start": "npm run build && node ./dist/index.js",
+    "start": "node ./dist/index.js",
     "server": "cd ./localdb && npm run server",
     "lint": "eslint .",
     "format": "prettier --write .",
